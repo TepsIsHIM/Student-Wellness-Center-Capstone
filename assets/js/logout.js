@@ -1,3 +1,4 @@
+// logout.js
 document.addEventListener('DOMContentLoaded', () => {
   const logoutButton = document.getElementById('logout');
 
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (response.ok) {
           // Redirect to the login page or any other page after successful logout
-          window.location.href = '/login';
+          window.location.href = '/';
         } else {
           console.error('Logout failed');
         }
