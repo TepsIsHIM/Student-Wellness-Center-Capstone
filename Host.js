@@ -14,6 +14,8 @@ myapp.use(express.json());
 myapp.use(express.urlencoded({ extended: true }));
 myapp.use(cors());
 myapp.use(cookieParser());
+
+
 myapp.set('view engine', 'ejs');
 myapp.set('views', __dirname + '/view');
 myapp.use(express.static(__dirname + '/assets'));
@@ -831,11 +833,16 @@ myapp.post('/login', async (req, res) => {
   }
 });
 
-myapp.get('/logout', (req, res) => {
-  // Clear the user session or any necessary cleanup
-  res.clearCookie('userData');
-  res.redirect('/');
-});
+myapp.post('/logout', async (req, res) => {
+  const { error } = await supabase.auth.signOut()
+
+  if (!error) {
+    res.clearCookie('userData')
+      .json({ message: 'Logout', status: 200 })
+  } else {
+    res.json({ message: error, status: 500 })
+  }
+})
 
 // APPOINTMENT
 myapp.post('/create-appointment', async (req, res) => {
