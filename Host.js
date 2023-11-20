@@ -831,16 +831,11 @@ myapp.post('/login', async (req, res) => {
   }
 });
 
-myapp.post('/logout', async (req, res) => {
-  const { error } = await supabase.auth.signOut()
-
-  if (!error) {
-    res.clearCookie('userData')
-      .json({ message: 'Logout', status: 200 })
-  } else {
-    res.json({ message: error, status: 500 })
-  }
-})
+myapp.get('/logout', (req, res) => {
+  // Clear the user session or any necessary cleanup
+  res.clearCookie('userData');
+  res.redirect('/');
+});
 
 // APPOINTMENT
 myapp.post('/create-appointment', async (req, res) => {

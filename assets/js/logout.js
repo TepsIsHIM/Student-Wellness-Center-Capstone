@@ -1,14 +1,25 @@
-document.getElementById('logout').addEventListener('click', async function(e) {
-  const res = await fetch('/logout', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
+document.addEventListener('DOMContentLoaded', () => {
+  const logoutButton = document.getElementById('logout');
 
-  const json = await res.json()
+  if (logoutButton) {
+    logoutButton.addEventListener('click', async () => {
+      try {
+        const response = await fetch('/logout', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
-  if (json.status === 200) {
-    window.location.href = '/'
+        if (response.ok) {
+          // Redirect to the login page or any other page after successful logout
+          window.location.href = '/login';
+        } else {
+          console.error('Logout failed');
+        }
+      } catch (error) {
+        console.error('Unexpected error during logout:', error);
+      }
+    });
   }
-})
+});
