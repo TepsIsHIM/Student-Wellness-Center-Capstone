@@ -764,6 +764,75 @@ myapp.post('/register', async (req, res) => {
 });
 
 // LOGIN
+myapp.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const { data, error: loginError } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+
+    if (loginError) {
+      console.error('Error logging in:', loginError.message);
+      res.status(500).json({ error: 'Login failed' });
+      return;
+    }
+
+    if (!data || !data.user) {
+      console.error('Authentication failed');
+      res.status(401).json({ error: 'Authentication failed' });
+      return;
+    }
+
+    // Fetch the student data from the specific table
+    const { data: studentData, error: studentError } = await supabase
+      .from('Student Accounts')
+      .select('*')
+      .eq('email', email.toUpperCase())
+      .single();
+
+    // Check if the user is a student
+    if (studentData) {
+      // Store the student data in the session
+      res.cookie('userData', data.session.access_token, {
+        httpOnly: true
+      })
+
+      res
+        .status(200)
+        .json({ success: 'Login successful', accountType: 'Student' });
+      return;
+
+    } else {
+      // Fetch the counselor data from the specific table
+      const { data: counselorData, error: counselorError } = await supabase
+        .from('Counselor Accounts')
+        .select('*')
+        .eq('email', email.toUpperCase())
+        .single();
+
+      // Check if the user is a counselor
+      if (counselorData) {
+        res.cookie('userData', data.session.access_token, {
+          httpOnly: true
+        })
+        res.status(200).json({ success: 'Login successful', accountType: 'Counselor' });
+        return;
+      }
+      else 
+      {console.error('User data not found');
+        res.status(404).json({ error: 'User not found' });
+      }
+
+    }
+  } catch (e) {
+    console.error('Unexpected error:', e); 
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
+
 myapp.post('/logout', async (req, res) => {
   const { error } = await supabase.auth.signOut();
 
@@ -779,7 +848,6 @@ myapp.post('/logout', async (req, res) => {
     res.json({ message: error, status: 500 });
   }
 });
-
 // APPOINTMENT
 myapp.post('/create-appointment', async (req, res) => {
   try {
