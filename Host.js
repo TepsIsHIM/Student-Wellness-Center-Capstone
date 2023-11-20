@@ -834,15 +834,27 @@ myapp.post('/login', async (req, res) => {
 });
 
 myapp.post('/logout', async (req, res) => {
-  const { error } = await supabase.auth.signOut()
+  try {
+    const { error } = await supabase.auth.signOut();
 
-  if (!error) {
-    res.clearCookie('userData')
-      .json({ message: 'Logout', status: 200 })
-  } else {
-    res.json({ message: error, status: 500 })
+    if (!error) {
+      // Clear the user session data
+      res.clearCookie('userData');
+
+      // Set headers to prevent caching
+      res.setHeader('Cache-Control', 'no-store, max-age=0');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
+
+      res.status(200).json({ status: 200, message: 'Logout successful' });
+    } else {
+      res.status(500).json({ status: 500, message: error.message || 'Logout failed' });
+    }
+  } catch (error) {
+    console.error('Unexpected error during logout:', error);
+    res.status(500).json({ status: 500, error: 'Logout failed' });
   }
-})
+});
 
 // APPOINTMENT
 myapp.post('/create-appointment', async (req, res) => {
