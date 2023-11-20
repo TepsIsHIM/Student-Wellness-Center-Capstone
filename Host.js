@@ -57,12 +57,21 @@ myapp.get('/', (req, res) => {
   res.render('LoginPage');
 });
 
+myapp.get('/forgotPassword', (req, res) => {
+  res.render('forgotPassword');
+});
+
+myapp.get('/changePassword', (req, res) => {
+  res.render('changePassword');
+});
+
 myapp.get('/Registerpage', (req, res) => {
   res.render('RegisterPage');
 });
 
 myapp.get('/StudentHomepage', (req, res) => {
   const studentData = res.locals.studentData;
+  
   res.render('StudentHomepage', { studentData });
 });
 
@@ -661,10 +670,6 @@ myapp.post('/register', async (req, res) => {
   const uppercaseGender = gender.toUpperCase()
   const uppercaseAccountType = accountType.toUpperCase()
   try {
-
-    // Encryption Password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     const emailExists = await supabase
       .from(accountType === 'Student' ? 'Student Accounts' : 'Counselor Accounts')
       .select('email')
@@ -701,7 +706,7 @@ myapp.post('/register', async (req, res) => {
             birth_date: birthDate,
             gender: uppercaseGender,
             email: uppercaseEmail,
-            password: hashedPassword, 
+            password, 
             id_number: uppercaseIDNumber,
             phone_number: phoneNumber,
             accountType: uppercaseAccountType,
@@ -732,7 +737,7 @@ myapp.post('/register', async (req, res) => {
             birth_date: birthDate,
             gender: uppercaseGender,
             email: uppercaseEmail,
-            password: hashedPassword, 
+            password, 
             id_number: uppercaseIDNumber,
             phone_number: phoneNumber,
             accountType: uppercaseAccountType,
@@ -763,6 +768,73 @@ myapp.post('/register', async (req, res) => {
   }
 });
 
+myapp.post('/forgotPassword', async (req, res) => {
+  const { email } = req.body;
+  try {
+    // Fetch the student data from the specific table
+    const { data: studentData, error: studentError } = await supabase
+      .from('Student Accounts')
+      .select('*')
+      .eq('email', email.toUpperCase())
+      .single();
+
+    if (studentData) {
+      await supabase.auth.resetPasswordForEmail(studentData.email);
+      return res.status(200).send('Password reset email sent successfully');
+    }
+
+      
+    const { data: counselorData, error: counselorError } = await supabase
+      .from('Counselor Accounts')
+      .select('*')
+      .eq('email', email.toUpperCase())
+      .single();
+
+    if (counselorData) {
+      await supabase.auth.resetPasswordForEmail(counselorData.email);
+      return res.status(200).send('Password reset email sent successfully');
+    }
+
+    // If user not found in both student and counselor accounts
+    console.error('User data not found');
+    return res.status(404).send('User not found');
+
+  } catch (e) {
+    console.error('Unexpected error:', e);
+    return res.status(500).send('Failed');
+  }
+});
+
+myapp.post('/changePassword', async (req, res) => {
+  const { email,password } = req.body;
+
+
+  try {
+    const { data, error: changepsw } = await supabase.auth.updateUser({ email: email, password: password })
+    
+    if (changepsw) {
+      console.log(data);
+      console.error('Error logging in:', changepsw.message);
+      if (changepsw.message.includes("Invalid login credentials")) {
+        res.status(401).json({ error: 'Incorrect email or password' });
+      } else {
+        res.status(500).json({ error: 'Login failed' });
+      }
+    
+      return;
+    }
+    if (!data || !data.user) {
+      console.error('Authentication failed');
+      res.status(401).json({ error: 'Authentication failed' });
+      return;
+    }
+
+  } catch (e) {
+    console.error('Unexpected error:', e);
+    return res.status(500).send('Failed');
+  }
+});
+
 // LOGIN
 myapp.post('/login', async (req, res) => {
   const { email, password } = req.body;
@@ -776,7 +848,12 @@ myapp.post('/login', async (req, res) => {
 
     if (loginError) {
       console.error('Error logging in:', loginError.message);
-      res.status(500).json({ error: 'Login failed' });
+      if (loginError.message.includes("Invalid login credentials")) {
+        res.status(401).json({ error: 'Incorrect email or password' });
+      } else {
+        res.status(500).json({ error: 'Login failed' });
+      }
+    
       return;
     }
 
@@ -838,13 +915,11 @@ myapp.post('/logout', async (req, res) => {
     const { error } = await supabase.auth.signOut();
 
     if (!error) {
-      // Clear the user session data
       res.clearCookie('userData');
+      res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", "0");
 
-      // Set headers to prevent caching
-      res.setHeader('Cache-Control', 'no-store, max-age=0');
-      res.setHeader('Pragma', 'no-cache');
-      res.setHeader('Expires', '0');
 
       res.status(200).json({ status: 200, message: 'Logout successful' });
     } else {

@@ -31,6 +31,13 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!response.ok) {
           // Handle login failure
           console.error('Error during login:', response.statusText);
+        
+          // Parse the JSON response
+          const errorData = await response.json();
+        
+          // Display the error message to the user
+          alert(errorData.error); // You can use a more sophisticated UI element for better user experience
+        
           // Hide the loading screen in case of an error
           hideLoadingScreen();
           return;
