@@ -3,7 +3,10 @@ document.getElementById('logout').addEventListener('click', async function(e) {
     const res = await fetch('/logout', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       }
     });
 
@@ -13,9 +16,8 @@ document.getElementById('logout').addEventListener('click', async function(e) {
       // Clear local storage or any client-side data if needed
       window.localStorage.clear();
       window.sessionStorage.clear();
-      
-      // Redirect to the home page
-      window.location.href = '/';
+ // Redirect to the login page
+ window.location.href = '/';
     } else {
       console.error('Logout failed:', json.error);
       // Handle error or display a message to the user
