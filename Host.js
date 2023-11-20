@@ -846,8 +846,7 @@ myapp.post('/logout', async (req, res) => {
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
 
-      // Redirect to the login page using the POST-Redirect-GET pattern
-      res.redirect(303, '/login');
+      res.status(200).json({ status: 200, message: 'Logout successful' });
     } else {
       res.status(500).json({ status: 500, message: error.message || 'Logout failed' });
     }
@@ -856,6 +855,7 @@ myapp.post('/logout', async (req, res) => {
     res.status(500).json({ status: 500, error: 'Logout failed' });
   }
 });
+
 // APPOINTMENT
 myapp.post('/create-appointment', async (req, res) => {
   try {
