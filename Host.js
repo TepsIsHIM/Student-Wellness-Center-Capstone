@@ -799,7 +799,10 @@ myapp.post('/login', async (req, res) => {
       res.cookie('userData', data.session.access_token, {
         httpOnly: true
       })
-
+ // Set cache-control headers to prevent caching
+ res.setHeader('Cache-Control', 'no-store, max-age=0');
+ res.setHeader('Pragma', 'no-cache');
+ res.setHeader('Expires', '0');
       res
         .status(200)
         .json({ success: 'Login successful', accountType: 'Student' });
@@ -818,6 +821,10 @@ myapp.post('/login', async (req, res) => {
         res.cookie('userData', data.session.access_token, {
           httpOnly: true
         })
+         // Set cache-control headers to prevent caching
+  res.setHeader('Cache-Control', 'no-store, max-age=0');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
         res.status(200).json({ success: 'Login successful', accountType: 'Counselor' });
         return;
       }
