@@ -48,6 +48,9 @@ function insertRecord() {
         // Display a success message or redirect to a confirmation page
         alert('Appointment Created Successfully');
         console.log('Appointment created successfully');
+        dateInput.value = '';
+        timeInput.value = '';
+        serviceInput.value = '';
       } else {
         // Handle errors or display an error message
         alert('Appointment Creation Failed');
