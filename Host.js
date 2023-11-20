@@ -846,9 +846,8 @@ myapp.post('/logout', async (req, res) => {
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
 
-      // Add a random query parameter to force a fresh request
-      const randomQueryParam = Math.random().toString(36).substring(7);
-      res.redirect(`/?${randomQueryParam}`);
+      // Redirect to the login page using the POST-Redirect-GET pattern
+      res.redirect(303, '/login');
     } else {
       res.status(500).json({ status: 500, message: error.message || 'Logout failed' });
     }
@@ -857,7 +856,6 @@ myapp.post('/logout', async (req, res) => {
     res.status(500).json({ status: 500, error: 'Logout failed' });
   }
 });
-
 // APPOINTMENT
 myapp.post('/create-appointment', async (req, res) => {
   try {
