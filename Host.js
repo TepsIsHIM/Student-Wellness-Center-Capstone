@@ -846,7 +846,9 @@ myapp.post('/logout', async (req, res) => {
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
 
-      res.status(200).json({ status: 200, message: 'Logout successful' });
+      // Add a random query parameter to force a fresh request
+      const randomQueryParam = Math.random().toString(36).substring(7);
+      res.redirect(`/?${randomQueryParam}`);
     } else {
       res.status(500).json({ status: 500, message: error.message || 'Logout failed' });
     }
