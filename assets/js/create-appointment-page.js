@@ -39,3 +39,7 @@ function insertRecord() {
       console.error('Error:', error);
     });
 }
+
+function clearForm() {
+  document.getElementById("insertForm").reset();
+}

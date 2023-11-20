@@ -561,6 +561,31 @@ body {
   /*--------------------------------------------------------------
   # Sections General
   --------------------------------------------------------------*/
+  .gradient-custom {
+    background: linear-gradient(to right, #4CAF50, #45a049);
+    color: #fff;
+}
+
+.card {
+    border: none;
+    border-radius: .5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-body h6 {
+    font-weight: 600;
+    color: #333;
+}
+
+hr {
+    border-top: 1px solid #ddd;
+}
+
   table {
     margin: 0 auto;
   }

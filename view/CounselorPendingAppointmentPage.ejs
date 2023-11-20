@@ -24,7 +24,7 @@
   <link href="/vendor/swiper/swiper-bundle.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link href="/css/student-homepage-style.css" rel="stylesheet">
+  <link href="/css/counselor-pendingappointment-page.css" rel="stylesheet">
 
   <script src="/js/logout.js" defer></script>
 </head>
@@ -35,7 +35,7 @@
   <section id="topbar" class="d-flex align-items-center">
     <div class="container d-flex justify-content-center justify-content-md-between">
       <div class="contact-info d-flex align-items-center">
-        <i class="bi bi-person"></i>Welcome Counselor <%= counselorData.last_name %> <%= counselorData.first_name %>
+        <i class="bi bi-person"></i>Welcome, Counselor <%= counselorData.last_name %> <%= counselorData.first_name %>
       </div>
       <!-- <div class="contact-info d-flex align-items-center">
         <i class="bi bi-envelope-fill"></i><a href="mailto:contact@example.com">info@example.com</a>
@@ -64,7 +64,6 @@
           <li class="dropdown"><a href="#"><span>Profile</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="/CounselorProfilePage">Account Details</a></li>
-              <li><a href="#">Settings</a></li>
             </ul>
           </li>
           <li class="dropdown"><a href="#"><span>Appointments</span> <i class="bi bi-chevron-down"></i></a>
@@ -82,7 +81,6 @@
               <li><a href="/CounselorReport">Report</a></li>
             </ul>
           </li>
-          <li><a class="nav-link scrollto " href="#portfolio">Messages</a></li>
           <li><a id="logout" class="getstarted scrollto" href="javascript:;">Logout</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -93,44 +91,47 @@
   </header><!-- End Header -->
 
   <main id="main">
-    <div className="table-responsive">
-      <table className="table border border-2">
-        <thead class="table-dark">
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">Date</th>
-            <th scope="col">Email</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Department</th>
-            <th scope="col">Notes</th>
-            <th scope="col">Appointed Time</th>
-            <th scope="col">Appointed Date</th>
-            <th scope="col">Accept</th>
-            <th scope="col">Reject</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% pendingAppointments.forEach((appointment) => { %>
-            <tr>
-              <td><%= appointment.time %></td>
-              <td><%= appointment.date %></td>
-              <td><%= appointment.email %></td>
-              <td><%= appointment.last_name %></td>
-              <td><%= appointment.first_name %></td>
-              <td><%= appointment.department %></td>
-              <td><%= appointment.notes %></td>
-              <td><%= appointment.appointed_time %></td>
-              <td><%= appointment.appointed_date %></td>
-              <td>
-                <button class="btn btn-success accept-appointment" data-toggle="modal" data-target="#acceptModal" data-appointment-id="<%= appointment.id %>">Accept</button>
-              </td>
-              <td>
-                <button class="btn btn-danger reject-appointment" data-toggle="modal" data-target="#rejectModal" data-appointment-id="<%= appointment.id %>">Reject</button>
-            </td>
-          <% }); %>
-        </tbody>
-      </table>
+    <div class="table-responsive">
+        <table class="table border border-2 table-hover">
+            <thead style="background-color: #28a745; color: white;">
+                <tr>
+                    <th scope="col">Time</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Notes</th>
+                    <th scope="col">Appointed Time</th>
+                    <th scope="col">Appointed Date</th>
+                    <th scope="col">Accept</th>
+                    <th scope="col">Reject</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% pendingAppointments.forEach((appointment) => { %>
+                <tr>
+                    <td><%= appointment.time %></td>
+                    <td><%= appointment.date %></td>
+                    <td><%= appointment.email %></td>
+                    <td><%= appointment.last_name %></td>
+                    <td><%= appointment.first_name %></td>
+                    <td><%= appointment.department %></td>
+                    <td><%= appointment.notes %></td>
+                    <td><%= appointment.appointed_time %></td>
+                    <td><%= appointment.appointed_date %></td>
+                    <td>
+                        <button class="btn btn-outline-success accept-appointment" data-toggle="modal"
+                            data-target="#acceptModal" data-appointment-id="<%= appointment.id %>">Accept</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-danger reject-appointment" data-toggle="modal"
+                            data-target="#rejectModal" data-appointment-id="<%= appointment.id %>">Reject</button>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
     </div>
   </main><!-- End #main -->
 
@@ -140,11 +141,7 @@
       <h3>Student Wellness Center</h3>
       <p>Create possibilities with DLSU-D.</p>
       <div class="social-links">
-        <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-        <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-        <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-        <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+        <a href="https://www.facebook.com/dlsudswc/" class="facebook"><i class="bx bxl-facebook"></i></a>
       </div>
       <div class="copyright">
         &copy; Copyright <strong><span>Alvaran, Dimaya, Manalo</span></strong>. All Rights Reserved
