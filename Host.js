@@ -799,10 +799,7 @@ myapp.post('/login', async (req, res) => {
       res.cookie('userData', data.session.access_token, {
         httpOnly: true
       })
- // Set cache-control headers to prevent caching
- res.setHeader('Cache-Control', 'no-store, max-age=0');
- res.setHeader('Pragma', 'no-cache');
- res.setHeader('Expires', '0');
+
       res
         .status(200)
         .json({ success: 'Login successful', accountType: 'Student' });
@@ -821,10 +818,6 @@ myapp.post('/login', async (req, res) => {
         res.cookie('userData', data.session.access_token, {
           httpOnly: true
         })
-         // Set cache-control headers to prevent caching
-  res.setHeader('Cache-Control', 'no-store, max-age=0');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
         res.status(200).json({ success: 'Login successful', accountType: 'Counselor' });
         return;
       }
@@ -841,20 +834,16 @@ myapp.post('/login', async (req, res) => {
 });
 
 myapp.post('/logout', async (req, res) => {
-  const { error } = await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut()
 
   if (!error) {
-    res.clearCookie('userData');
-    // Add headers to prevent caching
-    res.setHeader('Cache-Control', 'no-store, max-age=0');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    // Send JSON response
-    res.json({ message: 'Logout', status: 200 });
+    res.clearCookie('userData')
+      .json({ message: 'Logout', status: 200 })
   } else {
-    res.json({ message: error, status: 500 });
+    res.json({ message: error, status: 500 })
   }
-});
+})
+
 // APPOINTMENT
 myapp.post('/create-appointment', async (req, res) => {
   try {
