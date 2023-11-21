@@ -64,3 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+$(document).ready(function () {
+  // Initialize DataTable
+  $('#appointmentTable').DataTable();
+});

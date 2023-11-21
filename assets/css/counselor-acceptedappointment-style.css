@@ -604,6 +604,10 @@ tbody tr:hover {
     background-color: #bd2130;
 }
 
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  margin-right: 5px; /* Adjust the spacing as needed */
+}
+
   table {
     margin: 0 auto;
   }
