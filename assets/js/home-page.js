@@ -264,3 +264,10 @@
   });
 
 })()
+
+$(document).ready(function () {
+  // Initialize DataTable
+  $('#pendingAppointmentsTable').DataTable();
+  $('#acceptedAppointmentsTable').DataTable();
+});
+

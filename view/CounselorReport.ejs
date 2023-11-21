@@ -35,7 +35,7 @@
   <section id="topbar" class="d-flex align-items-center">
     <div class="container d-flex justify-content-center justify-content-md-between">
       <div class="contact-info d-flex align-items-center">
-        <i class="bi bi-person"></i>Welcome Counselor <%= counselorData.last_name %> <%= counselorData.first_name %>
+        <i class="bi bi-person"></i>Welcome, Counselor <%= counselorData.last_name %> <%= counselorData.first_name %>
       </div>
       <!-- <div class="contact-info d-flex align-items-center">
         <i class="bi bi-envelope-fill"></i><a href="mailto:contact@example.com">info@example.com</a>
@@ -80,7 +80,6 @@
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
-
     </div>
   </div>
   </header><!-- End Header -->
@@ -114,7 +113,7 @@
             <label for="department" class="form-label">Department:</label>
             <input type="text" class="form-control" id="department" name="department">
           </div>
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <label for="typeOfService" class="form-label">Type of Service:</label>
           <input type="text" class="form-control" id="typeOfService" name="typeOfService">
         </div>
@@ -127,15 +126,66 @@
           <input type="text" class="form-control" id="natureOfConcern" name="natureOfConcern">
         </div>
         <div class="mb-3">
+          <label for="sessionName" class="form-label">Type of Session:</label>
+          <input type="text" class="form-control" id="sessionName" name="sessionName">
+        </div> -->
+        <div class="mb-3">
+          <label for="typeOfService" class="form-label">Type of Consultation:</label>
+          <select class="form-select" id="typeOfService" name="typeOfService">
+              <option value="service1">N/A</option>
+              <option value="service2">CAREER/OCCUPATIONAL</option>
+              <option value="service2">EDUCATIONAL</option>
+              <option value="service2">PERSONAL/SOCIAL</option>
+              <!-- Add more options as needed -->
+          </select>
+      </div>
+      
+      <div class="mb-3">
+          <label for="categoryType" class="form-label">Category Type:</label>
+          <select class="form-select" id="categoryType" name="categoryType">
+              <option value="category1">N/A</option>
+              <option value="category2">Category 2</option>
+              <!-- Add more options as needed -->
+          </select>
+      </div>
+      
+      <div class="mb-3">
+          <label for="natureOfConcern" class="form-label">Nature of Concern:</label>
+          <select class="form-select" id="natureOfConcern" name="natureOfConcern">
+              <option value="concern1">N/A</option>
+              <option value="concern2">ACADEMIC</option>
+              <option value="concern3">ADJUSTMENT</option>
+              <option value="concern4">BEHAVIOR</option>
+              <option value="concern5">CAREER</option>
+              <option value="concern6">COGNITIVE</option>
+              <option value="concern7">DISCIPLINE</option>
+              <option value="concern8">ECONOMIC</option>
+              <option value="concern9">EMERGENCY/CRITICAL CASES</option>
+              <option value="concern10">EMOTIONAL</option>
+              <option value="concern11">PHYSICAL HEALTH/ORGANIC/MEDICAL</option>
+              <option value="concern12">RELATIONAL/INTERPERSONAL</option>
+              <option value="concern13">SCHOOL</option>
+              <option value="concern14">SEXUALITY</option>
+              <option value="concern15">SOCIAL/POLITICAL/IDEOLOGICAL</option>
+              <option value="concern16">SPIRITUAL/RELIGIOUS/TRANSPERSONAL</option>
+              <!-- Add more options as needed -->
+          </select>
+      </div>
+      
+      <div class="mb-3">
+          <label for="sessionName" class="form-label">Type of Session:</label>
+          <select class="form-select" id="sessionName" name="sessionName">
+              <option value="session1">N/A</option>
+              <option value="session2">ONGOING/FOLLOW-UP</option>
+              <!-- Add more options as needed -->
+          </select>
+      </div>
+        <div class="mb-3">
           <label for="counselingClient" class="form-label">Counseling Client:</label>
           <input type="text" class="form-control" id="counselingClient" name="counselingClient">
         </div>
         <div class="mb-3">
-          <label for="sessionName" class="form-label">Session Name:</label>
-          <input type="text" class="form-control" id="sessionName" name="sessionName">
-        </div>
-        <div class="mb-3">
-          <label for="note" class="form-label">Note:</label>
+          <label for="note" class="form-label">Notation:</label>
           <textarea class="form-control" id="note" name="note" rows="5"></textarea>
         </div>
         <button type="button"  class="btn btn-primary"onclick="insertRecord()">Submit
@@ -143,8 +193,6 @@
       </form>
     </div>
   </main>
-
-
 
   <!-- ======= Footer ======= -->
   <footer id="footer">

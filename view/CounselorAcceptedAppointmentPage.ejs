@@ -88,41 +88,41 @@
 
   <main id="main">
     <div class="table-responsive">
-      <table class="table border border-2 table-hover">
-          <thead style="background-color: #28a745; color: white;">
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">Date</th>
-            <th scope="col">Student Email</th>
-            <th scope="col">Student</th>
-            <th scope="col">Department</th>
-            <th scope="col">Appointed Time</th>
-            <th scope="col">Appointed Date</th>
-            <th scope="col">Complete</th>
-            <th scope="col">Cancel</th>
-
-          </tr>
-        </thead>
-        <tbody>
-          <% acceptedAppointments.forEach((appointment) => { %>
-            <tr>
-              <td><%= appointment.time %></td>
-              <td><%= appointment.date %></td>
-              <td><%= appointment.email %></td>
-              <td><%= appointment.last_name %> <%= appointment.first_name %></td>
-              <td><%= appointment.department %></td>
-              <td><%= appointment.appointed_time %></td>
-              <td><%= appointment.appointed_date %></td>
-              <td>
-                <button class="btn btn-outline-success" data-appointment-id="<%= appointment.id %>">Complete</button>
-              </td>
-              <td>
-                <button class="btn btn-outline-danger cancel-appointment" data-toggle="modal" data-target="#cancelModal" data-appointment-id="<%= appointment.id %>">Cancel</button>
-            </td>
-            </tr>
-          <% }); %>
-        </tbody>
-      </table>
+        <table class="table border border-2 table-hover" id="acceptedAppointmentsTable">
+            <thead style="background-color: #28a745; color: white;">
+                <tr>
+                    <th scope="col">Time</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Student Email</th>
+                    <th scope="col">Student</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Appointed Time</th>
+                    <th scope="col">Appointed Date</th>
+                    <th scope="col">Complete</th>
+                    <th scope="col">Cancel</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% acceptedAppointments.forEach((appointment) => { %>
+                <tr>
+                    <td><%= appointment.time %></td>
+                    <td><%= appointment.date %></td>
+                    <td><%= appointment.email %></td>
+                    <td><%= appointment.last_name %> <%= appointment.first_name %></td>
+                    <td><%= appointment.department %></td>
+                    <td><%= appointment.appointed_time %></td>
+                    <td><%= appointment.appointed_date %></td>
+                    <td>
+                        <button class="btn btn-outline-success" data-appointment-id="<%= appointment.id %>">Complete</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-danger cancel-appointment" data-toggle="modal"
+                            data-target="#cancelModal" data-appointment-id="<%= appointment.id %>">Cancel</button>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
     </div>
   </main><!-- End #main -->
 
@@ -148,6 +148,8 @@
   <script src="/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="/vendor/php-email-form/validate.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <!-- Add these lines to include Bootstrap and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
