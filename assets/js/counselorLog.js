@@ -9,3 +9,8 @@ function toggleRow(rowId) {
       hiddenRow.classList.add('open');
     }
   }
+
+  function toggleRow(rowId) {
+    const hiddenRow = document.getElementById(rowId);
+    hiddenRow.style.display = (hiddenRow.style.display === "table-row") ? "none" : "table-row";
+}

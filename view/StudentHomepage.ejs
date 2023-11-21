@@ -24,11 +24,12 @@
   <link href="/vendor/boxicons/css/boxicons.css" rel="stylesheet">
   <link href="/vendor/glightbox/css/glightbox.css" rel="stylesheet">
   <link href="/vendor/swiper/swiper-bundle.css" rel="stylesheet">
-
+  
   <!-- Template Main CSS File -->
   <link href="/css/student-homepage-style.css" rel="stylesheet">
   <link href="/css/spinner.css" rel="stylesheet">
 
+ 
   <script src="/js/logout.js" defer></script>
 </head>
 
@@ -36,18 +37,11 @@
    <section id="topbar" class="d-flex align-items-center">
     <div class="container d-flex justify-content-center justify-content-md-between">
       <div class="contact-info d-flex align-items-center">
-        <% if (studentData) { %>
+      
           <i class="bi bi-person"></i> Welcome, <%= studentData.last_name %> <%= studentData.first_name %>
-        <% } else { %>
-          <!-- Redirect to login page if user is not authenticated -->
-          <script>window.location.href = "/";</script>
-        <% } %>
       </div>
       <div class="social-links d-none d-md-block">
-        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></i></a>
+        <a href="https://www.facebook.com/dlsudswc/" class="facebook"><i class="bi bi-facebook"></i></a>
       </div>
     </div>
   </section>
@@ -64,7 +58,6 @@
           <li class="dropdown"><a href="#"><span>Profile</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="/studentProfilePage">Account Details</a></li>
-              <li><a href="#">Settings</a></li>
             </ul>
           </li>
           <li class="dropdown"><a href="#"><span>Schedule Appointment</span> <i class="bi bi-chevron-down"></i></a>
@@ -79,7 +72,6 @@
               <li><a href="/studentAppointmentHistory">Appointment History</a></li>
             </ul>
           </li>
-          <li><a class="nav-link scrollto" href="#">Notification</a></li>
           <li><a class="nav-link scrollto " href="#team">Our Team</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
           <li><a id="logout" class="getstarted scrollto" href="javascript:;">Logout</a></li>
@@ -447,11 +439,7 @@
       <h3>Student Wellness Center</h3>
       <p>Create possibilities with DLSU-D.</p>
       <div class="social-links">
-        <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-        <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-        <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-        <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+        <a href="https://www.facebook.com/dlsudswc/" class="facebook"><i class="bx bxl-facebook"></i></a>
       </div>
       <div class="copyright">
         &copy; Copyright <strong><span>Alvaran, Dimaya, Manalo</span></strong>. All Rights Reserved

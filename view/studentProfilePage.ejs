@@ -34,17 +34,14 @@
 
 <body>
    <!-- ======= Top Bar ======= -->
-
+   <% if (!studentData) { %>   <script>window.location.href = "/";</script><% } %>
    <section id="topbar" class="d-flex align-items-center">
     <div class="container d-flex justify-content-center justify-content-md-between">
       <div class="contact-info d-flex align-items-center">
         <i class="bi bi-person"></i> Welcome, <%= studentData.last_name %> <%= studentData.first_name %>
       </div>
       <div class="social-links d-none d-md-block">
-        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></i></a>
+        <a href="https://www.facebook.com/dlsudswc/" class="facebook"><i class="bi bi-facebook"></i></a>
       </div>
     </div>
   </section>
@@ -61,7 +58,6 @@
           <li class="dropdown"><a href="#"><span>Profile</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="/studentProfilePage">Account Details</a></li>
-              <li><a href="#">Settings</a></li>
             </ul>
           </li>
           <li class="dropdown"><a href="#"><span>Schedule Appointment</span> <i class="bi bi-chevron-down"></i></a>
@@ -76,9 +72,6 @@
               <li><a href="/studentAppointmentHistory">Appointment History</a></li>
             </ul>
           </li>
-          <li><a class="nav-link scrollto" href="#services">Services</a></li>
-          <li><a class="nav-link scrollto " href="#team">Our Team</a></li>
-          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
           <li><a id="logout" class="getstarted scrollto" href="javascript:;">Logout</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -88,53 +81,53 @@
   </div>
   </header><!-- End Header -->
 
-  <section class="vh-100" style="background-color: #f4f5f7;">
+  <section class="vh-100">
     <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col col-lg-6 mb-4 mb-lg-0">
-          <div class="card mb-3" style="border-radius: .5rem;">
-            <div class="row g-0">
-              <div class="col-md-4 gradient-custom text-center text-white"
-                style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-                <img src="/img/profile-avatar-green.png"
-                  alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
-                <h5><%= studentData.first_name %> <%= studentData.last_name %></h5>
-                <p><%= studentData.department %></p>
-                <i class="far fa-edit mb-5"></i>
-              </div>
-              <div class="col-md-8">
-                <div class="card-body p-4">
-                  <h6>Information</h6>
-                  <hr class="mt-0 mb-4">
-                  <div class="row pt-1">
-                    <div class="col-6 mb-3">
-                      <h6>Email</h6>
-                      <p class="text-muted"><%= studentData.email %></p>
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-lg-6 mb-4 mb-lg-0">
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-4 gradient-custom text-center"
+                            style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+                            <img src="/img/profile-avatar-green.png" alt="Avatar"
+                                class="img-fluid my-4" style="width: 80px;" />
+                            <h5 class="mb-2"><%= studentData.first_name %> <%= studentData.last_name %></h5>
+                            <p class="mb-2"><%= studentData.department %></p>
+                            <i class="far fa-edit mb-4"></i>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body p-4">
+                                <h6>Information</h6>
+                                <hr class="mt-0 mb-4">
+                                <div class="row pt-1">
+                                    <div class="col-6 mb-3">
+                                        <h6>Email</h6>
+                                        <p class="text-muted"><%= studentData.email %></p>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>Phone</h6>
+                                        <p class="text-muted"><%= studentData.phone_number %></p>
+                                    </div>
+                                </div>
+                                <hr class="mt-0 mb-4">
+                                <div class="row pt-1">
+                                    <div class="col-6 mb-3">
+                                        <h6>Account Type</h6>
+                                        <p class="text-muted"><%= studentData.accountType %></p>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <h6>Student ID</h6>
+                                        <p class="text-muted"><%= studentData.id_number %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-6 mb-3">
-                      <h6>Phone</h6>
-                      <p class="text-muted"><%= studentData.phone_number %></p>
-                    </div>
-                  </div>
-                  <hr class="mt-0 mb-4">
-                  <div class="row pt-1">
-                    <div class="col-6 mb-3">
-                      <h6>Account Type</h6>
-                      <p class="text-muted"><%= studentData.accountType %></p>
-                    </div>
-                    <div class="col-6 mb-3">
-                      <h6>Student ID</h6>
-                      <p class="text-muted"><%= studentData.id_number %></p>
-                    </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </section>
+</section>
 
   <!-- Your Student Profile Content Goes Here
  <section id="student-profile">
@@ -159,11 +152,7 @@
       <h3>Student Wellness Center</h3>
       <p>Create possibilities with DLSU-D.</p>
       <div class="social-links">
-        <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-        <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-        <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-        <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+        <a href="https://www.facebook.com/dlsudswc/" class="facebook"><i class="bx bxl-facebook"></i></a>
       </div>
       <div class="copyright">
         &copy; Copyright <strong><span>Alvaran, Dimaya, Manalo</span></strong>. All Rights Reserved
