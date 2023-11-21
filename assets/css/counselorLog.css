@@ -550,32 +550,36 @@ h6 {
 /*--------------------------------------------------------------
 # Sections General
 --------------------------------------------------------------*/
-.table-hover tbody tr:hover {
-  background-color: #e9ecef;
+
+.table-responsive {
+  max-width: 80%; /* Adjust the maximum width as needed */
+  margin: 0 auto; /* Center the table */
 }
 
-.accordion {
-  cursor: pointer;
+.table {
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.arrow-icon {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 5px 5px 0;
-  border-color: #555 transparent transparent transparent;
-  margin-right: 5px;
+th,
+td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
 }
 
-.hidden-row {
-  display: none;
+th {
+  background-color: #007bff;
+  color: #fff;
 }
 
-.additional-info {
-  background-color: #f1f1f1;
-  padding: 10px;
-  border-radius: 5px;
+tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+margin-right: 5px; /* Adjust the spacing as needed */
 }
 /* a */
 table {
