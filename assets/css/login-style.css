@@ -146,7 +146,7 @@ a:hover {
 @media screen and (max-width: 992px) {
     .card1 {
         width: 100%;
-        padding: 40px 30px 10px 30px;
+        padding: 60px 50px 30px 50px;
     }
 
     .card2 {
@@ -155,11 +155,12 @@ a:hover {
 
     .right {
         margin-top: 100px !important;
-        margin-bottom: 100px !important;
+        margin-bottom: 10px !important;
     }
 }
 
-@media screen and (max-width: 768px) {
+
+@media screen and (min-width: 800px) {
     .container {
         padding: 10px !important;
     }
