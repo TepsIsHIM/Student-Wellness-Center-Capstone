@@ -71,7 +71,6 @@ myapp.get('/Registerpage', (req, res) => {
 
 myapp.get('/StudentHomepage', (req, res) => {
   const studentData = res.locals.studentData;
-  
   res.render('StudentHomepage', { studentData });
 });
 
@@ -496,9 +495,27 @@ myapp.get('/CounselorLogs', async (req, res) => {
   }
 });
 
-myapp.get('/CounselorReport', (req, res) => {
-  const counselorData = res.locals.counselorData;
-  res.render('CounselorReport', { counselorData });
+myapp.get('/CounselorReport', async(req, res) => {
+  try {
+    const counselorData = res.locals.counselorData;
+    const counselorEmail = counselorData.email;
+    const { data: counselorReport, error } = await supabase
+      .from('Completed Appointment (No Reports)')
+      .select('*')
+      .eq('counselor_email', counselorEmail)
+      .order('date', { ascending: true }, 'time', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching appointments:', error.message);
+      return res.status(500).send('Internal server error');
+    }
+
+    res.render('CounselorReport', { counselorReport, });
+  } catch (error) {
+    // Handle any unexpected server errors
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
 });
 
 myapp.get('/emailSuggestions', async (req, res) => {
@@ -517,11 +534,18 @@ myapp.get('/emailSuggestions', async (req, res) => {
   res.json({ suggestions: suggestedEmails });
 });
 
+myapp.get('/adminHomepage', (req, res) => {
+  const counselorData = res.locals.counselorData;
+  res.render('adminHomepage', { counselorData });
+});
+
 myapp.get('/adminCreateAccounts', (req, res) => {
-  res.render('adminCreateAccounts');
+  const counselorData = res.locals.counselorData;
+  res.render('adminCreateAccounts', { counselorData });
 });
 
 myapp.get('/adminEditRoles', async (req, res) => {
+  const counselorData = res.locals.counselorData;
   try {
     const { data: editRoles, error } = await supabase
       .from('Counselor Accounts') 
@@ -532,7 +556,7 @@ myapp.get('/adminEditRoles', async (req, res) => {
       console.error('Error fetching Counselor Accounts:', error.message);
       return res.status(500).send('Internal server error');
     }
-    res.render('adminEditRoles', {  editRoles });
+    res.render('adminEditRoles', {  editRoles,counselorData });
   } catch (error) {
     // Handle any unexpected server errors
     console.error('Server error:', error.message);
@@ -541,6 +565,7 @@ myapp.get('/adminEditRoles', async (req, res) => {
 });
 
 myapp.get('/adminAppointmentHistory', async (req, res) => {
+  const counselorData = res.locals.counselorData;
   try {
     const { data: appointmentHistory, error } = await supabase
       .from('Appointment History')
@@ -552,7 +577,7 @@ myapp.get('/adminAppointmentHistory', async (req, res) => {
       return res.status(500).send('Internal server error');
     }
 
-    res.render('adminAppointmentHistory', { appointmentHistory });
+    res.render('adminAppointmentHistory', { appointmentHistory,counselorData });
   } catch (error) {
     // Handle any unexpected server errors
     console.error('Server error:', error.message);
@@ -561,6 +586,7 @@ myapp.get('/adminAppointmentHistory', async (req, res) => {
 });
 
 myapp.get('/adminAcceptedAppointment', async (req, res) => {
+  const counselorData = res.locals.counselorData;
   try {
     const { data: acceptedAppointment, error } = await supabase
       .from('Accepted Appointment')
@@ -572,7 +598,7 @@ myapp.get('/adminAcceptedAppointment', async (req, res) => {
       return res.status(500).send('Internal server error');
     }
 
-    res.render('adminAcceptedAppointment', { acceptedAppointment });
+    res.render('adminAcceptedAppointment', { acceptedAppointment, counselorData });
   } catch (error) {
     // Handle any unexpected server errors
     console.error('Server error:', error.message);
@@ -581,6 +607,7 @@ myapp.get('/adminAcceptedAppointment', async (req, res) => {
 });
 
 myapp.get('/adminPendingAppointment', async (req, res) => {
+  const counselorData = res.locals.counselorData;
   try {
     const { data: pendingAppointment, error } = await supabase
       .from('Pending Appointment')
@@ -592,7 +619,7 @@ myapp.get('/adminPendingAppointment', async (req, res) => {
       return res.status(500).send('Internal server error');
     }
 
-    res.render('adminPendingAppointment', { pendingAppointment });
+    res.render('adminPendingAppointment', { pendingAppointment, counselorData });
   } catch (error) {
     // Handle any unexpected server errors
     console.error('Server error:', error.message);
@@ -601,6 +628,7 @@ myapp.get('/adminPendingAppointment', async (req, res) => {
 });
 
 myapp.get('/adminViewAccounts', async (req, res) => {
+  const counselorData = res.locals.counselorData;
   try {
     const { data: studentViewAccounts, error } = await supabase
       .from('Student Accounts')
@@ -620,7 +648,7 @@ myapp.get('/adminViewAccounts', async (req, res) => {
       console.error('Error fetching appointments:', error.message);
       return res.status(500).send('Internal server error');
     }
-    res.render('adminViewAccounts', { studentViewAccounts,counselorViewAccounts });
+    res.render('adminViewAccounts', { studentViewAccounts,counselorViewAccounts, counselorData });
   } catch (error) {
     // Handle any unexpected server errors
     console.error('Server error:', error.message);
@@ -629,6 +657,7 @@ myapp.get('/adminViewAccounts', async (req, res) => {
 });
 
 myapp.get('/adminCounselorLog', async (req, res) => {
+  const counselorData = res.locals.counselorData;
   try {
     const { data: counselorLog, error } = await supabase
       .from('Report')
@@ -640,20 +669,13 @@ myapp.get('/adminCounselorLog', async (req, res) => {
       return res.status(500).send('Internal server error');
     }
 
-    res.render('adminCounselorLog', { counselorLog });
+    res.render('adminCounselorLog', { counselorLog,counselorData });
   } catch (error) {
     // Handle any unexpected server errors
     console.error('Server error:', error.message);
     res.status(500).send('Internal server error');
   }
 });
-
-myapp.get('/adminHomepage', (req, res) => {
-  res.render('adminHomepage');
-});
-
-
-
 
 //=========POSTING===========//
 
@@ -810,10 +832,13 @@ myapp.post('/changePassword', async (req, res) => {
 
 
   try {
-    const { data, error: changepsw } = await supabase.auth.updateUser({ email: email, password: password })
+    const { data, error: changepsw } = await supabase.auth.updateUser({ 
+      email: email, 
+      password: password 
+    })
     
     if (changepsw) {
-      console.log(data);
+     
       console.error('Error logging in:', changepsw.message);
       if (changepsw.message.includes("Invalid login credentials")) {
         res.status(401).json({ error: 'Incorrect email or password' });
@@ -844,7 +869,6 @@ myapp.post('/login', async (req, res) => {
       email,
       password
     });
-
 
     if (loginError) {
       console.error('Error logging in:', loginError.message);
@@ -1251,14 +1275,25 @@ myapp.post('/completeAppointment/:appointmentId', async (req, res) => {
     };
 
     // Save accepted appointment in the 'Accepted Appointment' table
-    const { data: insertedAppointment, error: insertError } = await supabase
-      .from('Appointment History')
-      .insert(completedAppointmentData);
+    // Save accepted appointment in the 'Appointment History' table
+const { data: insertAppointmentHistory, error: insertError1 } = await supabase
+.from('Appointment History')
+.insert(completedAppointmentData);
 
-    if (insertError) {
-      console.error('Error inserting completed appointment:', insertError.message);
-      return res.status(500).send('Failed to cancel the appointment');
-    }
+if (insertError1) {
+console.error('Error inserting completed appointment:', insertError1.message);
+return res.status(500).send('Failed to complete the appointment');
+}
+
+// Insert into 'Completed Appointment (No Reports)' table
+const { data: insertCompletedAppointments, error: insertError2 } = await supabase
+.from('Completed Appointment (No Reports)')
+.insert(completedAppointmentData);
+
+if (insertError2) {
+console.error('Error inserting into Completed Appointment (No Reports):', insertError2.message);
+return res.status(500).send('Failed to complete the appointment');
+}
 
     // Remove the appointment from 'completed Appointment' after moving it to 'Accepted Appointment'
     const { error: deleteError } = await supabase
@@ -1401,7 +1436,6 @@ myapp.post('/cancelAppointment/:appointmentId', async (req, res) => {
     const appoint_date = appointmentDetails.appointed_date;
     const appoint_time = appointmentDetails.appointed_time;
 
-
     // Prepare data for 'Accepted Appointment' with counselor details and adjusted date/time
     const cancelledAppointmentData = {
       counselor_email: counselorEmail,
@@ -1455,9 +1489,6 @@ myapp.post('/counselorEncoding', async (req, res) => {
     const userEmail = res.locals.counselorData.email;
     const userFirstName = res.locals.counselorData.first_name;
     const userLastName = res.locals.counselorData.last_name;
-
-
-    // Get the current date and time when the "appoint" button is clicked in the Philippines Time Zone (Asia/Manila)
     const encodedDateTime = new Date();
     const options = {
       timeZone: 'Asia/Manila',
@@ -1468,7 +1499,6 @@ myapp.post('/counselorEncoding', async (req, res) => {
     };
     const encodedTimeStr = encodedDateTime.toLocaleString('en-US', options);
     const encodedDateStr = encodedDateTime.toLocaleDateString('en-US', { timeZone: 'Asia/Manila' });
-
     const encodeData = {
       student_email: student_Email.toUpperCase(),
       student_lname: student_lname.toUpperCase(),
@@ -1501,6 +1531,89 @@ myapp.post('/counselorEncoding', async (req, res) => {
     }
 
     res.status(200).json({ message: 'Encoded successfully' });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
+myapp.post('/cancelAppointment/:appointmentId', async (req, res) => {
+  try {
+    const { nameOfConcern,typeOfClient,typeOfSession,date,hours,minutes,notes,title,id } = req.body;
+    const counselorData = res.locals.counselorData;
+    const userEmail = counselorData.email;
+    const userFirstName = counselorData.first_name;
+    const userLastName = counselorData.last_name; 
+    const appointmentDateTime = new Date();
+    const options = {
+      timeZone: 'Asia/Manila',
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    };
+    const appointmentTimeStr = appointmentDateTime.toLocaleString('en-US', options);
+    const appointmentDateStr = appointmentDateTime.toLocaleDateString('en-US', { timeZone: 'Asia/Manila' });
+
+    // Retrieve appointment details from 'Pending Appointment' based on appointmentId
+    const { data: appointmentData, error: appointmentError } = await supabase
+      .from('Completed Appointment (No Reports)')
+      .select('*')
+      .eq('id', id);
+
+    if (appointmentError || !appointmentData.length) {
+      console.error('Error fetching appointment details:', appointmentError?.message);
+      return res.status(404).send('Appointment not found');
+    }
+
+    const appointmentDetails = appointmentData[0];
+    const student_Email = appointmentDetails.email;
+    const student_FName = appointmentDetails.first_name;
+    const student_LName = appointmentDetails.last_name;
+    const dept = appointmentDetails.department;
+    const appointprogcode = appointmentDetails.progCode;
+    
+    // Prepare data for 'Accepted Appointment' with counselor details and adjusted date/time
+    const encodeData = {
+      student_email: student_Email,
+      student_lname: student_LName,
+      student_fname: student_FName,
+      progcode: appointprogcode,
+      department: dept,
+      service: title,
+      category: 'NULL',
+      concern: nameOfConcern,
+      client: typeOfClient,
+      session: typeOfSession,
+      notes: notes,
+      counselor_email: userEmail,
+      counselor_fname: userFirstName,
+      counselor_lname: userLastName,
+      date_encoded: appointmentDateStr,
+      time_encoded: appointmentTimeStr,
+      hours: hours,
+      minutes: minutes,
+    };
+    // Save accepted appointment in the 'Accepted Appointment' table
+    const { data: encodeReport, error: insertError } = await supabase
+      .from('Report')
+      .insert(encodeData);
+
+    if (insertError) {
+      console.error('Error inserting cancelled appointment:', insertError.message);
+      return res.status(500).send('Failed to cancel the appointment');
+    }
+
+
+    const { error: deleteError } = await supabase
+      .from('Completed Appointment (No Reports)')
+      .delete()
+      .eq('id',id);
+
+    if (deleteError) {
+      console.error('Error deleting:', deleteError.message);
+
+    }
+    res.status(200).json({ message: 'Reported successfully' });
   } catch (error) {
     console.error('Server error:', error.message);
     res.status(500).send('Internal server error');
