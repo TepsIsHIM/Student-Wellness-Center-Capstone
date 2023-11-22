@@ -5,6 +5,7 @@ body {
     margin: 0; /* Remove default body margin to ensure full coverage */
     background-image: url("/img/dlsud-bg-login.png"); /* Replace with the provided background image link */
     background-size: cover;
+    background-attachment: fixed;
     background-repeat: no-repeat;
 }
 
