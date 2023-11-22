@@ -91,7 +91,7 @@
   <main>
     <div class="container">
       <h1>Report</h1>
-      <form action="/submit_data" method="POST">
+      <form>
         <div class="mb-3">
           <label for="fname" class="form-label">First Name:</label>
           <input type="text" class="form-control" id="fname" name="fname">
@@ -110,41 +110,40 @@
           <input type="text" class="form-control" id="progcode" name="progcode">
         </div>
         <div class="mb-3">
-            <label for="schoolYear" class="form-label">School Year:</label>
-            <input type="text" class="form-control" id="schoolYear" name="schoolYear">
-          </div>
-        <div class="mb-3">
             <label for="department" class="form-label">Department:</label>
             <input type="text" class="form-control" id="department" name="department">
           </div>
         <div class="mb-3">
-          <label for="typeOfService" class="form-label">Type of Service:</label>
-          <input type="text" class="form-control" id="typeOfService" name="typeOfService">
-        </div>
-        <div class="mb-3">
-          <label for="categoryType" class="form-label">Category Type</label>
-          <select class="form-select" id="concernSelect3">
+          <label for="serviceSelect3" class="form-label">Type Of Service</label>
+          <select class="form-select" id="serviceSelect3">
+            <option value="" disabled>Select Type Of Service</option>
             <option value="COUNSELING">COUNSELING</option>
             <option value="CONSULTATION">CONSULTATION</option>
             <option value="INTERVIEW">INTERVIEW</option>
             <option value="TESTING">TESTING</option>
             <option value="OTHERS">OTHERS</option>
           </select>
+          
         </div>
       <!-- Consultation Section -->
       <div class="mb-3 consultation-section">
         <label for="consultSelect2" class="form-label">Type of Consultation:</label>
         <select class="form-select" id="consultSelect2" name="consultSelect2">
+          
             <option value="CAREER/OCCUPATIONAL">CAREER/OCCUPATIONAL</option>
             <option value="EDUCATIONAL">EDUCATIONAL</option>
             <option value="PERSONAL/SOCIAL">PERSONAL/SOCIAL</option>
         </select>
+        <label for="dateInput2" class="form-label">Date of Appointment:</label>
+      <input type="date" class="form-control" id="dateInput2" name="dateInput2">
         <label for="hoursInput2" class="form-label">Time used Hours:</label>
         <input type="number" class="form-control" id="hoursInput2" name="hoursInput2" min="0">
         <label for="minutesInput2" class="form-label">Time used Minutes:</label>
         <input type="number" class="form-control" id="minutesInput2" name="minutesInput2" min="0" max="59">
         <label for="noteTextarea2" class="form-label">Note:</label>
         <textarea class="form-control" id="noteTextarea2" name="noteTextarea2" rows="3"></textarea>
+        <button type="submit" class="btn btn-primary">Submit Consultation</button>
+        <button type="button" class="btn btn-secondary" onclick="clearConsultationFields()">Clear Consultation</button>
       </div>
 
       <!-- Counseling Section -->
@@ -177,60 +176,95 @@
             <option value="ONGOING">ONGOING</option>
             <option value="FOLLOW-UP">FOLLOW-UP</option>
         </select>
+        <label for="dateInput1" class="form-label">Date of Appointment:</label>
+      <input type="date" class="form-control" id="dateInput1" name="dateInput1">
         <label for="hoursInput1" class="form-label">Time used Hours:</label>
         <input type="number" class="form-control" id="hoursInput1" name="hoursInput1" min="0">
         <label for="minutesInput1" class="form-label">Time used Minutes:</label>
         <input type="number" class="form-control" id="minutesInput1" name="minutesInput1" min="0" max="59">
         <label for="noteTextarea1" class="form-label">Note:</label>
         <textarea class="form-control" id="noteTextarea1" name="noteTextarea1" rows="3"></textarea>
+        <button type="submit" class="btn btn-primary">Submit Counseling</button>
+        <button type="button" class="btn btn-secondary" onclick="clearCounselingFields()">Clear Counseling</button>
       </div>
 
       <!-- Interview Section -->
       <div class="mb-3 interview-section">
         <label for="concernSelect3" class="form-label">Name of Concern:</label>
         <select class="form-select" id="concernSelect3" name="concernSelect3">
-          <!-- ... (options for interview) ... -->
+          <option value="INITIAL">ACADEMIC</option>
+              <option value="ROUTINE">ADJUSTMENT</option>
+              <option value="EXIT">BEHAVIOR</option>
         </select>
+        <label for="dateInput3" class="form-label">Date of Appointment:</label>
+      <input type="date" class="form-control" id="dateInput3" name="dateInput3">
         <label for="hoursInput3" class="form-label">Time used Hours:</label>
         <input type="number" class="form-control" id="hoursInput3" name="hoursInput3" min="0">
         <label for="minutesInput3" class="form-label">Time used Minutes:</label>
         <input type="number" class="form-control" id="minutesInput3" name="minutesInput3" min="0" max="59">
         <label for="noteTextarea3" class="form-label">Note:</label>
         <textarea class="form-control" id="noteTextarea3" name="noteTextarea3" rows="3"></textarea>
+        <button type="submit" class="btn btn-primary">Submit Interview</button>
+        <button type="button" class="btn btn-secondary" onclick="clearInterviewFields()">Clear Interview</button>
       </div>
 
       <!-- Testing Section -->
       <div class="mb-3 testing-section">
         <label for="categType4" class="form-label">Type of Test:</label>
         <select class="form-select" id="categType4" name="categType4">
-          <!-- ... (options for testing) ... -->
+          <option value="INTELLIGENCE TESTS">INTELLIGENCE TESTS</option>
+          <option value="PERSONALITY TESTS">PERSONALITY TESTS</option>
+          <option value="ACHIEVEMENT TESTS">ACHIEVEMENT TESTS</option>
+          <option value="APTITUDE TESTS">APTITUDE TESTS</option>
+          <option value="NEUROPSYCHOLOGICAL TESTS">NEUROPSYCHOLOGICAL TESTS</option>
+          <option value="VOCATIONAL TESTS">VOCATIONAL TESTS</option>
         </select>
         <label for="concernSelect4" class="form-label">Purpose of Test:</label>
         <input class="form-control" id="concernSelect4" name="concernSelect4">
+        <label for="dateInput4" class="form-label">Date of Appointment:</label>
+      <input type="date" class="form-control" id="dateInput4" name="dateInput4">
         <label for="hoursInput4" class="form-label">Time used Hours:</label>
         <input type="number" class="form-control" id="hoursInput4" name="hoursInput4" min="0">
         <label for="minutesInput4" class="form-label">Time used Minutes:</label>
         <input type="number" class="form-control" id="minutesInput4" name="minutesInput4" min="0" max="59">
         <label for="noteTextarea4" class="form-label">Note:</label>
         <textarea class="form-control" id="noteTextarea4" name="noteTextarea4" rows="3"></textarea>
+        <button type="submit" class="btn btn-primary">Submit Testing</button>
+        <button type="button" class="btn btn-secondary" onclick="clearTestingFields()">Clear Testing</button>
       </div>
 
       <!-- Others Section -->
       <div class="mb-3 others-section">
         <label for="concernSelect5" class="form-label">Other Concern:</label>
         <select class="form-select" id="concernSelect5" name="concernSelect5">
-         
+          <option value="HOMEVISIT">HOMEVISIT</option>
+              <option value="HOSPITALVISIT">HOSPITALVISIT</option>
+              <option value="FUNERALVISIT">FUNERALVISIT</option>
+              <option value="SMALL GROUP SESSION">SMALL GROUP SESSION</option>
+              <option value="WORKSHOP/SEMINAR">WORKSHOP/SEMINAR</option>
+              <option value="CONFERENCE(PARENT-COUNSELOR)">CONFERENCE(PARENT-COUNSELOR)</option>
+              <option value="CONFERENCE(FACULTY-COUNSELOR)">CONFERENCE(FACULTY-COUNSELOR)</option>
+              <option value="CONFERENCE(ADMIN-COUNSELOR)">CONFERENCE(ADMIN-COUNSELOR)</option>
+              <option value="CONFERENCE(STAFF-COUNSELOR)">CONFERENCE(STAFF-COUNSELOR)</option>
+              <option value="CONFERENCE(COUNSELOR-COUNSELOR)">CONFERENCE(COUNSELOR-COUNSELOR)</option>
+              <option value="CONFERENCE(COUNSELOR-PEER COUNSELOR)">CONFERENCE(COUNSELOR-PEER COUNSELOR)</option>
+              <option value="OTHER">OTHER</option>
         </select>
         <label for="clientSelect5" class="form-label">Type of Client:</label>
         <select class="form-select" id="clientSelect5" name="clientSelect5">
-   
+          <option value="REFERRED">REFERRED</option>
+              <option value="NONE">NONE</option>
         </select>
+        <label for="dateInput5" class="form-label">Date of Appointment:</label>
+      <input type="date" class="form-control" id="dateInput5" name="dateInput5">
         <label for="hoursInput5" class="form-label">Time used Hours:</label>
         <input type="number" class="form-control" id="hoursInput5" name="hoursInput5" min="0">
         <label for="minutesInput5" class="form-label">Time used Minutes:</label>
         <input type="number" class="form-control" id="minutesInput5" name="minutesInput5" min="0" max="59">
         <label for="noteTextarea5" class="form-label">Note:</label>
         <textarea class="form-control" id="noteTextarea5" name="noteTextarea5" rows="3"></textarea>
+        <button type="submit" class="btn btn-primary">Submit Others</button>
+        <button type="button" class="btn btn-secondary" onclick="clearOthersFields()">Clear Others</button>
       </div>
     </form>
   </div>

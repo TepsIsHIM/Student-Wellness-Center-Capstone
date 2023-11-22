@@ -979,7 +979,7 @@ myapp.post('/logout', async (req, res) => {
 });
 
 // APPOINTMENT
-myapp.post('/create-appointment', async (req, res) => {
+myapp.post('/create-appointment', async (req, res) => { 
   try {
     // Access session data, such as email and first name
     const userEmail = res.locals.studentData.email;
@@ -1525,8 +1525,8 @@ myapp.post('/cancelAppointment/:appointmentId', async (req, res) => {
   }
 });
 
-myapp.post('/counselorEncoding', async (req, res) => {
-  const { student_Email, student_fname, student_lname, department, progCode, schoolYear, typeOfService, natureOfConcern, categoryType, counselingClient, sessionName,notes } = req.body;
+myapp.post('/submit-manualCounseling', async (req, res) => {
+  const { email, fname, lname, department, progcode, concernSelect1, clientSelect1, sessionSelect1,dateInput1, hoursInput1, minutesInput1,noteTextarea1  } = req.body;
   try {
     // Access session data, such as email and first name
     const userEmail = res.locals.counselorData.email;
@@ -1543,23 +1543,24 @@ myapp.post('/counselorEncoding', async (req, res) => {
     const encodedTimeStr = encodedDateTime.toLocaleString('en-US', options);
     const encodedDateStr = encodedDateTime.toLocaleDateString('en-US', { timeZone: 'Asia/Manila' });
     const encodeData = {
-      student_email: student_Email.toUpperCase(),
-      student_lname: student_lname.toUpperCase(),
-      student_fname: student_fname.toUpperCase(),
-      school_year: schoolYear,
-      progcode: progCode.toUpperCase(),
+      student_email: email.toUpperCase(),
+      student_lname: lname.toUpperCase(),
+      student_fname: fname.toUpperCase(),
+      progcode: progcode.toUpperCase(),
       department: department.toUpperCase(),
-      service: typeOfService.toUpperCase(),
-      category: categoryType.toUpperCase(),
-      concern: natureOfConcern.toUpperCase(),
-      client: counselingClient.toUpperCase(),
-      session: sessionName.toUpperCase(),
-      notes: notes,
+      service: "COUNSELING",
+      concern: concernSelect1.toUpperCase(),
+      client: clientSelect1.toUpperCase(),
+      session: sessionSelect1.toUpperCase(),
+      notes: noteTextarea1,
       counselor_email: userEmail,
       counselor_fname: userFirstName,
       counselor_lname: userLastName,
       date_encoded: encodedDateStr,
       time_encoded: encodedTimeStr,
+      hours:hoursInput1,
+      minutes:minutesInput1,
+      date_appointed:dateInput1
 
     };
 
@@ -1580,6 +1581,226 @@ myapp.post('/counselorEncoding', async (req, res) => {
   }
 });
 
+//MANUAL REPORT
+myapp.post('/submit-manualConsultation', async (req, res) => {
+  const { email, fname, lname, department, progcode, consultSelect2 ,dateInput2, hoursInput2, minutesInput2,noteTextarea2  } = req.body;
+  try {
+    // Access session data, such as email and first name
+    const userEmail = res.locals.counselorData.email;
+    const userFirstName = res.locals.counselorData.first_name;
+    const userLastName = res.locals.counselorData.last_name;
+    const encodedDateTime = new Date();
+    const options = {
+      timeZone: 'Asia/Manila',
+      hour12: false, // Use 24-hour format
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    };
+    const encodedTimeStr = encodedDateTime.toLocaleString('en-US', options);
+    const encodedDateStr = encodedDateTime.toLocaleDateString('en-US', { timeZone: 'Asia/Manila' });
+    const encodeData = {
+      student_email: email.toUpperCase(),
+      student_lname: lname.toUpperCase(),
+      student_fname: fname.toUpperCase(),
+      progcode: progcode.toUpperCase(),
+      department: department.toUpperCase(),
+      service: "CONSULTATION",
+      category: consultSelect2,
+      notes: noteTextarea2,
+      counselor_email: userEmail,
+      counselor_fname: userFirstName,
+      counselor_lname: userLastName,
+      date_encoded: encodedDateStr,
+      time_encoded: encodedTimeStr,
+      hours:hoursInput2,
+      minutes:minutesInput2,
+      date_appointed:dateInput2
+
+    };
+
+    // Save accepted appointment in the 'Accepted Appointment' table
+    const { data: encodeReport, error: insertError } = await supabase
+      .from('Report')
+      .insert(encodeData);
+
+    if (insertError) {
+      console.error('Error Encode Report:', insertError.message);
+      return res.status(500).send('Failed to accept the appointment');
+    }
+
+    res.status(200).json({ message: 'Encoded successfully' });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
+
+myapp.post('/submit-manualInterview', async (req, res) => {
+  const { email, fname, lname, department, progcode, concernSelect3,dateInput3, hoursInput3, minutesInput3,noteTextarea3  } = req.body;
+  try {
+    // Access session data, such as email and first name
+    const userEmail = res.locals.counselorData.email;
+    const userFirstName = res.locals.counselorData.first_name;
+    const userLastName = res.locals.counselorData.last_name;
+    const encodedDateTime = new Date();
+    const options = {
+      timeZone: 'Asia/Manila',
+      hour12: false, // Use 24-hour format
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    };
+    const encodedTimeStr = encodedDateTime.toLocaleString('en-US', options);
+    const encodedDateStr = encodedDateTime.toLocaleDateString('en-US', { timeZone: 'Asia/Manila' });
+    const encodeData = {
+      student_email: email.toUpperCase(),
+      student_lname: lname.toUpperCase(),
+      student_fname: fname.toUpperCase(),
+      progcode: progcode.toUpperCase(),
+      department: department.toUpperCase(),
+      service: "INTERVIEW",
+      concern: concernSelect3.toUpperCase(),
+      notes: noteTextarea3,
+      counselor_email: userEmail,
+      counselor_fname: userFirstName,
+      counselor_lname: userLastName,
+      date_encoded: encodedDateStr,
+      time_encoded: encodedTimeStr,
+      hours:hoursInput3,
+      minutes:minutesInput3,
+      date_appointed:dateInput3
+
+    };
+
+    // Save accepted appointment in the 'Accepted Appointment' table
+    const { data: encodeReport, error: insertError } = await supabase
+      .from('Report')
+      .insert(encodeData);
+
+    if (insertError) {
+      console.error('Error Encode Report:', insertError.message);
+      return res.status(500).send('Failed to accept the appointment');
+    }
+
+    res.status(200).json({ message: 'Encoded successfully' });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
+
+myapp.post('/submit-manualTesting', async (req, res) => {
+  const { email, fname, lname, department, progcode, categType4, concernSelect4,dateInput4, hoursInput4, minutesInput4,noteTextarea4  } = req.body;
+  try {
+    // Access session data, such as email and first name
+    const userEmail = res.locals.counselorData.email;
+    const userFirstName = res.locals.counselorData.first_name;
+    const userLastName = res.locals.counselorData.last_name;
+    const encodedDateTime = new Date();
+    const options = {
+      timeZone: 'Asia/Manila',
+      hour12: false, // Use 24-hour format
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    };
+    const encodedTimeStr = encodedDateTime.toLocaleString('en-US', options);
+    const encodedDateStr = encodedDateTime.toLocaleDateString('en-US', { timeZone: 'Asia/Manila' });
+    const encodeData = {
+      student_email: email.toUpperCase(),
+      student_lname: lname.toUpperCase(),
+      student_fname: fname.toUpperCase(),
+      progcode: progcode.toUpperCase(),
+      department: department.toUpperCase(),
+      service: "TESTING",
+      category: categType4,
+      concern: concernSelect4.toUpperCase(),
+      notes: noteTextarea4,
+      counselor_email: userEmail,
+      counselor_fname: userFirstName,
+      counselor_lname: userLastName,
+      date_encoded: encodedDateStr,
+      time_encoded: encodedTimeStr,
+      hours:hoursInput4,
+      minutes:minutesInput4,
+      date_appointed:dateInput4
+
+    };
+
+    // Save accepted appointment in the 'Accepted Appointment' table
+    const { data: encodeReport, error: insertError } = await supabase
+      .from('Report')
+      .insert(encodeData);
+
+    if (insertError) {
+      console.error('Error Encode Report:', insertError.message);
+      return res.status(500).send('Failed to accept the appointment');
+    }
+
+    res.status(200).json({ message: 'Encoded successfully' });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
+
+myapp.post('/submit-manualOthers', async (req, res) => {
+  const { email, fname, lname, department, progcode, concernSelect5, clientSelect5,dateInput5, hoursInput5, minutesInput5,noteTextarea5 } = req.body;
+  try {
+    // Access session data, such as email and first name
+    const userEmail = res.locals.counselorData.email;
+    const userFirstName = res.locals.counselorData.first_name;
+    const userLastName = res.locals.counselorData.last_name;
+    const encodedDateTime = new Date();
+    const options = {
+      timeZone: 'Asia/Manila',
+      hour12: false, // Use 24-hour format
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    };
+    const encodedTimeStr = encodedDateTime.toLocaleString('en-US', options);
+    const encodedDateStr = encodedDateTime.toLocaleDateString('en-US', { timeZone: 'Asia/Manila' });
+    const encodeData = {
+      student_email: email.toUpperCase(),
+      student_lname: lname.toUpperCase(),
+      student_fname: fname.toUpperCase(),
+      progcode: progcode.toUpperCase(),
+      department: department.toUpperCase(),
+      service: "OTHERS",
+      concern: concernSelect5.toUpperCase(),
+      client: clientSelect5.toUpperCase(),
+      notes: noteTextarea5,
+      counselor_email: userEmail,
+      counselor_fname: userFirstName,
+      counselor_lname: userLastName,
+      date_encoded: encodedDateStr,
+      time_encoded: encodedTimeStr,
+      hours:hoursInput5,
+      minutes:minutesInput5,
+      date_appointed:dateInput5
+
+    };
+
+    // Save accepted appointment in the 'Accepted Appointment' table
+    const { data: encodeReport, error: insertError } = await supabase
+      .from('Report')
+      .insert(encodeData);
+
+    if (insertError) {
+      console.error('Error Encode Report:', insertError.message);
+      return res.status(500).send('Failed to accept the appointment');
+    }
+
+    res.status(200).json({ message: 'Encoded successfully' });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
+
+//AUTO REPORT
 myapp.post('/submit-counseling', async (req, res) => {
   try {
     const { nameOfConcern,typeOfClient,typeOfSession,hours,minutes,notes,id } = req.body;
