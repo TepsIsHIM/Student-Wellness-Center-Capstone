@@ -54,8 +54,16 @@ document.addEventListener('DOMContentLoaded', function () {
         })
           .then(response => response.json())
           .then(data => {
-            // Handle the response from the server if needed
-            console.log('Success:', data);
+            if (response.ok) {
+              alert('Appointment cancelled successfully!');
+      
+              // After a short delay, refresh the page
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            } else {
+              console.error('Failed to cancel the appointment');
+            }
           })
           .catch((error) => {
             console.error('Error:', error);

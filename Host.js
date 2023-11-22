@@ -1536,7 +1536,8 @@ myapp.post('/counselorEncoding', async (req, res) => {
     res.status(500).send('Internal server error');
   }
 });
-myapp.post('/cancelAppointment/:appointmentId', async (req, res) => {
+
+myapp.post('/submit-counseling', async (req, res) => {
   try {
     const { nameOfConcern,typeOfClient,typeOfSession,date,hours,minutes,notes,title,id } = req.body;
     const counselorData = res.locals.counselorData;
@@ -1561,7 +1562,8 @@ myapp.post('/cancelAppointment/:appointmentId', async (req, res) => {
       .eq('id', id);
 
     if (appointmentError || !appointmentData.length) {
-      console.error('Error fetching appointment details:', appointmentError?.message);
+      console.log(appointmentData);
+      console.error('Error fetching appointment :', appointmentError?.message);
       return res.status(404).send('Appointment not found');
     }
 
@@ -1592,6 +1594,7 @@ myapp.post('/cancelAppointment/:appointmentId', async (req, res) => {
       time_encoded: appointmentTimeStr,
       hours: hours,
       minutes: minutes,
+      date_appointed: 'NULL',
     };
     // Save accepted appointment in the 'Accepted Appointment' table
     const { data: encodeReport, error: insertError } = await supabase
