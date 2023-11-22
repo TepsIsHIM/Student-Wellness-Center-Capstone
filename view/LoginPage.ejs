@@ -11,7 +11,24 @@
 </head>
 
 <body>
-  <div class="container px-4 py-5 mx-auto">
+  <div class="shadow p-3 mb-5 bg-body rounded">
+    <header id="header" class="d-flex align-items-center">
+      <div class="container d-flex align-items-center">
+        <h1 class="logo me-auto"><a href="#">DLSU-D Student Wellness Center</a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        <nav id="navbar" class="navbar">
+          <ul>
+            <li class="dropdown"><a href="https://www.dlsud.edu.ph/swc.htm"><span>About</span> <i class="bi bi-chevron-down"></i></a>
+            </li>
+        </nav><!-- .navbar -->
+  
+      </div>
+      </div>
+    </header><!-- End Header -->
+
+  <!-- Login Form -->
+  <!-- <div class="container px-4 py-5 mx-auto">
     <div class="card card0">
       <div class="d-flex flex-lg-row flex-column-reverse">
         <div class="card card1">
@@ -33,7 +50,7 @@
               <h6 class="msg-info">Please login to your account</h6>
               <form id="login-form" method="POST" action="/login">
                 <div class="form-group">
-                  <label class="form-control-label text-muted">Username</label>
+                  <label class="form-control-label text-muted">Email</label>
                   <input type="text" id="email" name="email" placeholder="Email" class="form-control">
                 </div>
 
@@ -68,20 +85,19 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
+<!-- End of Login Form -->
 
-<!-- <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+<div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
   <div class="row gx-lg-5 align-items-center mb-5">
-    <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+    <div class="col-lg-6 mb-5 mb-lg-0">
       <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
-        The best offer <br />
-        <span style="color: hsl(218, 81%, 75%)">for your business</span>
+        Welcome to <br />
+        <span style="color: hsl(218, 81%, 95%)">Student Wellness Center</span>
       </h1>
-      <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        Temporibus, expedita iusto veniam atque, magni tempora mollitia
-        dolorum consequatur nulla, neque debitis eos reprehenderit quasi
-        ab ipsum nisi dolorem modi. Quos?
+      <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 95%)">
+        "Empowering potentials, nurturing purpose: Guiding Lasallian students towards
+        holistic growth and resilience."
       </p>
     </div>
 
@@ -91,73 +107,43 @@
 
       <div class="card bg-glass">
         <div class="card-body px-4 py-5 px-md-5">
-          <form> -->
-            <!-- 2 column grid layout with text inputs for the first and last names -->
-            <!-- <div class="row">
-              <div class="col-md-6 mb-4">
-                <div class="form-outline">
-                  <input type="text" id="form3Example1" class="form-control" />
-                  <label class="form-label" for="form3Example1">First name</label>
-                </div>
-              </div>
-              <div class="col-md-6 mb-4">
-                <div class="form-outline">
-                  <input type="text" id="form3Example2" class="form-control" />
-                  <label class="form-label" for="form3Example2">Last name</label>
-                </div>
-              </div>
-            </div> -->
+          <div class="row justify-content-center mb-4">
+            <div class="col-md-10">
+              <img id="logo2" src="/img/SWC-Logo.png" class="img-fluid">
+            </div>
+          </div>
 
-            <!-- Email input -->
-            <!-- <div class="form-outline mb-4">
-              <input type="email" id="form3Example3" class="form-control" />
-              <label class="form-label" for="form3Example3">Email address</label>
-            </div> -->
+          <h6 class="msg-info">Please login to your account</h6>
+          <form class="row g-3" id="login-form" method="POST" action="/login">
+            <div class="form-group">
+              <label class="form-control-label text-muted">Email</label>
+              <input type="text" id="email" name="email" placeholder="Email" class="form-control">
+            </div>
 
-            <!-- Password input -->
-            <!-- <div class="form-outline mb-4">
-              <input type="password" id="form3Example4" class="form-control" />
-              <label class="form-label" for="form3Example4">Password</label>
-            </div> -->
+            <div class="form-group">
+              <label class="form-control-label text-muted">Password</label>
+              <input type="password" id="psw" name="psw" placeholder="Password" class="form-control">
+            </div>
 
-            <!-- Checkbox -->
-            <!-- <div class="form-check d-flex justify-content-center mb-4">
-              <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
-              <label class="form-check-label" for="form2Example33">
-                Subscribe to our newsletter
-              </label>
-            </div> -->
+            <div class="form-group">
+              <a href="/forgotPassword" class="text-muted">Forgot Password?</a>
+            </div>
 
-            <!-- Submit button -->
-            <!-- <button type="submit" class="btn btn-primary btn-block mb-4">
-              Sign up
-            </button> -->
-
-            <!-- Register buttons -->
-            <!-- <div class="text-center">
-              <p>or sign up with:</p>
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-facebook-f"></i>
-              </button>
-
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-google"></i>
-              </button>
-
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-twitter"></i>
-              </button>
-
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-github"></i>
-              </button>
+            <div class="row justify-content-center my-4 px-4">
+              <button class="btn btn-outline-success" type="submit">Login</button>
             </div>
           </form>
+
+          <div class="bottom text-center mb-5">
+            <p class="sm-text mx-auto mb-3">Don't have an account?
+              <a href="/Registerpage" class="btn btn-success">Create new</a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div> -->
+</div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
