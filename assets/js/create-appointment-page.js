@@ -43,9 +43,9 @@ function insertRecord() {
   })
     .then((response) => response.json())
     .then((data) => {
-      // Handle the response from the server
+
       if (data.success) {
-        // Display a success message or redirect to a confirmation page
+
         alert('Appointment Created Successfully');
         console.log('Appointment created successfully');
         dateInput.value = '';

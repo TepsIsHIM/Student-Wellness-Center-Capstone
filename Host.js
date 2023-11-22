@@ -1026,7 +1026,7 @@ myapp.post('/create-appointment', async (req, res) => {
     }
 
 
-    const { data, error } = await supabase
+    const { data:appoint, error } = await supabase
       .from('Pending Appointment')
       .upsert([
         {
@@ -1050,7 +1050,7 @@ myapp.post('/create-appointment', async (req, res) => {
       res.json({ success: false });
     } else {
       // Appointment created successfully
-      console.log('Appointment created successfully:', data);
+      console.log('Appointment created successfully:', appoint);
       res.json({ success: true });
     }
   } catch (error) {
