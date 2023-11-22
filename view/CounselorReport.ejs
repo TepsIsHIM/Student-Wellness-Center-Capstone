@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Report</title>
+  <title>Profile</title>
+  <script src="inactivity.js"></script>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -24,28 +26,25 @@
   <link href="/vendor/swiper/swiper-bundle.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link href="/css/student-homepage-style.css" rel="stylesheet">
+  <link href="/css/counselor-profilepage-style.css" rel="stylesheet">
 
   <script src="/js/logout.js" defer></script>
 </head>
 
 <body>
+   <!-- ======= Top Bar ======= -->
 
-  <!-- ======= Top Bar ======= -->
-  <section id="topbar" class="d-flex align-items-center">
+   <section id="topbar" class="d-flex align-items-center">
     <div class="container d-flex justify-content-center justify-content-md-between">
       <div class="contact-info d-flex align-items-center">
-        <i class="bi bi-person"></i>Welcome, Counselor <%= counselorData.last_name %> <%= counselorData.first_name %>
+        <i class="bi bi-person"></i> Welcome, Counselor <%= counselorData.last_name %> <%= counselorData.first_name %>
+
       </div>
-      <!-- <div class="contact-info d-flex align-items-center">
-        <i class="bi bi-envelope-fill"></i><a href="mailto:contact@example.com">info@example.com</a>
-        <i class="bi bi-phone-fill phone-icon"></i> +1 5589 55488 55
-      </div> -->
       <div class="social-links d-none d-md-block">
-        <a href="https://www.facebook.com/dlsudswc/" class="facebook"><i class="bi bi-facebook"></i></a>
         <% if (counselorData.admin) { %>
           <a href="/adminHomePage" id="admin-link">Admin Page</a>
         <% } %>
+        <a href="https://www.facebook.com/dlsudswc/" class="facebook"><i class="bi bi-facebook"></i></a>
       </div>
     </div>
   </section>
@@ -54,11 +53,9 @@
   <div class="shadow p-3 mb-5 bg-body rounded">
   <header id="header" class="d-flex align-items-center">
     <div class="container d-flex align-items-center">
-
       <h1 class="logo me-auto"><a href="/CounselorHomePage">DLSU-D Student Wellness Center</a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
-
       <nav id="navbar" class="navbar">
         <ul>
           <li class="dropdown"><a href="#"><span>Profile</span> <i class="bi bi-chevron-down"></i></a>
@@ -77,12 +74,14 @@
             <ul>
               <li><a href="/CounselorLogs">Logs</a></li>
               <li><a href="/CounselorReport">Report</a></li>
+              <li><a href="/CounselorManualReport">Manual Report</a></li>
             </ul>
           </li>
           <li><a id="logout" class="getstarted scrollto" href="javascript:;">Logout</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
+
     </div>
   </div>
   </header><!-- End Header -->
@@ -134,7 +133,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="counselingModalLabel">COUNSELING</h5>
+        <h5 class="modal-title" id="counselingModalLabel"value="COUNSELING">COUNSELING</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -146,7 +145,20 @@
             <label for="concernSelect1" class="form-label">Name of Concern:</label>
             <select class="form-select" id="concernSelect1">
               <option value="ACADEMIC">ACADEMIC</option>
+              <option value="ADJUSTMENT">ADJUSTMENT</option>
+              <option value="BEHAVIOR">BEHAVIOR</option>
+              <option value="CAREER">CAREER</option>
+              <option value="COGNITIVE">COGNITIVE</option>
+              <option value="DISCIPLINE">DISCIPLINE</option>
               <option value="ECONOMIC">ECONOMIC</option>
+              <option value="EMERGENCY/CRITICAL CASES">EMERGENCY/CRITICAL CASES</option>
+              <option value="EMOTIONAL">EMOTIONAL</option>
+              <option value="PHYSICAL HEALTH/ORGANIC/MEDICAL">PHYSICAL HEALTH/ORGANIC/MEDICAL</option>
+              <option value="RELATIONAL/INTERPERSONAL">RELATIONAL/INTERPERSONAL</option>
+              <option value="SCHOOL">SCHOOL</option>
+              <option value="SEXUALITY">SEXUALITY</option>
+              <option value="SOCIAL/POLITICAL/IDEOLOGICAL">SOCIAL/POLITICAL/IDEOLOGICAL</option>
+              <option value="SPRICITUAL/RELIGIOUS/TRANSPERSONAL">SPRICITUAL/RELIGIOUS/TRANSPERSONAL</option>
             </select>
           </div>
           <div class="mb-3">
@@ -160,12 +172,8 @@
             <label for="sessionSelect1" class="form-label">Type of Session:</label>
             <select class="form-select" id="sessionSelect1">
               <option value="ONGOING">ONGOING</option>
-              <option value="FOLLOW-UP">FOLLOW-U</option>
+              <option value="FOLLOW-UP">FOLLOW-UP</option>
             </select>
-          </div>
-          <div class="mb-3">
-            <label for="dateInput1" class="form-label">Date:</label>
-            <input type="date" class="form-control" id="dateInput1">
           </div>
           <div class="mb-3">
             <label for="hoursInput1" class="form-label">Time used Hours:</label>
@@ -194,7 +202,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="consultationModalLabel">Consultation</h5>
+        <h5 class="modal-title" id="counsultationModalLabel2"value="CONSULTATION">CONSULTATION</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -203,89 +211,189 @@
         <!-- Add your form elements here -->
         <form id="consultationForm">
           <div class="mb-3">
-            <label for="consultSelect" class="form-label">Type of Consultation:</label>
-            <select class="form-select" id="consultSelect">
+            <label for="consultSelect2" class="form-label">Type of Consultation:</label>
+            <select class="form-select" id="consultSelect2">
               <option value="CAREER/OCCUPATIONAL">CAREER/OCCUPATIONAL</option>
               <option value="EDUCATIONAL">EDUCATIONAL</option>
               <option value="PERSONAL/SOCIAL">PERSONAL/SOCIAL</option>
             </select>
           </div>
           <div class="mb-3">
-            <label for="dateInput" class="form-label">Date:</label>
-            <input type="date" class="form-control" id="dateInput">
+            <label for="hoursInput2" class="form-label">Time used Hours:</label>
+            <input type="number" class="form-control" id="hoursInput2" min="0">
           </div>
           <div class="mb-3">
-            <label for="hoursInput" class="form-label">Time used Hours:</label>
-            <input type="number" class="form-control" id="hoursInput" min="0">
+            <label for="minutesInput2" class="form-label">Time used Minutes:</label>
+            <input type="number" class="form-control" id="minutesInput2" min="0">
           </div>
-        <div class="mb-3">
-          <label for="typeOfService" class="form-label">Type of Service:</label>
-          <input type="text" class="form-control" id="typeOfService" name="typeOfService">
+          <div class="mb-3">
+            <label for="noteTextarea2" class="form-label">Note:</label>
+            <textarea class="form-control" id="noteTextarea2" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="submitConsultation">Submit</button>
         </div>
-        <div class="mb-3">
-          <label for="categoryType" class="form-label">Category Type</label>
-          <input type="text" class="form-control" id="categoryType" name="categoryType">
-        </div>
-        <div class="mb-3">
-          <label for="natureOfConcern" class="form-label">Nature of Concern:</label>
-          <input type="text" class="form-control" id="natureOfConcern" name="natureOfConcern">
-        </div>
-        <div class="mb-3">
-          <label for="counselingClient" class="form-label">Counseling Client:</label>
-          <input type="text" class="form-control" id="counselingClient" name="counselingClient">
-        </div>
-        <div class="mb-3">
-          <label for="sessionName" class="form-label">Session Name:</label>
-          <input type="text" class="form-control" id="sessionName" name="sessionName">
-        </div>
-        <div class="mb-3">
-          <label for="note" class="form-label">Note:</label>
-          <textarea class="form-control" id="note" name="note" rows="5"></textarea>
-        </div>
-        <button type="button"  class="btn btn-primary"onclick="insertRecord()">Submit
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FOR INTERVIEW -->
+<div class="modal fade" id="interviewModal" tabindex="-1" role="dialog" aria-labelledby="interviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="interviewModalLabel3"value="INTERVIEW">INTERVIEW</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <!-- Add your form elements here -->
-        <form id="testingForm">
+        <form id="counselingForm">
           <div class="mb-3">
-            <label for="testSelect" class="form-label">Type of Test:</label>
-            <select class="form-select" id="testSelect">
-              <option value="ACADEMIC">INTELLIGENCE TEST</option>
-              <option value="ACADEMIC">PERSONALITY TEST</option>
-              <option value="ACADEMIC">ACHIEVEMENT TEST</option>
-              <option value="ACADEMIC">APTITUDE TEST</option>
-              <option value="ACADEMIC">NEUROPSYCHOLOGICAL TEST</option>
-              <option value="ACADEMIC">VOCATIONAL TEST</option>
+            <label for="concernSelect3" class="form-label">Name of Concern:</label>
+            <select class="form-select" id="concernSelect3">
+              <option value="INITIAL">ACADEMIC</option>
+              <option value="ROUTINE">ADJUSTMENT</option>
+              <option value="EXIT">BEHAVIOR</option>
             </select>
           </div>
           <div class="mb-3">
-            <label for="purposeOfTestInput" class="form-label">Purpose of Test:</label>
-            <input type="text" class="form-control" id="purposeOfTestInput" placeholder="Enter purpose of test">
+            <label for="hoursInput3" class="form-label">Time used Hours:</label>
+            <input type="number" class="form-control" id="hoursInput3" min="0">
           </div>
           <div class="mb-3">
-            <label for="dateInput" class="form-label">Date:</label>
-            <input type="date" class="form-control" id="dateInput">
+            <label for="minutesInput1" class="form-label">Time used Minutes:</label>
+            <input type="number" class="form-control" id="minutesInput3" min="0" max="59">
           </div>
           <div class="mb-3">
-            <label for="hoursInput" class="form-label">Time used Hours:</label>
-            <input type="number" class="form-control" id="hoursInput" min="0">
-          </div>
-          <div class="mb-3">
-            <label for="minutesInput" class="form-label">Time used Minutes:</label>
-            <input type="number" class="form-control" id="minutesInput" min="0" max="59">
-          </div>
-          <div class="mb-3">
-            <label for="noteTextarea" class="form-label">Note:</label>
-            <textarea class="form-control" id="noteTextarea" rows="3"></textarea>
+            <label for="noteTextarea3" class="form-label">Note:</label>
+            <textarea class="form-control" id="noteTextarea3" rows="3"></textarea>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="submitCounseling">Submit</button>
+        <button type="button" class="btn btn-primary" id="submitInterview">Submit</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- MODAL FOR TESTING -->
+<div class="modal fade" id="testingModal" tabindex="-1" role="dialog" aria-labelledby="testingModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="testingModalLabel4"value="TESTING">TESTING</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Add your form elements here -->
+        <form id="counselingForm">
+          <div class="mb-3">
+            <label for="categType4" class="form-label">Type of Test:</label>
+            <select class="form-select" id="categType4">
+              <option value="INTELLIGENCE TESTS">INTELLIGENCE TESTS</option>
+              <option value="PERSONALITY TESTS">PERSONALITY TESTS</option>
+              <option value="ACHIEVEMENT TESTS">ACHIEVEMENT TESTS</option>
+              <option value="APTITUDE TESTS">APTITUDE TESTS</option>
+              <option value="NEUROPSYCHOLOGICAL TESTS">NEUROPSYCHOLOGICAL TESTS</option>
+              <option value="VOCATIONAL TESTS">VOCATIONAL TESTS</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="concernSelect4" class="form-label">Purpose of Test:</label>
+            <input class="form-control" id="concernSelect4">
+          </input>
+          </div>
+          <div class="mb-3">
+            <label for="hoursInput4" class="form-label">Time used Hours:</label>
+            <input type="number" class="form-control" id="hoursInput4" min="0">
+          </div>
+          <div class="mb-3">
+            <label for="minutesInput4" class="form-label">Time used Minutes:</label>
+            <input type="number" class="form-control" id="minutesInput4" min="0" max="59">
+          </div>
+          <div class="mb-3">
+            <label for="noteTextarea4" class="form-label">Note:</label>
+            <textarea class="form-control" id="noteTextarea4" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="submitTesting">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FOR OTHERS  -->
+<div class="modal fade" id="othersModal" tabindex="-1" role="dialog" aria-labelledby="othersModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="othersModalLabel">OTHERS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Add your form elements here -->
+        <form id="counselingForm">
+          <div class="mb-3">
+            <label for="concernSelect5" class="form-label">Other Concern:</label>
+            <select class="form-select" id="concernSelect1">
+              <option value="HOMEVISIT">HOMEVISIT</option>
+              <option value="HOSPITALVISIT">HOSPITALVISIT</option>
+              <option value="FUNERALVISIT">FUNERALVISIT</option>
+              <option value="SMALL GROUP SESSION">SMALL GROUP SESSION</option>
+              <option value="WORKSHOP/SEMINAR">WORKSHOP/SEMINAR</option>
+              <option value="CONFERENCE(PARENT-COUNSELOR)">CONFERENCE(PARENT-COUNSELOR)</option>
+              <option value="CONFERENCE(FACULTY-COUNSELOR)">CONFERENCE(FACULTY-COUNSELOR)</option>
+              <option value="CONFERENCE(ADMIN-COUNSELOR)">CONFERENCE(ADMIN-COUNSELOR)</option>
+              <option value="CONFERENCE(STAFF-COUNSELOR)">CONFERENCE(STAFF-COUNSELOR)</option>
+              <option value="CONFERENCE(COUNSELOR-COUNSELOR)">CONFERENCE(COUNSELOR-COUNSELOR)</option>
+              <option value="CONFERENCE(COUNSELOR-PEER COUNSELOR)">CONFERENCE(COUNSELOR-PEER COUNSELOR)</option>
+              <option value="OTHER">OTHER</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="clientSelect5" class="form-label">Type of Client:</label>
+            <select class="form-select" id="clientSelect5">
+              <option value="REFERRED">REFERRED</option>
+              <option value="NONE">NONE</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="hoursInput5" class="form-label">Time used Hours:</label>
+            <input type="number" class="form-control" id="hoursInput5" min="0">
+          </div>
+          <div class="mb-3">
+            <label for="minutesInput5" class="form-label">Time used Minutes:</label>
+            <input type="number" class="form-control" id="minutesInput5" min="0" max="59">
+          </div>
+          <div class="mb-3">
+            <label for="noteTextarea5" class="form-label">Note:</label>
+            <textarea class="form-control" id="noteTextarea5" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="submitOthers">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
   </main>
 
 

@@ -1,3 +1,52 @@
+$(document).ready(function () {
+    // Initial state
+    hideAllSections();
+
+    // Event handler for category type selection
+    $("#concernSelect3").change(function () {
+      hideAllSections(); // Hide all sections
+
+      // Show the selected section based on the category type
+      var selectedCategory = $(this).val();
+      if (selectedCategory === "CONSULTATION") {
+        showConsultationSection();
+      } else if (selectedCategory === "COUNSELING") {
+        showCounselingSection();
+      } else if (selectedCategory === "INTERVIEW") {
+        showInterviewSection();
+      } else if (selectedCategory === "TESTING") {
+        showTestingSection();
+      } else if (selectedCategory === "OTHERS") {
+        showOthersSection();
+      }
+    });
+
+    function hideAllSections() {
+      $(".consultation-section, .counseling-section, .interview-section, .testing-section, .others-section").hide();
+    }
+
+    function showConsultationSection() {
+      $(".consultation-section").show();
+    }
+
+    function showCounselingSection() {
+      $(".counseling-section").show();
+    }
+
+    function showInterviewSection() {
+      $(".interview-section").show();
+    }
+
+    function showTestingSection() {
+      $(".testing-section").show();
+    }
+
+    function showOthersSection() {
+      $(".others-section").show();
+    }
+  });
+
+  
 async function suggestEmails() {
     const input = document.getElementById('email').value;
 

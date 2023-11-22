@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
     // Event delegation to handle 'Accept' button clicks
     document.addEventListener('click', function (event) {
-      if (event.target.classList.contains('btn-success')) {
+      if (event.target.classList.contains('btn-outline-success')) {
         const appointmentId = event.target.dataset.appointmentId;
         completeAppointment(appointmentId);
       }

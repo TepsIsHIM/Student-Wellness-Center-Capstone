@@ -78,6 +78,7 @@
             <ul>
               <li><a href="/CounselorLogs">Logs</a></li>
               <li><a href="/CounselorReport">Report</a></li>
+              <li><a href="/CounselorManualReport">Manual Report</a></li>
             </ul>
           </li>
           <li><a id="logout" class="getstarted scrollto" href="javascript:;">Logout</a></li>
@@ -116,7 +117,7 @@
                     <td><%= appointment.appointed_time %></td>
                     <td><%= appointment.appointed_date %></td>
                     <td>
-                        <button class="btn btn-outline-success" data-appointment-id="<%= appointment.id %>">Complete</button>
+                        <button class="btn btn-outline-success " data-appointment-id="<%= appointment.id %>">Complete</button>
                     </td>
                     <td>
                         <button class="btn btn-outline-danger cancel-appointment" data-toggle="modal"

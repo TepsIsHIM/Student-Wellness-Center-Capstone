@@ -53,7 +53,7 @@ function insertRecord() {
         serviceInput.value = '';
       } else {
         // Handle errors or display an error message
-        alert('Appointment Creation Failed');
+        alert(data.message); // Display the server's error message
         console.error('Appointment creation failed');
       }
     })
