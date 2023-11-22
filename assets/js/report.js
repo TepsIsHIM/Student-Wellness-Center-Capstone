@@ -39,11 +39,11 @@ function insertRecord() {
     const progCode = document.getElementById('progcode').value;
     const schoolYear = document.getElementById('schoolYear').value;
     const department = document.getElementById('department').value;
-    const typeOfService = document.getElementById('typeOfService').value;
-    const natureOfConcern = document.getElementById('natureOfConcern').value;
-    const categoryType = document.getElementById('categoryType').value;
+    const typeOfService = document.getElementById('typeOfService').options[document.getElementById('typeOfService').selectedIndex].text;
+    const natureOfConcern = document.getElementById('natureOfConcern').options[document.getElementById('natureOfConcern').selectedIndex].text;
+    const categoryType = document.getElementById('categoryType').options[document.getElementById('categoryType').selectedIndex].text;
     const counselingClient = document.getElementById('counselingClient').value;
-    const sessionName = document.getElementById('sessionName').value;
+    const sessionName = document.getElementById('sessionName').options[document.getElementById('sessionName').selectedIndex].text;
     const notes = document.getElementById('note').value;
 
     // Create an object with the form data

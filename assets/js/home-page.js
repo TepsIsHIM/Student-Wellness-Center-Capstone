@@ -89,10 +89,10 @@
     const headerFixed = () => {
       if ((headerOffset - window.scrollY) <= 0) {
         selectHeader.classList.add('fixed-top')
-        nextElement.classList.add('scrolled-offset')
+        // nextElement.classList.add('scrolled-offset')
       } else {
         selectHeader.classList.remove('fixed-top')
-        nextElement.classList.remove('scrolled-offset')
+        // nextElement.classList.remove('scrolled-offset')
       }
     }
     window.addEventListener('load', headerFixed)
@@ -264,3 +264,11 @@
   });
 
 })()
+
+$(document).ready(function () {
+  // Initialize DataTable
+  $('#pendingAppointmentsTable').DataTable();
+  $('#acceptedAppointmentsTable').DataTable();
+  $('#TableID').DataTable();
+});
+

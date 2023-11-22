@@ -35,13 +35,14 @@
   <section id="topbar" class="d-flex align-items-center">
     <div class="container d-flex justify-content-center justify-content-md-between">
       <div class="contact-info d-flex align-items-center">
-        <i class="bi bi-person"></i>Welcome Counselor <%= counselorData.last_name %> <%= counselorData.first_name %>
+        <i class="bi bi-person"></i>Welcome, Counselor <%= counselorData.last_name %> <%= counselorData.first_name %>
       </div>
       <!-- <div class="contact-info d-flex align-items-center">
         <i class="bi bi-envelope-fill"></i><a href="mailto:contact@example.com">info@example.com</a>
         <i class="bi bi-phone-fill phone-icon"></i> +1 5589 55488 55
       </div> -->
       <div class="social-links d-none d-md-block">
+        <a href="https://www.facebook.com/dlsudswc/" class="facebook"><i class="bi bi-facebook"></i></a>
         <% if (counselorData.admin) { %>
           <a href="/adminHomePage" id="admin-link">Admin Page</a>
         <% } %>
@@ -63,7 +64,6 @@
           <li class="dropdown"><a href="#"><span>Profile</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="/CounselorProfilePage">Account Details</a></li>
-              <li><a href="#">Settings</a></li>
             </ul>
           </li>
           <li class="dropdown"><a href="#"><span>Appointments</span> <i class="bi bi-chevron-down"></i></a>
@@ -79,12 +79,10 @@
               <li><a href="/CounselorReport">Report</a></li>
             </ul>
           </li>
-          <li><a class="nav-link scrollto " href="#portfolio">Messages</a></li>
           <li><a id="logout" class="getstarted scrollto" href="javascript:;">Logout</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
-
     </div>
   </div>
   </header><!-- End Header -->
@@ -220,79 +218,31 @@
             <label for="hoursInput" class="form-label">Time used Hours:</label>
             <input type="number" class="form-control" id="hoursInput" min="0">
           </div>
-          <div class="mb-3">
-            <label for="minutesInput" class="form-label">Time used Minutes:</label>
-            <input type="number" class="form-control" id="minutesInput" min="0" max="59">
-          </div>
-          <div class="mb-3">
-            <label for="noteTextarea" class="form-label">Note:</label>
-            <textarea class="form-control" id="noteTextarea" rows="3"></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="submitCounseling">Submit</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL FOR INTERVIEW -->
-<div class="modal fade" id="interviewModal" tabindex="-1" role="dialog" aria-labelledby="interviewModal" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="interviewModalLabel">Counseling</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Add your form elements here -->
-        <form id="interviewForm">
-          <div class="mb-3">
-            <label for="interSelect" class="form-label">Name of Concern:</label>
-            <select class="form-select" id="interSelect">
-              <option value="INITIAL">INITIAL</option>
-              <option value="ROUTINE">ROUTINE</option>
-              <option value="EXIT">EXIT</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="dateInput" class="form-label">Date:</label>
-            <input type="date" class="form-control" id="dateInput">
-          </div>
-          <div class="mb-3">
-            <label for="hoursInput" class="form-label">Time used Hours:</label>
-            <input type="number" class="form-control" id="hoursInput" min="0">
-          </div>
-          <div class="mb-3">
-            <label for="minutesInput" class="form-label">Time used Minutes:</label>
-            <input type="number" class="form-control" id="minutesInput" min="0" max="59">
-          </div>
-          <div class="mb-3">
-            <label for="noteTextarea" class="form-label">Note:</label>
-            <textarea class="form-control" id="noteTextarea" rows="3"></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="submitCounseling">Submit</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL FOR TESTING -->
-<div class="modal fade" id="testingModal" tabindex="-1" role="dialog" aria-labelledby="testingModal" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="testingModalLabel">Testing</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <div class="mb-3">
+          <label for="typeOfService" class="form-label">Type of Service:</label>
+          <input type="text" class="form-control" id="typeOfService" name="typeOfService">
+        </div>
+        <div class="mb-3">
+          <label for="categoryType" class="form-label">Category Type</label>
+          <input type="text" class="form-control" id="categoryType" name="categoryType">
+        </div>
+        <div class="mb-3">
+          <label for="natureOfConcern" class="form-label">Nature of Concern:</label>
+          <input type="text" class="form-control" id="natureOfConcern" name="natureOfConcern">
+        </div>
+        <div class="mb-3">
+          <label for="counselingClient" class="form-label">Counseling Client:</label>
+          <input type="text" class="form-control" id="counselingClient" name="counselingClient">
+        </div>
+        <div class="mb-3">
+          <label for="sessionName" class="form-label">Session Name:</label>
+          <input type="text" class="form-control" id="sessionName" name="sessionName">
+        </div>
+        <div class="mb-3">
+          <label for="note" class="form-label">Note:</label>
+          <textarea class="form-control" id="note" name="note" rows="5"></textarea>
+        </div>
+        <button type="button"  class="btn btn-primary"onclick="insertRecord()">Submit
         </button>
       </div>
       <div class="modal-body">
@@ -336,82 +286,17 @@
         <button type="button" class="btn btn-primary" id="submitCounseling">Submit</button>
       </div>
     </div>
-  </div>
-</div>
+  </main>
 
-<!-- MODAL FOR OTHERS -->
-<div class="modal fade" id="othersModal" tabindex="-1" role="dialog" aria-labelledby="othersModal" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="othersModalLabel">Others</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Add your form elements here -->
-        <form id="othersForm">
-          <div class="mb-3">
-            <label for="othersSelect" class="form-label">Other Concern:</label>
-            <select class="form-select" id="othersSelect">
-              <option value="HOMEVISIT">HOMEVISIT</option>
-              <option value="HOSPITALIVISIT">HOSPITALIVISIT</option>
-              <option value="FUNERALVISIT">FUNERALVISIT</option>
-              <option value="SMALL GROUP SESSION">SMALL GROUP SESSION</option>
-              <option value="WORKSHOP/SEMINAR">WORKSHOP/SEMINAR</option>
-              <option value="CONFERENCE (PARENT-COUNSELOR)">CONFERENCE (PARENT-COUNSELOR)</option>
-              <option value="CONFERENCE (FACULTY-COUNSELOR)">CONFERENCE (FACULTY-COUNSELOR)</option>
-              <option value="CONFERENCE (ADMIN-COUNSELOR)">CONFERENCE (ADMIN-COUNSELOR)</option>
-              <option value="CONFERENCE (STAFF-COUNSELOR)">CONFERENCE (STAFF-COUNSELOR)</option>
-              <option value="CONFERENCE (COUNSELOR-COUNSELOR)">CONFERENCE (COUNSELOR-COUNSELOR)</option>
-              <option value="CONFERENCE (CONSELOUR-PEER COUNSELOR)">CONFERENCE (CONSELOUR-PEER COUNSELOR)</option>
-              <option value="OTHER">OTHER</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="clientSelect" class="form-label">Type of Client:</label>
-            <select class="form-select" id="clientSelect">
-              <option value="REFERRED">REFERRED</option>
-              <option value="NONE">NONE</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="dateInput" class="form-label">Date:</label>
-            <input type="date" class="form-control" id="dateInput">
-          </div>
-          <div class="mb-3">
-            <label for="hoursInput" class="form-label">Time used Hours:</label>
-            <input type="number" class="form-control" id="hoursInput" min="0">
-          </div>
-          <div class="mb-3">
-            <label for="minutesInput" class="form-label">Time used Minutes:</label>
-            <input type="number" class="form-control" id="minutesInput" min="0" max="59">
-          </div>
-          <div class="mb-3">
-            <label for="noteTextarea" class="form-label">Note:</label>
-            <textarea class="form-control" id="noteTextarea" rows="3"></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="submitCounseling">Submit</button>
-      </div>
-    </div>
-  </div>
-</div>
+
+
   <!-- ======= Footer ======= -->
   <footer id="footer">
     <div class="container">
       <h3>Student Wellness Center</h3>
       <p>Create possibilities with DLSU-D.</p>
       <div class="social-links">
-        <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-        <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-        <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-        <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+        <a href="https://www.facebook.com/dlsudswc/" class="facebook"><i class="bx bxl-facebook"></i></a>
       </div>
       <div class="copyright">
         &copy; Copyright <strong><span>Alvaran, Dimaya, Manalo</span></strong>. All Rights Reserved

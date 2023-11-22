@@ -561,29 +561,51 @@ body {
   /*--------------------------------------------------------------
   # Sections General
   --------------------------------------------------------------*/
-  .gradient-custom {
-    background: linear-gradient(to right, #4CAF50, #45a049);
-    color: #fff;
+  .table-responsive {
+    overflow-x: auto;
+    max-width: 80%; /* Adjust the maximum width as needed */
+    margin: 0 auto; /* Center the table */
 }
 
-.card {
-    border: none;
-    border-radius: .5rem;
+.table {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease-in-out;
 }
 
-.card:hover {
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+th,
+td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
 }
 
-.card-body h6 {
-    font-weight: 600;
-    color: #333;
+th {
+    background-color: #007bff;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
-hr {
-    border-top: 1px solid #ddd;
+tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.cancel-appointment {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.cancel-appointment:hover {
+    background-color: #bd2130;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  margin-right: 5px; /* Adjust the spacing as needed */
 }
 
   table {

@@ -14,17 +14,6 @@ body {
     color: #444444;
   }
 
-  .gradient-custom {
-    /* fallback for old browsers */
-    background: #f6d365;
-    
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right bottom,#56C596, #4CAF50, #00796B);
-    
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right bottom,#56C596, #4CAF50, #00796B)
-    }
-  
   a {
     text-decoration: none;
     color: #5cb874;
@@ -561,31 +550,37 @@ body {
   /*--------------------------------------------------------------
   # Sections General
   --------------------------------------------------------------*/
-  .gradient-custom {
-    background: linear-gradient(to right, #4CAF50, #45a049);
+  .table-responsive {
+    max-width: 80%; /* Adjust the maximum width as needed */
+    margin: 0 auto; /* Center the table */
+}
+
+.table {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+th {
+    background-color: #007bff;
     color: #fff;
 }
 
-.card {
-    border: none;
-    border-radius: .5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease-in-out;
+tbody tr:hover {
+    background-color: #f8f9fa;
 }
 
-.card:hover {
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  margin-right: 5px; /* Adjust the spacing as needed */
 }
-
-.card-body h6 {
-    font-weight: 600;
-    color: #333;
-}
-
-hr {
-    border-top: 1px solid #ddd;
-}
-
+/* a */
   table {
     margin: 0 auto;
   }
@@ -1526,5 +1521,14 @@ hr {
     padding: 8px;
     text-align: left;
   }
+  .badge-notification {
+    font-size: 0.7em; /* Decrease the font size to make it smaller */
+    position: absolute;
+    top: 0; /* Position from the top */
+    right: 0; /* Position from the right */
+    transform: translate(-50%, -7%); /* Fine-tuning the position */
+    /* Other styles as needed */
+  }
+  
   
   
