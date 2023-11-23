@@ -142,7 +142,7 @@
         <input type="number" class="form-control" id="minutesInput2" name="minutesInput2" min="0" max="59">
         <label for="noteTextarea2" class="form-label">Note:</label>
         <textarea class="form-control" id="noteTextarea2" name="noteTextarea2" rows="3"></textarea>
-        <button type="submit" class="btn btn-primary">Submit Consultation</button>
+        <button type="submit" class="btn btn-primary"onclick="submitConsultation()">Submit Consultation</button>
         <button type="button" class="btn btn-secondary" onclick="clearConsultationFields()">Clear Consultation</button>
       </div>
 
@@ -184,7 +184,7 @@
         <input type="number" class="form-control" id="minutesInput1" name="minutesInput1" min="0" max="59">
         <label for="noteTextarea1" class="form-label">Note:</label>
         <textarea class="form-control" id="noteTextarea1" name="noteTextarea1" rows="3"></textarea>
-        <button type="submit" class="btn btn-primary">Submit Counseling</button>
+        <button type="submit" class="btn btn-primary"onclick="submitCounseling()">Submit Counseling</button>
         <button type="button" class="btn btn-secondary" onclick="clearCounselingFields()">Clear Counseling</button>
       </div>
 
@@ -204,7 +204,7 @@
         <input type="number" class="form-control" id="minutesInput3" name="minutesInput3" min="0" max="59">
         <label for="noteTextarea3" class="form-label">Note:</label>
         <textarea class="form-control" id="noteTextarea3" name="noteTextarea3" rows="3"></textarea>
-        <button type="submit" class="btn btn-primary">Submit Interview</button>
+        <button type="submit" class="btn btn-primary"onclick="submitInterview()">Submit Interview</button>
         <button type="button" class="btn btn-secondary" onclick="clearInterviewFields()">Clear Interview</button>
       </div>
 
@@ -229,7 +229,7 @@
         <input type="number" class="form-control" id="minutesInput4" name="minutesInput4" min="0" max="59">
         <label for="noteTextarea4" class="form-label">Note:</label>
         <textarea class="form-control" id="noteTextarea4" name="noteTextarea4" rows="3"></textarea>
-        <button type="submit" class="btn btn-primary">Submit Testing</button>
+        <button type="submit" class="btn btn-primary"onclick="submitTesting()">Submit Testing</button>
         <button type="button" class="btn btn-secondary" onclick="clearTestingFields()">Clear Testing</button>
       </div>
 
@@ -263,7 +263,7 @@
         <input type="number" class="form-control" id="minutesInput5" name="minutesInput5" min="0" max="59">
         <label for="noteTextarea5" class="form-label">Note:</label>
         <textarea class="form-control" id="noteTextarea5" name="noteTextarea5" rows="3"></textarea>
-        <button type="submit" class="btn btn-primary">Submit Others</button>
+        <button type="submit" class="btn btn-primary"onclick="submitOthers()">Submit Others</button>
         <button type="button" class="btn btn-secondary" onclick="clearOthersFields()">Clear Others</button>
       </div>
     </form>
@@ -302,6 +302,11 @@
   <!-- Template Main JS File -->
   <script src="/js/home-page.js"></script>
   <script src="/js/report.js"></script>
+  <script src="/js/consultation.js"></script>
+  <script src="/js/counseling.js"></script>
+  <script src="/js/interview.js"></script>
+  <script src="/js/testing.js"></script>
+  <script src="/js/others.js"></script>
 
 
 
