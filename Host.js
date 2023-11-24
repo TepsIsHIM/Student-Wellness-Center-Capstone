@@ -706,7 +706,7 @@ myapp.get('/adminCounselorLog', async (req, res) => {
 
   // REGISTRATION
 myapp.post('/register', async (req, res) => {
-  const { idNumber, email, password, lastName, firstName, gender, birthDate, phoneNumber, accountType, departmentSelect } = req.body;
+  const { idNumber, programCode,email, password, lastName, firstName, gender, birthDate, phoneNumber, accountType, departmentSelect } = req.body;
 
   const uppercaseFirstName = firstName.toUpperCase()
   const uppercaseLastName = lastName.toUpperCase()
@@ -714,6 +714,7 @@ myapp.post('/register', async (req, res) => {
   const uppercaseIDNumber= idNumber.toUpperCase()
   const uppercaseGender = gender.toUpperCase()
   const uppercaseAccountType = accountType.toUpperCase()
+  const uppercaseProgramCode = programCode.toUpperCase()
   try {
     const emailExists = await supabase
       .from(accountType === 'Student' ? 'Student Accounts' : 'Counselor Accounts')
@@ -754,7 +755,8 @@ myapp.post('/register', async (req, res) => {
             id_number: uppercaseIDNumber,
             phone_number: phoneNumber,
             accountType: uppercaseAccountType,
-            department:departmentSelect
+            department:departmentSelect,
+            PROGCODE:uppercaseProgramCode
           },
         ])
         .single();
