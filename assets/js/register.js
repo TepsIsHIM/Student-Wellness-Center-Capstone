@@ -58,7 +58,7 @@ function handleRegistration() {
   const programCodeRegex = /^[a-zA-Z]{3}\d{2}$/;
 
   // Perform form validation
-  if (
+  if (accountType === 'Student' && 
     !firstName ||
     !lastName ||
     !birthDate ||
