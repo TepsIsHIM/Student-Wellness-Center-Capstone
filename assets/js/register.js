@@ -66,7 +66,7 @@ function handleRegistration() {
     !email ||
     !password ||
     !idNumber ||
-    (accountType !== 'Counselor' && !programCode) ||
+    !programCode||
     !phoneNumber
   ) {
     alert('Please fill out all required fields.');
