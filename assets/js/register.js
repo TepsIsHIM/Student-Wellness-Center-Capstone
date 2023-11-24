@@ -30,6 +30,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   async function handleRegistration() {
       try {
+          // Disable the button to prevent spamming
+          
+
+          // Get form data
           const firstName = document.querySelector('#firstName').value;
           const lastName = document.querySelector('#lastName').value;
           const birthDate = document.querySelector('#birthdayDate').value;
@@ -91,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
               alert('Please enter a valid program code (e.g., BIT12).');
               return; // Prevent form submission
           }
-          createAccountButton.disabled = true;
+        createAccountButton.disabled = true;
 
           // Create a user object with form data
           const user = {
