@@ -69,6 +69,7 @@ function handleRegistration() {
     !phoneNumber
   ) {
     alert('Please fill out all required fields.');
+    console.log("BUTTON");
     createAccountButton.disabled = false;
     return; // Prevent form submission
   }
@@ -153,7 +154,7 @@ function handleRegistration() {
     alert('Email may have been used already OR have not yet confirmed');
   })
   .finally(() => {
-    // Re-enable the "Create Account" button after the registration process is complete
+    console.log("BUTTON");
     createAccountButton.disabled = false;
   });
 }
