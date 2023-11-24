@@ -69,35 +69,42 @@ function handleRegistration() {
     !phoneNumber
   ) {
     alert('Please fill out all required fields.');
+    createAccountButton.disabled = false;
     return; // Prevent form submission
   }
 
   if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
     alert('First Name and Last Name should only contain alphabetic characters.');
+    createAccountButton.disabled = false;
     return; // Prevent form submission
   }
 
   if (!phPhoneNumberRegex.test(phoneNumber)) {
     alert('Please enter a valid Philippine phone number (+639xxxxxxxxx).');
+    createAccountButton.disabled = false;
     return; // Prevent form submission
   }
 
   if (!dlsudEmailRegex.test(email)) {
     alert('Please enter a valid DLSUD email address (e.g., user@dlsud.edu.ph).');
+    createAccountButton.disabled = false;
     return; // Prevent form submission
   }
 
   if (accountType === 'Student' && !/^\d{9}$/.test(idNumber)) {
+    createAccountButton.disabled = false;
     alert('Please enter a valid ID number for students.');
     return; // Prevent form submission
   } else if (accountType === 'Counselor' && !/^F-\d+$/.test(idNumber)) {
+    createAccountButton.disabled = false;
     alert('Please enter a valid ID number for counselors ');
     return; // Prevent form submission
   }
 
 
   // Perform programCode validation
-  if (!programCodeRegex.test(programCode)) {
+  if (accountType !== 'Counselor' && !programCodeRegex.test(programCode)) {
+    createAccountButton.disabled = false;
     alert('Please enter a valid program code (e.g., BIT12).');
     return; // Prevent form submission
   }
