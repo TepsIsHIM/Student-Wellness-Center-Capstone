@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 function handleRegistration() {
+  console.log('Entering handleRegistration function');
   // Get form data
   const firstName = document.querySelector('#firstName').value;
   const lastName = document.querySelector('#lastName').value;
@@ -49,7 +50,9 @@ function handleRegistration() {
   const departmentSelect = document.querySelector('#departmentSelect').value;
   const programCode = document.querySelector('#programCode').value;
   const createAccountButton = document.getElementById('createAccountButton');
-  createAccountButton.disabled = true;
+  console.log('Before disabling button');
+createAccountButton.disabled = true;
+console.log('Button disabled');
 
   // Regular expressions for validation
   const nameRegex = /^[a-zA-Z\s]+$/; // Only alphabetic characters
@@ -69,8 +72,9 @@ function handleRegistration() {
     !phoneNumber
   ) {
     alert('Please fill out all required fields.');
-    console.log("BUTTON");
-    createAccountButton.disabled = false;
+    console.log('Before disabling button');
+  createAccountButton.disabled = true;
+  console.log('Button disabled');
     return; // Prevent form submission
   }
 
@@ -154,7 +158,7 @@ function handleRegistration() {
     alert('Email may have been used already OR have not yet confirmed');
   })
   .finally(() => {
-    console.log("BUTTON");
+    // Re-enable the "Create Account" button after the registration process is complete
     createAccountButton.disabled = false;
   });
 }
