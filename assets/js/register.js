@@ -70,7 +70,8 @@ function handleRegistration() {
     !phoneNumber
   ) {
     alert('Please fill out all required fields.');
-    
+
+    return; // Prevent form submission
   }
 
   if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
@@ -87,6 +88,7 @@ function handleRegistration() {
 
   if (!dlsudEmailRegex.test(email)) {
     alert('Please enter a valid DLSUD email address (e.g., user@dlsud.edu.ph).');
+  
     return; // Prevent form submission
   }
 
@@ -151,5 +153,10 @@ function handleRegistration() {
       // Handle network errors or other issues
       console.error('Error:', error);
       alert('Email may have been used already OR have not yet confirmed');
+    })
+    .finally(() => {
+      // Re-enable the "Create Account" button after the registration process is complete
+      createAccountButton.disabled = false;
     });
+    
 }
