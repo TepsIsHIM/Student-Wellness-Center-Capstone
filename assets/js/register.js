@@ -15,18 +15,26 @@ document.addEventListener('DOMContentLoaded', function () {
     accountTypeSelect.addEventListener('change', handleAccountTypeChange);
   }
   function handleAccountTypeChange() {
+    const programCodeField = document.querySelector('#programCode');
+    const programCodeLabel = document.querySelector('label[for="programCode"]');
     const selectedAccountType = accountTypeSelect.value;
     if (selectedAccountType === 'Student') {
       // Show the department dropdown and hide the checklist
       departmentDropdown.style.display = 'block';
-      departmentChecklist.style.display = 'none';
-    } else {
+    programCodeLabel.style.display = 'block'; // Show the Program Code label
+    programCodeField.style.display = 'block'; // Show the Program Code field
+    } else if (selectedAccountType === 'Counselor') {
+      programCodeLabel.style.display = 'none';
+    programCodeField.style.display = 'none';
+    departmentDropdown.style.display = 'none';
+    }
+    else {
       // Hide both if none selected
       departmentDropdown.style.display = 'none';
+    programCodeField.style.display = 'none';
     }
   }
 });
-
 function handleRegistration() {
   // Get form data
   const firstName = document.querySelector('#firstName').value;
@@ -39,11 +47,15 @@ function handleRegistration() {
   const phoneNumber = document.querySelector('#phoneNumber').value;
   const accountType = document.querySelector('#accountType').value;
   const departmentSelect = document.querySelector('#departmentSelect').value;
+  const programCode = document.querySelector('#programCode').value;
+  const createAccountButton = document.getElementById('createAccountButton');
+  createAccountButton.disabled = true;
 
   // Regular expressions for validation
   const nameRegex = /^[a-zA-Z\s]+$/; // Only alphabetic characters
   const phPhoneNumberRegex = /^\+639\d{9}$/; // Philippine phone number format
   const dlsudEmailRegex = /^[\w-]+@dlsud\.edu\.ph$/; // DLSUD email format
+  const programCodeRegex = /^[a-zA-Z]{3}\d{2}$/;
 
   // Perform form validation
   if (
@@ -53,6 +65,7 @@ function handleRegistration() {
     !email ||
     !password ||
     !idNumber ||
+    !programCode ||
     !phoneNumber
   ) {
     alert('Please fill out all required fields.');
@@ -70,11 +83,24 @@ function handleRegistration() {
   }
 
   if (!dlsudEmailRegex.test(email)) {
-    alert('Please enter a valid DLSUD email address (e.g., yourname@dlsud.edu.ph).');
+    alert('Please enter a valid DLSUD email address (e.g., user@dlsud.edu.ph).');
     return; // Prevent form submission
   }
 
-  
+  if (accountType === 'Student' && !/^\d{9}$/.test(idNumber)) {
+    alert('Please enter a valid ID number for students.');
+    return; // Prevent form submission
+  } else if (accountType === 'Counselor' && !/^F-\d+$/.test(idNumber)) {
+    alert('Please enter a valid ID number for counselors ');
+    return; // Prevent form submission
+  }
+
+
+  // Perform programCode validation
+  if (!programCodeRegex.test(programCode)) {
+    alert('Please enter a valid program code (e.g., BIT12).');
+    return; // Prevent form submission
+  }
 
   // Create a user object with form data
   const user = {
@@ -88,6 +114,7 @@ function handleRegistration() {
     phoneNumber,
     accountType,
     departmentSelect,
+    programCode
   };
 
   // Send the user data to the server
@@ -98,25 +125,28 @@ function handleRegistration() {
     },
     body: JSON.stringify(user),
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then((data) => {
-      if (data.success) {
-        const successMessage = document.querySelector('#successMessage');
-        successMessage.style.display = 'block';
-        const form = document.querySelector('#insertForm');
-        form.style.display = 'none';
-      } else {
-        alert('Registration failed. Please try again.');
-      }
-    })
-    .catch((error) => {
-      // Handle network errors or other issues
-      console.error('Error:', error);
-      alert('Email may have been used already OR have not yet confirmed');
-    });
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then((data) => {
+    if (data.success) {
+      const successMessage = document.querySelector('#successMessage');
+      successMessage.style.display = 'block';
+      const form = document.querySelector('#insertForm');
+      form.style.display = 'none';
+    } else {
+      alert('Registration failed. Please try again.');
+    }
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+    alert('Email may have been used already OR have not yet confirmed');
+  })
+  .finally(() => {
+    // Re-enable the "Create Account" button after the registration process is complete
+    createAccountButton.disabled = false;
+  });
 }
