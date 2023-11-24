@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     accountTypeSelect.addEventListener('change', handleAccountTypeChange);
   }
+
   function handleAccountTypeChange() {
     const programCodeField = document.querySelector('#programCode');
     const programCodeLabel = document.querySelector('label[for="programCode"]');
@@ -66,40 +67,39 @@ function handleRegistration() {
     !email ||
     !password ||
     !idNumber ||
-    !programCode||
+    (accountType !== 'Counselor' && !programCode) ||
     !phoneNumber
   ) {
     alert('Please fill out all required fields.');
-
-    return; // Prevent form submission
+    // Prevent form submission
   }
 
   if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
     alert('First Name and Last Name should only contain alphabetic characters.');
 
-    return; // Prevent form submission
+     // Prevent form submission
   }
 
   if (!phPhoneNumberRegex.test(phoneNumber)) {
     alert('Please enter a valid Philippine phone number (+639xxxxxxxxx).');
  
-    return; // Prevent form submission
+   // Prevent form submission
   }
 
   if (!dlsudEmailRegex.test(email)) {
     alert('Please enter a valid DLSUD email address (e.g., user@dlsud.edu.ph).');
   
-    return; // Prevent form submission
+     // Prevent form submission
   }
 
   if (accountType === 'Student' && !/^\d{9}$/.test(idNumber)) {
    
     alert('Please enter a valid ID number for students.');
-    return; // Prevent form submission
+     // Prevent form submission
   } else if (accountType === 'Counselor' && !/^F-\d+$/.test(idNumber)) {
  
     alert('Please enter a valid ID number for counselors ');
-    return; // Prevent form submission
+    // Prevent form submission
   }
 
 
@@ -107,7 +107,7 @@ function handleRegistration() {
   if (accountType !== 'Counselor' && !programCodeRegex.test(programCode)) {
   
     alert('Please enter a valid program code (e.g., BIT12).');
-    return; // Prevent form submission
+    // Prevent form submission
   }
 
   // Create a user object with form data
@@ -133,7 +133,12 @@ function handleRegistration() {
     },
     body: JSON.stringify(user),
   })
-    
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
     .then((data) => {
       if (data.success) {
         const successMessage = document.querySelector('#successMessage');
@@ -149,5 +154,4 @@ function handleRegistration() {
       console.error('Error:', error);
       alert('Email may have been used already OR have not yet confirmed');
     });
-    
 }
