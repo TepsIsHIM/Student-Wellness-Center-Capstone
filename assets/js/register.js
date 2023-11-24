@@ -137,28 +137,25 @@ console.log('Button disabled');
     },
     body: JSON.stringify(user),
   })
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then((data) => {
-    if (data.success) {
-      const successMessage = document.querySelector('#successMessage');
-      successMessage.style.display = 'block';
-      const form = document.querySelector('#insertForm');
-      form.style.display = 'none';
-    } else {
-      alert('Registration failed. Please try again.');
-    }
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-    alert('Email may have been used already OR have not yet confirmed');
-  })
-  .finally(() => {
-    // Re-enable the "Create Account" button after the registration process is complete
-    createAccountButton.disabled = false;
-  });
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.success) {
+        const successMessage = document.querySelector('#successMessage');
+        successMessage.style.display = 'block';
+        const form = document.querySelector('#insertForm');
+        form.style.display = 'none';
+      } else {
+        alert('Registration failed. Please try again.');
+      }
+    })
+    .catch((error) => {
+      // Handle network errors or other issues
+      console.error('Error:', error);
+      alert('Email may have been used already OR have not yet confirmed');
+    });
 }
