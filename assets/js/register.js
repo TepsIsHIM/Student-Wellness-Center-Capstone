@@ -58,14 +58,14 @@ function handleRegistration() {
   const programCodeRegex = /^[a-zA-Z]{3}\d{2}$/;
 
   // Perform form validation
-  if (accountType === 'Student' && 
+  if (
     !firstName ||
     !lastName ||
     !birthDate ||
     !email ||
     !password ||
     !idNumber ||
-    !programCode ||
+    (accountType !== 'Counselor' && !programCode) ||
     !phoneNumber
   ) {
     alert('Please fill out all required fields.');
