@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     accountTypeSelect.addEventListener('change', handleAccountTypeChange);
   }
-
   function handleAccountTypeChange() {
     const programCodeField = document.querySelector('#programCode');
     const programCodeLabel = document.querySelector('label[for="programCode"]');
@@ -59,57 +58,7 @@ function handleRegistration() {
   const dlsudEmailRegex = /^[\w-]+@dlsud\.edu\.ph$/; // DLSUD email format
   const programCodeRegex = /^[a-zA-Z]{3}\d{2}$/;
 
-  // Perform form validation
-  if (
-    !firstName ||
-    !lastName ||
-    !birthDate ||
-    !email ||
-    !password ||
-    !idNumber ||
-    (accountType !== 'Counselor' && !programCode) ||
-    !phoneNumber
-  ) {
-    alert('Please fill out all required fields.');
-    // Prevent form submission
-  }
-
-  if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
-    alert('First Name and Last Name should only contain alphabetic characters.');
-
-     // Prevent form submission
-  }
-
-  if (!phPhoneNumberRegex.test(phoneNumber)) {
-    alert('Please enter a valid Philippine phone number (+639xxxxxxxxx).');
  
-   // Prevent form submission
-  }
-
-  if (!dlsudEmailRegex.test(email)) {
-    alert('Please enter a valid DLSUD email address (e.g., user@dlsud.edu.ph).');
-  
-     // Prevent form submission
-  }
-
-  if (accountType === 'Student' && !/^\d{9}$/.test(idNumber)) {
-   
-    alert('Please enter a valid ID number for students.');
-     // Prevent form submission
-  } else if (accountType === 'Counselor' && !/^F-\d+$/.test(idNumber)) {
- 
-    alert('Please enter a valid ID number for counselors ');
-    // Prevent form submission
-  }
-
-
-  // Perform programCode validation
-  if (accountType !== 'Counselor' && !programCodeRegex.test(programCode)) {
-  
-    alert('Please enter a valid program code (e.g., BIT12).');
-    // Prevent form submission
-  }
-
   // Create a user object with form data
   const user = {
     firstName,
