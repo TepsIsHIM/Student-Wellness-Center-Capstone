@@ -110,6 +110,14 @@ function handleRegistration() {
     return; // Prevent form submission
   }
 
+  if (window.registrationInProgress) {
+    console.log('Registration in progress, returning...');
+    return;
+  }
+
+  // Set registration in progress flag
+  window.registrationInProgress = true;
+
   // Create a user object with form data
   const user = {
     firstName,
@@ -155,8 +163,8 @@ function handleRegistration() {
       alert('Email may have been used already OR have not yet confirmed');
     })
     .finally(() => {
-      // Re-enable the "Create Account" button after the registration process is complete
-      createAccountButton.disabled = false;
-    });
-    
-}
+        // Reset registration in progress flag
+        window.registrationInProgress = false;
+      });
+  }
+
