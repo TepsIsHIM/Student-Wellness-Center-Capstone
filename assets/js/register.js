@@ -70,7 +70,7 @@ function handleRegistration() {
     !phoneNumber
   ) {
     alert('Please fill out all required fields.');
-    return; // Prevent form submission
+    
   }
 
   if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
