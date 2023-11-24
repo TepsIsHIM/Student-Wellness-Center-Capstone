@@ -1,40 +1,51 @@
-const expandableRows = document.querySelectorAll('.expandable-row');
+document.addEventListener('DOMContentLoaded', function () {
+    const editButtons = document.querySelectorAll('.btn-edit-user');
+    const editForm = document.getElementById('editForm');
 
-expandableRows.forEach(row => {
-    row.addEventListener('click', () => {
-        const dropdown = row.nextElementSibling.querySelector('.dropdown-content');
-        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    // Initialize the Bootstrap Switch
+    $('#adminSwitch').bootstrapSwitch();
+
+    editButtons.forEach(editButton => {
+        editButton.addEventListener('click', function () {
+            const card = this.closest('.counselor-card');
+            // Open the modal
+            $('#editModal').modal('show');
+        });
+    });
+
+    if (editForm) {
+        document.getElementById('confirmButton').addEventListener('click', function () {
+            // Get form data
+            const formData = new FormData(editForm);
+
+            // Send the form data to the server using fetch
+            fetch('/adminEditRoles/update', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data); // Log the server response
+                // Display a success message to the user
+                alert('Counselor role updated successfully!');
+                // Reload the current page or perform any other actions
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error.message);
+                // Display an error message to the user
+                alert('Error updating counselor role. Please try again.');
+            });
+        });
+    }
+
+    // Add smooth closing for the modal
+    $('#modalCloseButtonX, #modalCancelButton').on('click', function () {
+        $('#editModal').modal('hide');
     });
 });
-
-function saveDepartments(email) {
-  console.log('Clicked "Save" for email:', email);
-  const checkboxes = document.querySelectorAll('input[name="department"]:checked');
-  const selectedDepartments = Array.from(checkboxes).map(checkbox => checkbox.value);
-
-  // Prepare the data to send to the server
-  const data = {
-      email: email,
-      departments: selectedDepartments
-  };
-
-  // Make an HTTP POST request to your server
-  fetch('/updateDepartments', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-  })
-  .then(response => {
-    if (response.ok) {
-        console.log('Departments updated successfully');
-        alert('Departments Updated Successfully!');
-    } else {
-        console.error('Failed to update departments. Response:', response);
-    }
-})
-  .catch(error => {
-      console.error('Error:', error);
-  });
-}

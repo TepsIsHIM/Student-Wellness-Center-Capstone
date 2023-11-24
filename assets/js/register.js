@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
       createAccountButton.addEventListener('click', handleRegistration);
       accountTypeSelect.addEventListener('change', handleAccountTypeChange);
   }
+  handleAccountTypeChange();
 
   function handleAccountTypeChange() {
       const programCodeField = document.querySelector('#programCode');
@@ -22,8 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
           programCodeField.style.display = 'none';
           departmentDropdown.style.display = 'none';
       } else {
-          // Hide both if none selected
-          departmentDropdown.style.display = 'none';
+          
           programCodeField.style.display = 'none';
       }
   }

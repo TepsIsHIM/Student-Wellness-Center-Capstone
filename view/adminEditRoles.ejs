@@ -94,111 +94,74 @@
 
 
   <main id="main">
-
-    <!-- ======= About Us Section ======= -->
-    <section id="about" class="about">
+    <section id="counselorDetails">
       <div class="container">
-
-        <div class="section-title">
-          <h2>Edit Roles</h2>
-        </div>
+        <h2 class="text-center mb-5">Counselor Details</h2>
         <div class="row">
-          <table>
-            <tbody>
-                <% editRoles.forEach((roles) => { %>
-                <tr class="expandable-row">
-                    <td><%= roles.email %></td>
-              <td><%= roles.last_name %></td>
-              <td><%= roles.first_name %></td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <div class="dropdown-content">
-                            <label><input type="checkbox" name="department" value="CSCS"> CSCS</label><br>
-                            <label><input type="checkbox" name="department" value="CEAT"> CEAT</label><br>
-                            <label><input type="checkbox" name="department" value="CTHM"> CTHM</label><br>
-                            <label><input type="checkbox" name="department" value="CBAA"> CBAA</label><br>
-                            <label><input type="checkbox" name="department" value="COED"> COED</label><br>
-                            <label><input type="checkbox" name="department" value="CCJE"> CCJE</label><br>
-                            <label><input type="checkbox" name="department" value="CLAC"> CLAC</label><br>
-                            <button onclick="saveDepartments('<%= roles.email %>')">Save</button>
-                        </div>
-                    </td>
-                </tr>
-                <% }); %>
-            </tbody>
-          </table>
-          <hr>
-        </div>
-    </section>
-
-
-    <!-- ======= Contact Section ======= -->
-    <section id="contact" class="contact">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>Contact</h2>
-        </div>
-
-        <div class="row">
-
-          <div class="col-lg-5 d-flex align-items-stretch">
-            <div class="info">
-              <div class="address">
-                <i class="bi bi-geo-alt"></i>
-                <h4>Address:</h4>
-                <p>De La Salle University - Dasmariñas DBB-B City of Dasmariñas Cavite. Philippines 4115</p>
-              </div>
-
-              <div class="email">
-                <i class="bi bi-envelope"></i>
-                <h4>Email:</h4>
-                <p>swc@dlsud.edu.ph</p>
-              </div>
-
-              <div class="phone">
-                <i class="bi bi-phone"></i>
-                <h4>Call:</h4>
-                <p>Hotline: 0912-3349003</p>
-                <p>Local Line: +63 (46) 481.1900 local 3054</p>
-                <p>Manila Line: +63 (2) 779.5180</p>
+          <% counselors.forEach(counselor => { %>
+            <div class="col-lg-4 col-md-6 mb-4">
+              <div class="card h-100 border-primary">
+                <div class="card-body">
+                  <h5 class="card-title text-primary"><%= counselor.name %></h5>
+                  <p class="card-text"><strong>Email:</strong> <%= counselor.email %></p>
+                  <p class="card-text"><strong>Department:</strong> <%= counselor.departments.join(', ') %></p>
+                  <p class="card-text"><strong>Program:</strong> <%= counselor.programs.join(', ') %></p>
+                </div>
+                <div class="card-footer bg-transparent">
+                  <button class="btn btn-primary btn-block btn-edit-user" data-toggle="modal" data-target="#editModal">Edit</button>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-              <div class="row">
-                <div class="form-group col-md-6">
-                  <label for="name">Your Name</label>
-                  <input type="text" name="name" class="form-control" id="name" required>
-                </div>
-                <div class="form-group col-md-6 mt-3 mt-md-0">
-                  <label for="name">Your Email</label>
-                  <input type="email" class="form-control" name="email" id="email" required>
-                </div>
-              </div>
-              <div class="form-group mt-3">
-                <label for="name">Subject</label>
-                <input type="text" class="form-control" name="subject" id="subject" required>
-              </div>
-              <div class="form-group mt-3">
-                <label for="name">Message</label>
-                <textarea class="form-control" name="message" rows="10" required></textarea>
-              </div>
-              <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
-              </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
-            </form>
-          </div>
+          <% }); %>
         </div>
       </div>
-    </section><!-- End Contact Section -->
-  </main><!-- End #main -->
+    </section>
+  </main>
+
+ <!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+        <button type="button" class="close" id="modalCloseButtonX" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="editForm" action="/adminEditRoles/update" method="POST">
+        <!-- Add your form fields here -->
+        <div class="form-group">
+          <label for="adminSwitch">Admin:</label>
+          <input type="checkbox" id="adminSwitch" class="form-control" data-toggle="switch" data-on-text="On" data-off-text="Off">
+        </div>
+        <div class="form-group">
+            <label>Department:</label>
+            <div>
+              <label><input type="checkbox" name="department" value="CSCS"> CSCS</label><br>
+              <label><input type="checkbox" name="department" value="CEAT"> CEAT</label><br>
+              <label><input type="checkbox" name="department" value="CBAA"> CBAA</label><br>
+              <label><input type="checkbox" name="department" value="CTHM"> CTHM</label><br>
+              <label><input type="checkbox" name="department" value="CCJE"> CEAT</label><br>
+              <label><input type="checkbox" name="department" value="COED"> CEAT</label><br>
+              <label><input type="checkbox" name="department" value="CLAC"> CLAC</label><br>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="programCode">Program Code:</label>
+            <input type="text" class="form-control" id="programCode" >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close" id="modalCancelButton">Cancel</button>
+          <button type="button" class="btn btn-primary btn-confirm-update">Confirm</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+  
+
 
   <!-- ======= Footer ======= -->
   <footer id="footer">
@@ -227,6 +190,14 @@
   <script src="/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="/vendor/php-email-form/validate.js"></script>
+
+<!-- Include Bootstrap CSS and JS in your HTML file -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
 
   <!-- Template Main JS File -->
   <script src="/js/home-page.js"></script>
