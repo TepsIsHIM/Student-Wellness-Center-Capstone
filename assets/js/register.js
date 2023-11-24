@@ -110,14 +110,6 @@ function handleRegistration() {
     return; // Prevent form submission
   }
 
-  if (window.registrationInProgress) {
-    console.log('Registration in progress, returning...');
-    return;
-  }
-
-  // Set registration in progress flag
-  window.registrationInProgress = true;
-
   // Create a user object with form data
   const user = {
     firstName,
@@ -161,10 +153,6 @@ function handleRegistration() {
       // Handle network errors or other issues
       console.error('Error:', error);
       alert('Email may have been used already OR have not yet confirmed');
-    })
-    .finally(() => {
-        // Reset registration in progress flag
-        window.registrationInProgress = false;
-      });
-  }
-
+    });
+    
+}
