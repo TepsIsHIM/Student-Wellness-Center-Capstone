@@ -70,9 +70,6 @@ function handleRegistration() {
     !phoneNumber
   ) {
     alert('Please fill out all required fields.');
-    console.log('Before disabling button');
-
-  console.log('Button disabled');
     return; // Prevent form submission
   }
 
@@ -90,7 +87,6 @@ function handleRegistration() {
 
   if (!dlsudEmailRegex.test(email)) {
     alert('Please enter a valid DLSUD email address (e.g., user@dlsud.edu.ph).');
-  
     return; // Prevent form submission
   }
 
