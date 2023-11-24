@@ -49,7 +49,7 @@ function handleRegistration() {
   const accountType = document.querySelector('#accountType').value;
   const departmentSelect = document.querySelector('#departmentSelect').value;
   const programCode = document.querySelector('#programCode').value;
-  const createAccountButton = document.getElementById('createAccountButton');
+
 
 
   // Regular expressions for validation
