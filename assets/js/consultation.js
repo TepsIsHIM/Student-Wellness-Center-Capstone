@@ -10,7 +10,7 @@ function submitConsultation() {
     const noteTextarea2 = document.getElementById('noteTextarea2').value;
     const dateInput2 = document.getElementById('dateInput2').value;
 
-    // Create an object with the form data
+ 
     const formData = {
         fname,
         lname,
@@ -29,7 +29,7 @@ function submitConsultation() {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData) // Send form data as JSON
+        body: JSON.stringify(formData) 
     })
     .then((response) => response.json())
     .then((data) => {

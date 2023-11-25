@@ -9,7 +9,7 @@ function submitInterview() {
     const minutesInput3 = document.getElementById('minutesInput3').value;
     const noteTextarea3 = document.getElementById('noteTextarea3').value;
     const dateInput3 = document.getElementById('dateInput3').value;
-    // Create an object with the form data
+
     const formData = {
         fname,
         lname,
@@ -28,7 +28,7 @@ function submitInterview() {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData) // Send form data as JSON
+        body: JSON.stringify(formData) 
     })
     .then((response) => response.json())
     .then((data) => {

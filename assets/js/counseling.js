@@ -11,7 +11,7 @@ function submitCounseling() {
     const minutesInput1 = document.getElementById('minutesInput1').value;
     const noteTextarea1 = document.getElementById('noteTextarea1').value;
     const dateInput1 = document.getElementById('dateInput1').value;
-    // Create an object with the form data
+
     const formData = {
         fname,
         lname,

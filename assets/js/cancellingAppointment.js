@@ -1,18 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
   
-  let currentAppointmentId; // Store the current appointmentId globally
+  let currentAppointmentId;
 
-  // Event delegation to handle 'Cancel' and 'Confirm Cancel' button clicks
+ 
   document.addEventListener('click', function (event) {
     if (event.target.classList.contains('cancel-appointment')) {
-      // Show the modal when clicking the "Cancel" button
+
       currentAppointmentId = event.target.dataset.appointmentId;
       $('#cancelModal').modal('show');
     } else if (event.target.classList.contains('confirm-cancel')) {
-      // Get the remarks from the modal input
+
       const remarks = document.getElementById('modalRemarkInput2').value;
 
-      // Call the function to cancel the appointment with remarks
       cancelAppointment(currentAppointmentId, remarks);
     }
   });

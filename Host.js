@@ -2325,33 +2325,39 @@ myapp.post('/adminCreateAccount', async (req, res) => {
 
 myapp.post('/adminEditRoles/update', async (req, res) => {
   try {
-      const { counselorEmail, departments } = req.body;
+    const { counselorEmail, departments, admin } = req.body;
 
-      // Iterate over the array of departments and insert records
-      const promises = departments.map(async department => {
-          const { data, error } = await supabase
-              .from('Counselor Role')
-              .upsert([
-                  {
-                      email: counselorEmail,
-                      department: department.department,
-                  },
-              ]);
+    // Update the Counselor Role in the database
+    const { data: roleData, error: roleError } = await supabase
+      .from('Counselor Role')
+      .upsert([
+        {
+          email: counselorEmail,
+          department: departments,
+        },
+      ]);
 
-          if (error) {
-              console.error('Error updating counselor role:', error.message);
-              return Promise.reject(error.message);
-          }
+    if (roleError) {
+      console.error('Error updating counselor role:', roleError.message);
+      return res.status(500).send('Internal server error');
+    }
 
-          return data;
-      });
+    // Update the Counselor Account in the database
+    const { data: accountData, error: accountError } = await supabase
+      .from('Counselor Account')
+      .update({
+        admin: admin,
+      })
+      .eq('email', counselorEmail);
 
-      // Wait for all insert operations to complete
-      await Promise.all(promises);
+    if (accountError) {
+      console.error('Error updating counselor account:', accountError.message);
+      return res.status(500).send('Internal server error');
+    }
 
-      res.send('Counselor role updated successfully!');
+    res.send('Counselor role and account updated successfully!');
   } catch (error) {
-      console.error('Server error:', error.message);
-      res.status(500).send('Internal server error');
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
   }
 });

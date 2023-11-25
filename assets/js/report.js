@@ -1,12 +1,12 @@
 $(document).ready(function () {
-    // Initial state
+  
     hideAllSections();
 
-    // Event handler for category type selection
+ 
     $("#serviceSelect3").change(function () {
-      hideAllSections(); // Hide all sections
+      hideAllSections(); 
 
-      // Show the selected section based on the category type
+    
       var selectedCategory = $(this).val();
       if (selectedCategory === "CONSULTATION") {
         showConsultationSection();

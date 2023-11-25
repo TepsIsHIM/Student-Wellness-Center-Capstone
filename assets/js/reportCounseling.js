@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Event delegation for showing the modal
+
     document.addEventListener('click', function (event) {
         let id;
       if (event.target.classList.contains('showCounselingModal')) {
