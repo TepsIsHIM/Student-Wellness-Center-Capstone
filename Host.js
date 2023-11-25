@@ -2324,31 +2324,34 @@ myapp.post('/adminCreateAccount', async (req, res) => {
 
 
 myapp.post('/adminEditRoles/update', async (req, res) => {
-  const { email, department } = req.body;
-
   try {
-    // Validate input (you may add more validation as needed)
-    if (!email || !department) {
-      return res.status(400).send('Invalid input. Please provide both email and department.');
-    }
+      const { counselorEmail, departments } = req.body;
 
-    // Update the 'Counselor Role' table in Supabase
-    const { data, error } = await supabase
-      .from('Counselor Role')
-      .upsert(
-        [{ email, department }],
-        { onConflict: ['email'], returning: 'minimal' }
-      );
+      // Iterate over the array of departments and insert records
+      const promises = departments.map(async department => {
+          const { data, error } = await supabase
+              .from('Counselor Role')
+              .upsert([
+                  {
+                      email: counselorEmail,
+                      department: department.department,
+                  },
+              ]);
 
-    if (error) {
-      console.error('Error updating Counselor Role:', error.message);
-      return res.status(500).send('Internal server error');
-    }
+          if (error) {
+              console.error('Error updating counselor role:', error.message);
+              return Promise.reject(error.message);
+          }
 
-    // Respond with a success message or redirect to the original page
-    res.status(200).send('Counselor role updated successfully!');
+          return data;
+      });
+
+      // Wait for all insert operations to complete
+      await Promise.all(promises);
+
+      res.send('Counselor role updated successfully!');
   } catch (error) {
-    console.error('Server error:', error.message);
-    res.status(500).send('Internal server error');
+      console.error('Server error:', error.message);
+      res.status(500).send('Internal server error');
   }
 });

@@ -95,71 +95,67 @@
 
   <main id="main">
     <section id="counselorDetails">
-      <div class="container">
-        <h2 class="text-center mb-5">Counselor Details</h2>
-        <div class="row">
-          <% counselors.forEach(counselor => { %>
-            <div class="col-lg-4 col-md-6 mb-4">
-              <div class="card h-100 border-primary">
-                <div class="card-body">
-                  <h5 class="card-title text-primary"><%= counselor.name %></h5>
-                  <p class="card-text"><strong>Email:</strong> <%= counselor.email %></p>
-                  <p class="card-text"><strong>Department:</strong> <%= counselor.departments.join(', ') %></p>
-                  <p class="card-text"><strong>Program:</strong> <%= counselor.programs.join(', ') %></p>
-                </div>
-                <div class="card-footer bg-transparent">
-                  <button class="btn btn-primary btn-block btn-edit-user" data-toggle="modal" data-target="#editModal">Edit</button>
-                </div>
-              </div>
+        <div class="container">
+            <h2 class="text-center mb-5">Counselor Details</h2>
+            <div class="row">
+                <% counselors.forEach(counselor => { %>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100 border-primary counselor-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary"><%= counselor.name %></h5>
+                                <p class="card-text email"><strong>Email:</strong> <%= counselor.email %></p>
+                                <p class="card-text"><strong>Department:</strong> <%= counselor.departments.join(', ') %></p>
+                                <p class="card-text"><strong>Program:</strong> <%= counselor.programs.join(', ') %></p>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <button class="btn btn-primary btn-block btn-edit-user" data-toggle="modal" data-target="#editModal">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
             </div>
-          <% }); %>
         </div>
-      </div>
     </section>
-  </main>
+</main>
 
- <!-- Edit Modal -->
+<!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">Edit User</h5>
-        <button type="button" class="close" id="modalCloseButtonX" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="editForm" action="/adminEditRoles/update" method="POST">
-        <!-- Add your form fields here -->
-        <div class="form-group">
-          <label for="adminSwitch">Admin:</label>
-          <input type="checkbox" id="adminSwitch" class="form-control" data-toggle="switch" data-on-text="On" data-off-text="Off">
-        </div>
-        <div class="form-group">
-            <label>Department:</label>
-            <div>
-              <label><input type="checkbox" name="department" value="CSCS"> CSCS</label><br>
-              <label><input type="checkbox" name="department" value="CEAT"> CEAT</label><br>
-              <label><input type="checkbox" name="department" value="CBAA"> CBAA</label><br>
-              <label><input type="checkbox" name="department" value="CTHM"> CTHM</label><br>
-              <label><input type="checkbox" name="department" value="CCJE"> CEAT</label><br>
-              <label><input type="checkbox" name="department" value="COED"> CEAT</label><br>
-              <label><input type="checkbox" name="department" value="CLAC"> CLAC</label><br>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+                <button type="button" class="close" id="modalCloseButtonX" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="programCode">Program Code:</label>
-            <input type="text" class="form-control" id="programCode" >
-          </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <!-- Add your form fields here -->
+                    <div class="form-group">
+                        <label for="adminSwitch">Admin:</label>
+                        <input type="checkbox" id="adminSwitch" class="form-control" data-toggle="switch" data-on-text="On" data-off-text="Off">
+                    </div>
+                    <div class="form-group">
+                        <label>Department:</label>
+                        <div>
+                            <label><input type="checkbox" name="department" value="CSCS"> CSCS</label><br>
+                            <label><input type="checkbox" name="department" value="CEAT"> CEAT</label><br>
+                            <!-- Add other department checkboxes as needed -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="programCode">Program Code:</label>
+                        <input type="text" class="form-control" id="programCode">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close" id="modalCancelButton">Cancel</button>
+                        <button type="button" class="btn btn-primary btn-confirm-update" id="confirmButton">Confirm</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close" id="modalCancelButton">Cancel</button>
-          <button type="button" class="btn btn-primary btn-confirm-update">Confirm</button>
-        </div>
-      </form>
-      </div>
     </div>
-  </div>
+</div>
   
 
 

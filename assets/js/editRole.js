@@ -1,27 +1,49 @@
 document.addEventListener('DOMContentLoaded', function () {
     const editButtons = document.querySelectorAll('.btn-edit-user');
     const editForm = document.getElementById('editForm');
+    const confirmButton = document.getElementById('confirmButton');
 
     // Initialize the Bootstrap Switch
     $('#adminSwitch').bootstrapSwitch();
 
+    let selectedEmail; // Variable to store the selected counselor's email
+
     editButtons.forEach(editButton => {
         editButton.addEventListener('click', function () {
             const card = this.closest('.counselor-card');
+            const emailText = card.querySelector('.card-text.email').innerText;
+            // Extract the email address without the "Email: " prefix
+            selectedEmail = emailText.replace('Email: ', '');
+    
             // Open the modal
             $('#editModal').modal('show');
         });
     });
+    
 
     if (editForm) {
         document.getElementById('confirmButton').addEventListener('click', function () {
-            // Get form data
-            const formData = new FormData(editForm);
+            // Get other form data
 
-            // Send the form data to the server using fetch
+            const departmentCheckboxes = document.querySelectorAll('input[name="department"]:checked');
+
+            // Prepare the data object
+            const data = {
+                counselorEmail: selectedEmail,
+                departments: Array.from(departmentCheckboxes).map(checkbox => ({
+                    department: checkbox.value,
+                })),
+            };
+
+            console.log('Data:', data);
+
+            // Send the data object to the server using fetch
             fetch('/adminEditRoles/update', {
                 method: 'POST',
-                body: formData,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
             })
             .then(response => {
                 if (!response.ok) {
@@ -44,8 +66,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Add smooth closing for the modal
-    $('#modalCloseButtonX, #modalCancelButton').on('click', function () {
-        $('#editModal').modal('hide');
-    });
+});
+
+// Add smooth closing for the modal
+$('#modalCloseButtonX, #modalCancelButton').on('click', function () {
+    $('#editModal').modal('hide');
 });

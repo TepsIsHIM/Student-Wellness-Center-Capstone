@@ -1,34 +1,34 @@
 function insertRecord() {
-  // Get the form values (date, time, service)
+
   const dateInput = document.getElementById('date');
   const timeInput = document.getElementById('time');
   const serviceInput = document.getElementById('service');
 
-  // Check if the selected date is in the past
+
   const selectedDate = new Date(dateInput.value);
   const currentDate = new Date();
   if (selectedDate < currentDate) {
     alert('Please select a future date.');
-    dateInput.value = ''; // Clear the date input
+    dateInput.value = ''; 
     return;
   }
 
-  // Check if the selected time is outside the allowed range or not in 30-minute intervals
+
   const selectedTime = timeInput.value;
   const startTime = '07:00';
   const endTime = '17:00';
-  const timeRegex = /^([01]\d|2[0-3]):([03]0|45)$/; // Updated regex for HH:00 or HH:30 format
+  const timeRegex = /^([01]\d|2[0-3]):([03]0|45)$/; 
 
   if (selectedTime < startTime || selectedTime > endTime || !timeRegex.test(selectedTime)) {
     alert('Please select a valid time between 7:00 AM and 5:00 PM in 30-minute intervals.');
-    timeInput.value = ''; // Clear the time input
+    timeInput.value = ''; 
     return;
   }
 
-  // Get the current date and time when the "appoint" button is clicked
+
   const appointmentDateTime = new Date();
 
-  // Send the data to the server using AJAX or fetch
+
   fetch('/create-appointment', {
     method: 'POST',
     headers: {

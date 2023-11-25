@@ -14,10 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
       const programCodeLabel = document.querySelector('label[for="programCode"]');
       const selectedAccountType = accountTypeSelect.value;
       if (selectedAccountType === 'Student') {
-          // Show the department dropdown and hide the checklist
           departmentDropdown.style.display = 'block';
-          programCodeLabel.style.display = 'block'; // Show the Program Code label
-          programCodeField.style.display = 'block'; // Show the Program Code field
+          programCodeLabel.style.display = 'block'; 
+          programCodeField.style.display = 'block';
       } else if (selectedAccountType === 'Counselor') {
           programCodeLabel.style.display = 'none';
           programCodeField.style.display = 'none';
@@ -30,10 +29,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   async function handleRegistration() {
       try {
-          // Disable the button to prevent spamming
-          
-
-          // Get form data
           const firstName = document.querySelector('#firstName').value;
           const lastName = document.querySelector('#lastName').value;
           const birthDate = document.querySelector('#birthdayDate').value;
