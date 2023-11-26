@@ -567,46 +567,6 @@ myapp.get('/adminCreateAccounts', (req, res) => {
   res.render('adminCreateAccounts', { counselorData });
 });
 
-myapp.get('/adminEditRoles', async (req, res) => {
-  const counselorData = res.locals.counselorData;
-  try {
-    const { data: editRoles, error1 } = await supabase
-      .from('Counselor Accounts') 
-      .select('email, first_name, last_name')
-
-    if (error1) {
-      // Handle the error
-      console.error('Error fetching Counselor Accounts:', error.message);
-      return res.status(500).send('Internal server error');
-    }
-    
-    const { data: assignedRoles, error2 } = await supabase
-      .from('Counselor Role') 
-      .select('email, department, progCode')
-
-    if (error2) {
-      // Handle the error
-      console.error('Error fetching Counselor Accounts:', error.message);
-      return res.status(500).send('Internal server error');
-    } const counselors = editRoles.map(account => {
-      const roles = assignedRoles.filter(role => role.email === account.email);
-      return {
-        email: account.email,
-        name: `${account.first_name} ${account.last_name}`,
-        departments: roles.map(role => role.department),
-        programs: roles.map(role => role.progCode),
-      };
-    });
-
-    // Render the 'adminEditRoles' template with counselor details
-    res.render('adminEditRoles', { counselors, counselorData });
-  } catch (error) {
-    // Handle any unexpected server errors
-    console.error('Server error:', error.message);
-    res.status(500).send('Internal server error');
-  }
-});
-
 myapp.get('/adminAppointmentHistory', async (req, res) => {
   const counselorData = res.locals.counselorData;
   try {
@@ -694,6 +654,124 @@ myapp.get('/adminViewAccounts', async (req, res) => {
     res.render('adminViewAccounts', { studentViewAccounts,counselorViewAccounts, counselorData });
   } catch (error) {
     // Handle any unexpected server errors
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
+
+myapp.get('/adminEditRoles', async (req, res) => {
+  const counselorData = res.locals.counselorData;
+  try {
+    const { data: editRoles, error1 } = await supabase
+      .from('Counselor Accounts') 
+      .select('email, first_name, last_name')
+
+    if (error1) {
+      console.error('Error fetching Counselor Accounts:', error1.message);
+      return res.status(500).send('Internal server error');
+    }
+    
+    const { data: assignedRoles, error2 } = await supabase
+      .from('Counselor Role') 
+      .select('email, department, progCode')
+
+    if (error2) {
+      console.error('Error fetching Counselor Role:', error2.message);
+      return res.status(500).send('Internal server error');
+    }
+
+    const { data: counselorPrograms, error3 } = await supabase
+      .from('Counselor Program')
+      .select('email, program');
+
+    if (error3) {
+      console.error('Error fetching Counselor Program:', error3.message);
+      return res.status(500).send('Internal server error');
+    }
+
+    const counselors = editRoles.map(account => {
+      const roles = assignedRoles.filter(role => role.email === account.email);
+      const programs = counselorPrograms
+        .filter(program => program.email === account.email)
+        .map(program => program.program);
+
+      return {
+        email: account.email,
+        name: `${account.first_name} ${account.last_name}`,
+        departments: roles.map(role => role.department),
+        programs: programs,
+      };
+    });
+
+    // Render the 'adminEditRoles' template with counselor details
+    res.render('adminEditRoles', { counselors, counselorData });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
+
+
+myapp.get('/getCounselorRoles/:email', async (req, res) => {
+  const { email } = req.params;
+
+  try {
+      const { data, error } = await supabase
+          .from('Counselor Role')
+          .select('department')
+          .eq('email', email);
+
+      if (error) {
+          console.error('Error fetching counselor roles:', error.message);
+          return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      res.json(data);
+  } catch (error) {
+      console.error('Server error:', error.message);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+myapp.get('/getCounselorAdminStatus/:email', async (req, res) => {
+  const { email } = req.params;
+
+  try {
+      const { data, error } = await supabase
+          .from('Counselor Accounts')
+          .select('admin')
+          .eq('email', email);
+
+      if (error) {
+          console.error('Error fetching counselor admin status:', error.message);
+          return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      // Assuming that there's only one record for each counselor email
+      const isAdmin = data.length > 0 ? data[0].admin : false;
+      res.json(isAdmin);
+  } catch (error) {
+      console.error('Server error:', error.message);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+myapp.get('/getAdminCount', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('Counselor Accounts')
+      .select('*', { count: 'exact' })
+      .eq('admin', true);
+
+    if (error) {
+      console.error('Error fetching admin count:', error.message);
+      return res.status(500).send('Internal server error');
+    }
+
+    const adminCount = data.length;
+
+    res.json(adminCount);
+  } catch (error) {
     console.error('Server error:', error.message);
     res.status(500).send('Internal server error');
   }
@@ -2323,39 +2401,116 @@ myapp.post('/adminCreateAccount', async (req, res) => {
 });
 
 
+
 myapp.post('/adminEditRoles/update', async (req, res) => {
   try {
-    const { counselorEmail, departments, admin } = req.body;
+    const { counselorEmail, departments, admin , programs } = req.body;
 
-    // Update the Counselor Role in the database
-    const { data: roleData, error: roleError } = await supabase
+    // Get the existing departments for the counselor
+    const { data: existingDepartments, error: existingError } = await supabase
       .from('Counselor Role')
-      .upsert([
-        {
-          email: counselorEmail,
-          department: departments,
-        },
-      ]);
+      .select('department')
+      .eq('email', counselorEmail);
 
-    if (roleError) {
-      console.error('Error updating counselor role:', roleError.message);
+    if (existingError) {
+      console.error('Error fetching existing departments:', existingError.message);
       return res.status(500).send('Internal server error');
     }
 
-    // Update the Counselor Account in the database
+    const existingDepartmentSet = new Set(existingDepartments.map(entry => entry.department));
+
+    // Identify departments to be deleted
+    const departmentsToDelete = existingDepartments
+      .filter(entry => !departments.some(selected => selected.department === entry.department))
+      .map(entry => entry.department);
+
+    // Delete records for departments to be removed
+    const deletePromises = departmentsToDelete.map(async department => {
+      const { data, error } = await supabase
+        .from('Counselor Role')
+        .delete()
+        .eq('email', counselorEmail)
+        .eq('department', department);
+
+      if (error) {
+        console.error('Error deleting counselor role:', error.message);
+        return Promise.reject(error.message);
+      }
+
+      return data;
+    });
+
+    // Insert records for new departments
+    const insertPromises = departments
+      .filter(selected => !existingDepartmentSet.has(selected.department))
+      .map(async selected => {
+        const { data, error } = await supabase
+          .from('Counselor Role')
+          .upsert([
+            {
+              email: counselorEmail,
+              department: selected.department,
+            },
+          ]);
+
+        if (error) {
+          console.error('Error updating counselor role:', error.message);
+          return Promise.reject(error.message);
+        }
+
+        return data;
+      });
+
+    // Wait for all delete and insert operations to complete
+    await Promise.all([...deletePromises, ...insertPromises]);
+
+    // Update 'admin' field in 'Counselor Account' table
     const { data: accountData, error: accountError } = await supabase
-      .from('Counselor Account')
-      .update({
-        admin: admin,
-      })
+      .from('Counselor Accounts')
+      .update({ admin })
       .eq('email', counselorEmail);
 
+    // Check for errors
     if (accountError) {
       console.error('Error updating counselor account:', accountError.message);
       return res.status(500).send('Internal server error');
     }
 
-    res.send('Counselor role and account updated successfully!');
+
+  const { data: deleteProgramData, error: deleteProgramError } = await supabase
+  .from('Counselor Program')
+  .delete()
+  .eq('email', counselorEmail);
+
+// Check for errors
+if (deleteProgramError) {
+  console.error('Error deleting existing counselor programs:', deleteProgramError.message);
+  return res.status(500).send('Internal server error');
+}
+
+    // Insert records for new programs
+    const programInsertPromises = programs.map(async program => {
+      const { data, error } = await supabase
+        .from('Counselor Program')
+        .upsert([
+          {
+            email: counselorEmail,
+            program,
+          },
+        ]);
+
+      if (error) {
+        console.error('Error updating counselor program:', error.message);
+        return Promise.reject(error.message);
+      }
+
+      return data;
+    });
+
+    // Wait for all program insert operations to complete
+    await Promise.all(programInsertPromises);
+
+    res.send('Counselor role, account, and program updated successfully!');
   } catch (error) {
     console.error('Server error:', error.message);
     res.status(500).send('Internal server error');
