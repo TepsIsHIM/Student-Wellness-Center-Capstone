@@ -42,7 +42,10 @@
         <i class="bi bi-phone-fill phone-icon"></i> +1 5589 55488 55
       </div> -->
       <div class="social-links d-none d-md-block">
-        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+        <a href="https://www.facebook.com/dlsudswc/" class="facebook"><i class="bi bi-facebook"></i></a>
+        <% if (counselorData.admin) { %>
+          <a href="/adminHomePage" id="admin-link">Admin Page</a>
+        <% } %>
       </div>
     </div>
   </section>
@@ -76,6 +79,7 @@
             <ul>
               <li><a href="/CounselorLogs">Logs</a></li>
               <li><a href="/CounselorReport">Report</a></li>
+              <li><a href="/CounselorManualReport">Manual Report</a></li>
             </ul>
           </li>
           <li><a id="logout" class="getstarted scrollto" href="javascript:;">Logout</a></li>
@@ -98,6 +102,7 @@
                     <th scope="col">Last Name</th>
                     <th scope="col">First Name</th>
                     <th scope="col">Department</th>
+                    <th scope="col">Program Code</th>
                     <th scope="col">Notes</th>
                     <th scope="col">Appointed Time</th>
                     <th scope="col">Appointed Date</th>
@@ -114,6 +119,7 @@
                     <td><%= appointment.last_name %></td>
                     <td><%= appointment.first_name %></td>
                     <td><%= appointment.department %></td>
+                    <td><%= appointment.progCode %></td>
                     <td><%= appointment.notes %></td>
                     <td><%= appointment.appointed_time %></td>
                     <td><%= appointment.appointed_date %></td>

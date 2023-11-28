@@ -1,23 +1,21 @@
 document.addEventListener('DOMContentLoaded', function () {
   
-  let currentAppointmentId; // Store the current appointmentId globally
+  let currentAppointmentId; 
 
-  // Event delegation to handle 'Reject' and 'Confirm Reject' button clicks
   document.addEventListener('click', function (event) {
     if (event.target.classList.contains('reject-appointment')) {
-      // Show the modal when clicking the "Reject" button
+
       currentAppointmentId = event.target.dataset.appointmentId;
       $('#rejectModal').modal('show');
     } else if (event.target.classList.contains('confirm-reject')) {
-      // Get the remarks from the modal input
+
       const remarks = document.getElementById('modalRemarkInput').value;
 
-      // Call the function to reject the appointment with remarks
+
       rejectAppointment(currentAppointmentId, remarks);
     }
   });
 
-  // Function to handle rejecting an appointment
   function rejectAppointment(appointmentId, remarks) {
     fetch(`/rejectAppointment/${appointmentId}`, {
       method: 'POST',
@@ -30,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (response.ok) {
         alert('Appointment rejected successfully!');
 
-        // After a short delay, refresh the page
+
         setTimeout(() => {
           window.location.reload();
         }, 1000);

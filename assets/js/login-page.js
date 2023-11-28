@@ -1,24 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Get a reference to the login form by its ID
   const loginForm = document.getElementById("login-form");
 
   if (loginForm) {
-    // Get references to the input fields
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("psw");
-
-    // Add an event listener for the form submission
     loginForm.addEventListener("submit", async function (e) {
-      e.preventDefault(); // Prevent the default form submission
-
-      // Show the loading screen
+      e.preventDefault();
       showLoadingScreen();
-
-      // Get the user's email and password from the input fields
       const email = emailInput.value;
       const password = passwordInput.value;
 
-      // Send a POST request to your server with the login data
       try {
         const response = await fetch("/login", {
           method: "POST",
@@ -27,43 +18,31 @@ document.addEventListener("DOMContentLoaded", function () {
           },
           body: JSON.stringify({ email, password }),
         });
-
         if (!response.ok) {
-          // Handle login failure
           console.error('Error during login:', response.statusText);
-        
-          // Parse the JSON response
           const errorData = await response.json();
-        
-          // Display the error message to the user
-          alert(errorData.error); // You can use a more sophisticated UI element for better user experience
-        
-          // Hide the loading screen in case of an error
+          alert(errorData.error); 
           hideLoadingScreen();
           return;
         }
 
-        // Parse the JSON response
         const data = await response.json();
 
-        // Check the user's account type and redirect accordingly
         if (data.accountType === 'Student') {
-          window.location.href = '/StudentHomepage'; // Redirect to student homepage
+          window.location.href = '/StudentHomepage';
         } else if (data.accountType === 'Counselor') {
-          window.location.href = '/CounselorHomepage'; // Redirect to counselor homepage
+          window.location.href = '/CounselorHomepage';
         } else {
           console.error('Unknown account type:', data.accountType);
         }
       } catch (error) {
         console.error('Error during login:', error);
-        // Hide the loading screen in case of an error
         hideLoadingScreen();
       }
     });
   }
 });
 
-// Function to show the loading screen
 function showLoadingScreen() {
   const loadingScreen = document.getElementById("loading-screen");
   if (loadingScreen) {
@@ -71,7 +50,7 @@ function showLoadingScreen() {
   }
 }
 
-// Function to hide the loading screen
+
 function hideLoadingScreen() {
   const loadingScreen = document.getElementById("loading-screen");
   if (loadingScreen) {
