@@ -423,7 +423,8 @@ myapp.get('/CounselorProfilePage', async (req, res) => {
       }
     }
 
-
+    counselorData.department = departments;
+    counselorData.program = programs;
 
     const pendingAppointmentsCount = filteredAppointments.length;
 
@@ -1215,6 +1216,47 @@ myapp.post('/login', async (req, res) => {
   } catch (e) {
     console.error('Unexpected error:', e); 
     res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+myapp.post('/updateStudentProfile', async (req, res) => {
+  try {
+    const { email, phone_number, department, progCode,birth_date } = req.body;
+    const upperProgCode = progCode.upperCase();
+    // Update the Supabase table
+    const { data, error } = await supabase
+      .from('Student Accounts')
+      .update({ phone_number:phone_number, department:department, progCode:upperProgCode, birth_date:birth_date })
+      .eq('email', email);
+
+    if (error) {
+      console.error('Supabase error:', error.message);
+      throw error;
+    }
+    res.status(200).json({ success: true, message: 'Profile updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
+myapp.post('/updateCounselorProfile', async (req, res) => {
+  try {
+    const { email, phone_number,birth_date } = req.body;
+    // Update the Supabase table
+    const { data, error } = await supabase
+      .from('Counselor Accounts')
+      .update({ phone_number:phone_number,  birth_date:birth_date })
+      .eq('email', email);
+
+    if (error) {
+      console.error('Supabase error:', error.message);
+      throw error;
+    }
+    res.status(200).json({ success: true, message: 'Profile updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
 
@@ -2679,3 +2721,4 @@ if (deleteProgramError) {
     res.status(500).send('Internal server error');
   }
 });
+
