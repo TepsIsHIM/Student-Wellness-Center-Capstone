@@ -1222,7 +1222,7 @@ myapp.post('/login', async (req, res) => {
 myapp.post('/updateStudentProfile', async (req, res) => {
   try {
     const { email, phone_number, department, progCode,birth_date } = req.body;
-    const upperProgCode = progCode.upperCase();
+    const upperProgCode = progCode.toUpperCase();
     // Update the Supabase table
     const { data, error } = await supabase
       .from('Student Accounts')
