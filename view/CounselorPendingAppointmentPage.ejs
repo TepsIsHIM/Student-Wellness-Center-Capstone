@@ -38,10 +38,6 @@
       <div class="contact-info d-flex align-items-center">
         <i class="bi bi-person"></i>Welcome, Counselor <%= counselorData.last_name %> <%= counselorData.first_name %>
       </div>
-      <!-- <div class="contact-info d-flex align-items-center">
-        <i class="bi bi-envelope-fill"></i><a href="mailto:contact@example.com">info@example.com</a>
-        <i class="bi bi-phone-fill phone-icon"></i> +1 5589 55488 55
-      </div> -->
       <div class="social-links d-none d-md-block">
         <a href="https://www.facebook.com/dlsudswc/" class="facebook"><i class="bi bi-facebook"></i></a>
         <% if (counselorData.admin) { %>
@@ -171,6 +167,7 @@
   <script src="/js/home-page.js"></script>
   <script src="/js/acceptingAppointment.js"></script>
   <script src="/js/rejectingAppointment.js"></script>
+  <script src="/js/rescheduleAppointment.js"></script>
 
 
   <style>
@@ -190,6 +187,21 @@
       text-align: center;
       width: 100%;
     }
+
+    /* Style for both cancel and "X" buttons */
+.close-modal-btn {
+  background-color: #6c757d; /* Set your desired background color */
+  color: #fff; /* Set your desired text color */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.close-modal-btn:hover {
+  background-color: #5a6268; /* Change background color on hover */
+}
   </style>
   <!--reject modal -->
 <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
@@ -198,19 +210,20 @@
       <div class="modal-header">
         <h5 class="modal-title" id="rejectModalLabel">Reject Appointment</h5>
 
-        <button type="button" class="close" data-dismiss="modal" id="closeModalX"aria-label="Close">
+        <button type="button" class="close close-modal-btn" data-dismiss="modal" id="closeModalX" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <p>Enter your remarks:</p>
-        <input type="text" class="form-control" id="modalRemarkInput" placeholder="Remarks">
+        <textarea class="form-control" id="modalRemarkInput2" placeholder="Remarks"rows="3"></textarea>
       </div>
       <div class="modal-footer">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModalBtn">
+        <button type="button" class="close close-modal-btn" data-dismiss="modal" aria-label="Close" id="closeModalBtn">
           Close
         </button>
         <button type="button" class="btn btn-danger confirm-reject" data-dismiss="modal">Confirm Reject</button>
+        <button class="btn btn-outline-success reschedule-appointment" data-toggle="modal" data-target="#rescheduleModal" >Reschedule</button>
       </div>
     </div>
   </div>
@@ -221,16 +234,16 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="acceptModalLabel">Accept Appointment</h5>
-          <button type="button" class="close" data-dismiss="modal" id="closeModalX"aria-label="Close">
+          <button type="button" class="close close-modal-btn" data-dismiss="modal" id="closeModalX2" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <p>Enter your remarks:</p>
-          <input type="text" class="form-control" id="modalRemarkInput1" placeholder="Remarks">
+          <textarea class="form-control" id="modalRemarkInput1" placeholder="Remarks"rows="3"></textarea>
         </div>
         <div class="modal-footer">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModalBtn">
+          <button type="button" class="close close-modal-btn" data-dismiss="modal" aria-label="Close" id="closeModalBtn2">
             Close
           </button>
           <button type="button" class="btn btn-success confirm-accept" data-dismiss="modal">Confirm Accept</button>
@@ -239,5 +252,41 @@
     </div>
   </div>
   <div class="loader"></div>
+
+  <!-- Reschedule Modal -->
+ <div class="modal fade" id="reschedModal" tabindex="-1" role="dialog" aria-labelledby="reschedModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reschedModalLabel">Reschedule Appointment</h5>
+        <button type="button" class="close close-modal-btn" data-dismiss="modal" id="closeModalX3" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="rescheduleDate" class="form-label">Date</label>
+          <input type="date" class="form-control" id="rescheduleDate" required>
+        </div>
+        <div class="mb-3">
+          <label for="rescheduleTime" class="form-label">Time</label>
+          <input type="time" class="form-control" id="rescheduleTime" required>
+        </div>
+        <div class="mb-3">
+          <label for="rescheduleNotes" class="form-label">Notes</label>
+          <textarea class="form-control" id="rescheduleNotes" rows="3"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="close close-modal-btn" data-dismiss="modal" aria-label="Close" id="closeModalBtn3">
+            Close
+          </button>
+        </button>
+        <button type="button" class="btn btn-success confirm-reschedule" data-dismiss="modal">Confirm Reschedule</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="loader"></div>
 </body>
 </html>

@@ -1519,7 +1519,7 @@ myapp.post('/acceptAppointment/:appointmentId', async (req, res) => {
     const dept = appointmentDetails.department;
     const appoint_date = appointmentDetails.appointed_date;
     const appoint_time = appointmentDetails.appointed_time;
-
+    const progCode = appointmentDetails.progCode;
 
     // Prepare data for 'Accepted Appointment' with counselor details and adjusted date/time
     const acceptedAppointmentData = {
@@ -1534,11 +1534,51 @@ myapp.post('/acceptAppointment/:appointmentId', async (req, res) => {
       last_name: student_LName,
       appointed_date: appoint_date,
       appointed_time: appoint_time,
+      progCode:progCode,
       prog_stat: 'ACCEPTED',
       remarks: remarks
 
     };
+ // Check for existing appointments with the same counselor email
+ const { data: existingAppointments, error: existingAppointmentsError } = await supabase
+ .from('Accepted Appointment')
+ .select('*')
+ .eq('counselor_email', counselorEmail);
 
+if (existingAppointmentsError) {
+ console.error('Error fetching existing appointments:', existingAppointmentsError.message);
+ return res.status(500).send('Failed to check for existing appointments');
+}
+
+// Check for time conflicts with existing appointments
+const minimumTimeDifference = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+const existingAppointmentsUnified = existingAppointments.map(appointment => {
+  const startTime = new Date(`${appointment.appointed_date}T${appointment.appointed_time}`);
+  const endTime = new Date(startTime.getTime() + minimumTimeDifference);
+  return { startTime, endTime };
+});
+
+const newAppointmentStartTime = new Date(`${appoint_date}T${appoint_time}`);
+const newAppointmentEndTime = new Date(newAppointmentStartTime.getTime() + minimumTimeDifference);
+
+// Check for time conflicts with existing appointments
+const hasTimeConflict = existingAppointmentsUnified.some(existingAppointment => {
+  return (
+    (newAppointmentStartTime >= existingAppointment.startTime && newAppointmentStartTime <= existingAppointment.endTime) ||
+    (newAppointmentEndTime >= existingAppointment.startTime && newAppointmentEndTime <= existingAppointment.endTime)
+  );
+});
+
+// If there is a time conflict, handle the conflict (e.g., inform the user, reject the new appointment)
+if (hasTimeConflict) {
+  console.log('existingAppointmentsUnified:', existingAppointmentsUnified);
+console.log('newAppointmentStartTime:', newAppointmentStartTime);
+console.log('newAppointmentEndTime:', newAppointmentEndTime);
+ return res.status(409).json({
+   message: 'Appointment conflict: There is already an appointment within the specified time range.',
+ });
+}
     // Save accepted appointment in the 'Accepted Appointment' table
     const { data: insertedAppointment, error: insertError } = await supabase
       .from('Accepted Appointment')
@@ -1603,6 +1643,7 @@ myapp.post('/completeAppointment/:appointmentId', async (req, res) => {
     const dept = appointmentDetails.department;
     const appoint_date = appointmentDetails.appointed_date;
     const appoint_time = appointmentDetails.appointed_time;
+    const progCode = appointmentDetails.progCode;
 
 
     // Prepare data for 'completed Appointment' with counselor details and adjusted date/time
@@ -1618,6 +1659,7 @@ myapp.post('/completeAppointment/:appointmentId', async (req, res) => {
       last_name: student_LName,
       appointed_date: appoint_date,
       appointed_time: appoint_time,
+      progCode:progCode,
       prog_status: 'COMPLETED'
 
     };
@@ -1698,6 +1740,7 @@ myapp.post('/rejectAppointment/:appointmentId', async (req, res) => {
     const dept = appointmentDetails.department;
     const appoint_date = appointmentDetails.appointed_date;
     const appoint_time = appointmentDetails.appointed_time;
+    const progCode = appointmentDetails.progCode;
 
 
     // Prepare data for 'Accepted Appointment' with counselor details and adjusted date/time
@@ -1713,6 +1756,7 @@ myapp.post('/rejectAppointment/:appointmentId', async (req, res) => {
       last_name: student_LName,
       appointed_date: appoint_date,
       appointed_time: appoint_time,
+      progCode :progCode,
       prog_status: 'REJECTED',
       remarks: remarks
 
@@ -1783,6 +1827,7 @@ myapp.post('/cancelAppointment/:appointmentId', async (req, res) => {
     const dept = appointmentDetails.department;
     const appoint_date = appointmentDetails.appointed_date;
     const appoint_time = appointmentDetails.appointed_time;
+    const progCode = appointmentDetails.progCode;
 
     // Prepare data for 'Accepted Appointment' with counselor details and adjusted date/time
     const cancelledAppointmentData = {
@@ -1797,6 +1842,7 @@ myapp.post('/cancelAppointment/:appointmentId', async (req, res) => {
       last_name: student_LName,
       appointed_date: appoint_date,
       appointed_time: appoint_time,
+      progCode:progCode,
       prog_status: 'CANCELLED',
       remarks: remarks
 

@@ -4,16 +4,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.addEventListener('click', function (event) {
     if (event.target.classList.contains('reject-appointment')) {
-
       currentAppointmentId = event.target.dataset.appointmentId;
       $('#rejectModal').modal('show');
     } else if (event.target.classList.contains('confirm-reject')) {
-
-      const remarks = document.getElementById('modalRemarkInput').value;
-
-
+      const remarks = document.getElementById('modalRemarkInput2').value;
       rejectAppointment(currentAppointmentId, remarks);
     }
+  });
+
+  // Add event listeners for the close button and the "X" button
+  document.getElementById('closeModalX').addEventListener('click', function () {
+    $('#rejectModal').modal('hide');
+  });
+
+  document.getElementById('closeModalBtn').addEventListener('click', function () {
+    $('#rejectModal').modal('hide');
   });
 
   function rejectAppointment(appointmentId, remarks) {
@@ -27,8 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(response => {
       if (response.ok) {
         alert('Appointment rejected successfully!');
-
-
         setTimeout(() => {
           window.location.reload();
         }, 1000);
@@ -42,23 +45,3 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
-
-document.addEventListener('DOMContentLoaded', function () {
-  // Function to handle refreshing the page
-  function refreshPage() {
-    // You can customize this function based on your needs
-    window.location.reload();
-  }
-
-  // Event delegation to handle modal close button clicks
-  document.addEventListener('click', function (event) {
-    // Check if the clicked element or its ancestor has the ID "closeModalBtn"
-    if (event.target.id === 'closeModalBtn' || event.target.closest('#closeModalBtn')) {
-      // Add your logic here before refreshing (if needed)
-      refreshPage();
-    } else if (event.target.id === 'closeModaX'|| event.target.closest('#closeModalX')) {
-      refreshPage();
-    }
-  });
-});
-
