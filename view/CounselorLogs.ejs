@@ -95,36 +95,37 @@
                     <th scope="col">Student Name</th>
                     <th scope="col">Session Name</th>
                     <th scope="col">Date Encoded</th>
+                    <th scope ="col">Student Email</th>
+                    <th scope ="col">ProgCode</th>
+                    <th scope ="col">Service Type</th>
+                    <th scope ="col">Category Type</th>
+                    <th scope ="col">Nature of Concern</th>
+                    <th scope ="col">Counseling Client</th>
+                    <th scope ="col">Session Name</th>
+                    <th scope ="col">Date Encoded</th>
+                    <th scope ="col">Time Encoded</th>
+                    <th scope ="col">Notes</th>
                 </tr>
             </thead>
             <tbody>
                 <% counselorLog.forEach((log, index) => { %>
-                <tr class="accordion" data-bs-toggle="collapse" data-bs-target="#hidden-row<%= index %>"
-                    aria-expanded="false" aria-controls="hidden-row<%= index %>">
-                    <td>
-                        <div class="arrow-icon"></div>
-                        <%= log.student_lname %> <%= log.student_fname %>
-                    </td>
+                <tr>
+                    <td><%= log.student_lname %> <%= log.student_fname %></td>
                     <td><%= log.session %></td>
                     <td><%= log.date_encoded %> <%= log.time_encoded %></td>
-                </tr>
-                <tr class="collapse" id="hidden-row<%= index %>" aria-labelledby="row<%= index %>">
-                    <td colspan="3">
-                        <div class="additional-info">
-                            <!-- Additional information here -->
-                            <div>Student Email: <%= log.student_email %></div>
-                            <div>ProgCode: <%= log.progcode %></div>
-                            <div>Type Of Service: <%= log.service %></div>
-                            <div>Category Type: <%= log.category %></div>
-                            <div>Nature Of Concern: <%= log.concern %></div>
-                            <div>Counseling Client: <%= log.client %></div>
-                            <div>Session Name: <%= log.session %></div>
-                            <div>Date Encoded: <%= log.date_encoded %> <%= log.time_encoded %></div>
-                            <div>Notes: <%= log.notes %></div>
-                            <!-- Add more details as needed -->
-                        </div>
-                    </td>
-                </tr>
+                    <td><%= log.student_email %></td>
+                    <td><%= log.progcode %></td>
+                    <td><%= log.service %></td>
+                    <td><%= log.category %></td>
+                    <td><%= log.concern %></td>
+                    <td><%= log.client %></td>
+                    <td><%= log.session %></td>
+                    <td><%= log.date_encoded %></td>
+                    <td><%= log.time_encoded %></td>
+                    <td><%= log.notes %></td>
+
+                </tr>          
+              
                 <% }); %>
             </tbody>
         </table>
