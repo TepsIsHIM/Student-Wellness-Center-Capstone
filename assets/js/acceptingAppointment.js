@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 1000);
       } else {
         response.json().then(data => {
+          $('#acceptModal').modal('hide');
           alert('Failed to accept the appointment: ' + data.message);
         });
       }

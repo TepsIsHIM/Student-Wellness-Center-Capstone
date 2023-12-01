@@ -651,7 +651,7 @@ myapp.get('/CounselorLogs', async (req, res) => {
       return res.status(500).send('Internal server error');
     }
 
-    res.render('CounselorLogs', { counselorLog });
+    res.render('CounselorLogs', { counselorLog, });
   } catch (error) {
     // Handle any unexpected server errors
     console.error('Server error:', error.message);
@@ -874,7 +874,6 @@ myapp.get('/adminEditRoles', async (req, res) => {
     res.status(500).send('Internal server error');
   }
 });
-
 
 myapp.get('/getCounselorRoles/:email', async (req, res) => {
   const { email } = req.params;
@@ -1282,7 +1281,7 @@ myapp.post('/logout', async (req, res) => {
 });
 
 // APPOINTMENT
-myapp.post('/create-appointment', async (req, res) => { 
+myapp.post('/create-appointment', async (req, res) => {   
   try {
     // Access session data, such as email and first name
     const userEmail = res.locals.studentData.email;
@@ -1320,15 +1319,22 @@ myapp.post('/create-appointment', async (req, res) => {
     .select('*')
     .eq('email', userEmail);
 
+    const { data: checkResched, error: checkReschedError } = await supabase
+    .from('Pending Reschedule')
+    .select('*')
+    .eq('email', userEmail);
+
     if (checkPending && checkPending.length > 0) {
       return res.json({ success: false, message: 'You already have a pending appointment.' });
     }
 
-    // Check if there's an existing accepted appointment
-    if (checkAccepted && checkAccepted.length > 0) {
-      return res.json({ success: false, message: 'You already have an ongoing appointment.' });
+    if (checkAccepted && checkAcceptedError.length > 0) {
+      return res.json({ success: false, message: 'You already have an accepted appointment.' });
     }
 
+    if (checkResched && checkReschedError.length > 0) {
+      return res.json({ success: false, message: 'You already have a pending Reschedule.' });
+    }
 
     const { data:appoint, error } = await supabase
       .from('Pending Appointment')
@@ -1551,7 +1557,7 @@ if (existingAppointmentsError) {
 }
 
 // Check for time conflicts with existing appointments
-const minimumTimeDifference = 30 * 60 * 1000; // 30 minutes in milliseconds
+const minimumTimeDifference = 20 * 60 * 1000; // 30 minutes in milliseconds
 
 const existingAppointmentsUnified = existingAppointments.map(appointment => {
   const startTime = new Date(`${appointment.appointed_date}T${appointment.appointed_time}`);
@@ -1601,6 +1607,132 @@ console.log('newAppointmentEndTime:', newAppointmentEndTime);
     }
     // Send success response
     res.status(200).json({ message: 'Appointment accepted successfully' });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
+
+myapp.post('/reschedAppointment/:appointmentId', async (req, res) => {
+  try {
+    const counselorData = res.locals.counselorData;
+    const counselorEmail = counselorData.email;
+    const counselorFName= counselorData.first_name;
+    const counselorLName= counselorData.last_name;
+    const appointmentId = req.params.appointmentId; 
+    const date = req.body.date;
+    const rescheduleTime = req.body.rescheduleTime; 
+    const rescheduleNotes = req.body.rescheduleNotes;
+    const appointmentDateTime = new Date();
+    const options = {
+      timeZone: 'Asia/Manila',
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    };
+    const appointmentTimeStr = appointmentDateTime.toLocaleString('en-US', options);
+    const appointmentDateStr = appointmentDateTime.toLocaleDateString('en-US', { timeZone: 'Asia/Manila' });
+
+    // Retrieve appointment details from 'Pending Appointment' based on appointmentId
+    const { data: appointmentData, error: appointmentError } = await supabase
+      .from('Pending Appointment')
+      .select('*')
+      .eq('id', appointmentId);
+
+    if (appointmentError || !appointmentData.length) {
+      console.error('Error fetching appointment details!:', appointmentError?.message);
+      return res.status(404).send('Appointment not found');
+    }
+
+    const appointmentDetails = appointmentData[0];
+    const student_Email = appointmentDetails.email;
+    const student_FName = appointmentDetails.first_name;
+    const student_LName = appointmentDetails.last_name;
+    const dept = appointmentDetails.department;
+    const progCode = appointmentDetails.progCode;
+
+    
+    const reschedAppointmentData = {
+      counselor_email: counselorEmail,
+      counselor_Fname: counselorFName,
+      counselor_Lname: counselorLName,
+      date: appointmentDateStr,
+      time: appointmentTimeStr,
+      email: student_Email,
+      department: dept ,
+      first_name: student_FName,
+      last_name: student_LName,
+      appointed_date: date,
+      appointed_time: rescheduleTime,
+      progCode:progCode,
+      notif: true,
+      prog_stat: 'PENDING',
+      notes: rescheduleNotes
+
+    };
+ // Check for existing appointments with the same counselor email
+ const { data: existingAppointments, error: existingAppointmentsError } = await supabase
+ .from('Accepted Appointment')
+ .select('*')
+ .eq('counselor_email', counselorEmail);
+
+if (existingAppointmentsError) {
+ console.error('Error fetching existing appointments:', existingAppointmentsError.message);
+ return res.status(500).send('Failed to check for existing appointments');
+}
+
+// Check for time conflicts with existing appointments
+const minimumTimeDifference = 20 * 60 * 1000; // 30 minutes in milliseconds
+
+const existingAppointmentsUnified = existingAppointments.map(appointment => {
+  const startTime = new Date(`${appointment.appointed_date}T${appointment.appointed_time}`);
+  const endTime = new Date(startTime.getTime() + minimumTimeDifference);
+  return { startTime, endTime };
+});
+
+const newAppointmentStartTime = new Date(`${date}T${rescheduleTime}`);
+const newAppointmentEndTime = new Date(newAppointmentStartTime.getTime() + minimumTimeDifference);
+
+// Check for time conflicts with existing appointments
+const hasTimeConflict = existingAppointmentsUnified.some(existingAppointment => {
+  return (
+    (newAppointmentStartTime >= existingAppointment.startTime && newAppointmentStartTime <= existingAppointment.endTime) ||
+    (newAppointmentEndTime >= existingAppointment.startTime && newAppointmentEndTime <= existingAppointment.endTime)
+  );
+});
+
+// If there is a time conflict, handle the conflict (e.g., inform the user, reject the new appointment)
+if (hasTimeConflict) {
+  console.log('existingAppointmentsUnified:', existingAppointmentsUnified);
+console.log('newAppointmentStartTime:', newAppointmentStartTime);
+console.log('newAppointmentEndTime:', newAppointmentEndTime);
+ return res.status(409).json({
+   message: 'Appointment conflict: There is already an appointment within the specified time range.',
+ });
+}
+    // Save accepted appointment in the 'Accepted Appointment' table
+    const { data: insertedAppointment, error: insertError } = await supabase
+      .from('Pending Reschedule')
+      .insert(reschedAppointmentData);
+
+    if (insertError) {
+      console.error('Error inserting accepted appointment:', insertError.message);
+      return res.status(500).send('Failed to accept the appointment');
+    }
+
+    // Remove the appointment from 'Pending Appointment' after moving it to 'Accepted Appointment'
+    const { error: deleteError } = await supabase
+      .from('Pending Appointment')
+      .delete()
+      .eq('id', appointmentId);
+
+    if (deleteError) {
+      console.error('Error deleting appointment from pending:', deleteError.message);
+      // Handle the error (appointment accepted but not removed from pending)
+    }
+    // Send success response
+    res.status(200).json({ message: 'Rescheduled successfully' });
   } catch (error) {
     console.error('Server error:', error.message);
     res.status(500).send('Internal server error');
