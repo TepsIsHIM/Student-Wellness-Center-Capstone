@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Logs</title>
+  <title>View Report</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -88,53 +88,33 @@
   </header><!-- End Header -->
 
   <main id="main">
-    <div class="table-responsive">
-        <table id="TableID" class="table border border-2 table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Student Name</th>
-                    <th scope="col">Session Name</th>
-                    <th scope="col">Date Encoded</th>
-                    <th scope ="col">Student Email</th>
-                    <th scope="col">Actions</th>
-                    <!-- <th scope ="col">ProgCode</th>
-                    <th scope ="col">Service Type</th>
-                    <th scope ="col">Category Type</th>
-                    <th scope ="col">Nature of Concern</th>
-                    <th scope ="col">Counseling Client</th>
-                    <th scope ="col">Session Name</th>
-                    <th scope ="col">Date Encoded</th>
-                    <th scope ="col">Time Encoded</th>
-                    <th scope ="col">Notes</th> -->
-                </tr>
-            </thead>
-            <tbody>
-                <% counselorLog.forEach((log, index) => { %>
-                <tr>
-                    <td><%= log.student_lname %> <%= log.student_fname %></td>
-                    <td><%= log.session %></td>
-                    <td><%= log.date_encoded %> <%= log.time_encoded %></td>
-                    <td><%= log.student_email %></td>
-                    <td>
-                      <button type="button" class="btn btn-primary view-report-btn" data-time-encoded="<%= log.time_encoded %>">View Report</button>
-                  </td>
-                    <!-- <td><%= log.progcode %></td>
-                    <td><%= log.service %></td>
-                    <td><%= log.category %></td>
-                    <td><%= log.concern %></td>
-                    <td><%= log.client %></td>
-                    <td><%= log.session %></td>
-                    <td><%= log.date_encoded %></td>
-                    <td><%= log.time_encoded %></td>
-                    <td><%= log.notes %></td>  -->
+        <section class="report-section">
+            <!-- Display the relevant student information -->
+            <h1>Student Information</h1>
+            <p><strong>Student Name:</strong> <%= log.student_lname %> <%= log.student_fname %></p>
+            <p><strong>Student Email:</strong> <%= log.student_email %></p>
+            <h1>Session Information</h1>
+            <p><strong>Session Name:</strong> <%= log.session %></p>
+            <p><strong>Date Encoded:</strong> <%= log.date_encoded %> <%= log.time_encoded %></p>
 
-                </tr>          
-              
-                <% }); %>
-            </tbody>
-        </table>
-    </div>
+            <h1>Program Information</h1>
+            <p><strong>ProgCode:</strong> <%= log.progcode %></p>
+            <p><strong>Service Type:</strong> <%= log.service %></p>
+
+            <h1>Category Information</h1>
+            <p><strong>Category Type:</strong> <%= log.category %></p>
+            <p><strong>Nature of Concern:</strong> <%= log.concern %></p>
+
+            <h1>Counseling Information</h1>
+            <p><strong>Counseling Client:</strong> <%= log.client %></p>
+
+            <h1>Additional Session Details</h1>
+            <p><strong>Time Encoded:</strong> <%= log.time_encoded %></p>
+            <p><strong>Notes:</strong> <%= log.notes %></p>
+        </section>
 </main>
+
+
 
 
 
@@ -166,6 +146,7 @@
 
   <!-- Template Main JS File -->
   <script src="/js/home-page.js"></script>
+  <script src="/js/CounselorViewReport.js"></script>
   <script src="/js/counselorLog.js"></script>
   <script src="/js/spinner.js"></script>
 
