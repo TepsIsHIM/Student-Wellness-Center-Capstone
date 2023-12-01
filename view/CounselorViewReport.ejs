@@ -87,9 +87,9 @@
     </div>
   </header><!-- End Header -->
 
-  <main id="main">
+  <!-- <main id="main">
         <section class="report-section">
-            <!-- Display the relevant student information -->
+             Display the relevant student information 
             <h1>Student Information</h1>
             <p><strong>Student Name:</strong> <%= log.student_lname %> <%= log.student_fname %></p>
             <p><strong>Student Email:</strong> <%= log.student_email %></p>
@@ -111,10 +111,42 @@
             <h1>Additional Session Details</h1>
             <p><strong>Time Encoded:</strong> <%= log.time_encoded %></p>
             <p><strong>Notes:</strong> <%= log.notes %></p>
+            <div class="mt-4">
+              <button id="printBtn" class="btn btn-primary ml-2">Print</button>
+            </div>
         </section>
+</main> -->
+
+<main id="main">
+  <section class="report-section">
+    <h1 class="report-title">OFFICIAL STUDENT REPORT</h1> <!-- Added line -->
+    <!-- Display the relevant student information -->
+    <h1>Student Information</h1>
+    <p><strong>Student Name:</strong> <%= log.student_lname %> <%= log.student_fname %></p>
+    <p><strong>Student Email:</strong> <%= log.student_email %></p>
+    <h1>Session Information</h1>
+    <p><strong>Session Name:</strong> <%= log.session %></p>
+    <p><strong>Date Encoded:</strong> <%= log.date_encoded %> <%= log.time_encoded %></p>
+
+    <h1>Program Information</h1>
+    <p><strong>ProgCode:</strong> <%= log.progcode %></p>
+    <p><strong>Service Type:</strong> <%= log.service %></p>
+
+    <h1>Category Information</h1>
+    <p><strong>Category Type:</strong> <%= log.category %></p>
+    <p><strong>Nature of Concern:</strong> <%= log.concern %></p>
+
+    <h1>Counseling Information</h1>
+    <p><strong>Counseling Client:</strong> <%= log.client %></p>
+
+    <h1>Additional Session Details</h1>
+    <p><strong>Time Encoded:</strong> <%= log.time_encoded %></p>
+    <p><strong>Notes:</strong> <%= log.notes %></p>
+    <div class="mt-4">
+      <button id="printBtn" class="btn btn-primary ml-2">Print</button>
+    </div>
+  </section>
 </main>
-
-
 
 
 
@@ -149,6 +181,8 @@
   <script src="/js/CounselorViewReport.js"></script>
   <script src="/js/counselorLog.js"></script>
   <script src="/js/spinner.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 
   <style>
@@ -178,6 +212,77 @@
 .open .arrow-icon {
   transform: rotate(180deg); /* Rotate arrow when row is open */
 }
+.report-title {
+    font-family: 'Arial', sans-serif; /* Change to your preferred font family */
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+.report-section {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin: 20px 0;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .report-section:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .report-section h1 {
+    color: #2b8c4b;
+    font-size: 28px;
+    margin-bottom: 15px;
+  }
+
+  .report-section p {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .report-section hr {
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+  }
+
+  .additional-info {
+    margin: 20px 0;
+    padding: 20px;
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+
+  .hidden-row {
+    display: none;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+    max-height: 0;
+  }
+
+  .hidden-row.open {
+    display: table-row;
+    max-height: 200px;
+  }
+
+  .arrow-icon {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #000;
+    margin-right: 5px;
+    transition: transform 0.3s ease-out;
+  }
+
+  .open .arrow-icon {
+    transform: rotate(180deg);
+  }
 
 .additional-info {
   margin: 10px 0;
