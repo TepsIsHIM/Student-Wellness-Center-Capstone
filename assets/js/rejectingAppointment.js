@@ -26,55 +26,57 @@ document.addEventListener('DOMContentLoaded', function () {
   const dateInput = document.getElementById('rescheduleDate');
   const timeInput = document.getElementById('rescheduleTime');
 
-  const selectedDate = new Date(dateInput.value + 'T00:00:00Z');
-  selectedDate.setMilliseconds(0);
-    const currentDate = new Date();
-    const currentDateUTC = new Date(currentDate.toISOString());
-    
-    if (selectedDate.toISOString().split('T')[0] < currentDateUTC.toISOString().split('T')[0]) {
-      alert('Please select a future date.');
-      dateInput.value = '';
-      return;
-    }
+  const selectedDate = new Date(dateInput.value);
+  const currentDate = new Date();
 
-    if (!dateInput){
-      alert("Please select a date")
+  if (selectedDate < currentDate) {
+    alert('Please select a future date.');
+    dateInput.value = '';
     return;
-    }
-    if (!timeInput){
-      alert("Please select a time")
-    return;
-    }
-    
-    if (!dateInput||!timeInput){
-      alert("Please select a date and time")
-    return;
-    }
+  }
 
+  if (timeInput.value.trim() === '') {
+    alert('Please enter a valid time.');
+    return;
+  }
+
+  if (dateInput.value.trim() === '') {
+    alert('Please enter a valid date.');
+    return;
+  }
+
+  if (dateInput.value.trim() === '' || timeInput.value.trim() === '') {
+    alert('Please enter a valid date and time.');
+    return;
+  }
+
+  // Check if the selected date is not a weekend (Saturday or Sunday)
   const dayOfWeek = selectedDate.getDay();
-
+  
   if (dayOfWeek === 0 || dayOfWeek === 6) {
     alert('Please select a date from Monday to Friday.');
-    dateInput.value = '';
+    dateInput.value = ''; // Clear the date input
     return;
   }
 
   const selectedTime = timeInput.value;
   const startTime = '08:00';
   const endTime = '17:00';
-  const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+  const timeRegex = /^([01]\d|2[0-3]):([0-5]0)$/;
+  const isValidTime = timeRegex.test(selectedTime);
 
   if (selectedTime < startTime || selectedTime > endTime) {
     alert('Please select a valid time between 8:00 AM and 5:00 PM in 10-minute intervals.');
-    timeInput.value = '';
+    timeInput.value = ''; // Clear the time input
     return;
   }
 
-  if (!timeRegex.test(selectedTime)) {
-    alert('Time must be in 10-minute intervals, e.g., 8:00, 8:10, 8:20, 8:30');
-    timeInput.value = '';
+  if (!isValidTime) {
+    alert('Time must be in 10-minutes intervel ex. 8:00 8:10 8:20 8:30');
+    timeInput.value = ''; // Clear the time input
     return;
   }
+
 
   const rescheduleNotes = document.getElementById('rescheduleNotes').value;
   reschedAppointment(currentAppointmentId, selectedDate, selectedTime, rescheduleNotes);

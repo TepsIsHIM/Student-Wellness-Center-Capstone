@@ -161,140 +161,26 @@ myapp.get('/studentAppointmentStatus', async (req, res) => {
   }
 });
 
-myapp.get('/CounselorPendingAppointmentPage', async (req, res) => {
-  let hasNewAppointments;
+myapp.get('/studentReschedules', async (req, res) => {
   try {
-    const counselorData = res.locals.counselorData;
-    const counselorEmail = counselorData.email;
+    const studentData = res.locals.studentData;
+    const studentEmail = studentData.email;
 
     // Fetch counselor's program
-    const { data: counselorProgramData, error: counselorProgramError } = await supabase
-      .from('Counselor Program') // Adjusted table name with a space
+    const { data: studentPendingResched, error: studentPendingReschedError } = await supabase
+      .from('Pending Reschedule') // Adjusted table name with a space
       .select('*')
-      .eq('email', counselorEmail);
+      .eq('email', studentEmail);
 
-    if (counselorProgramError) {
-      console.error('Error fetching counselor program:', counselorProgramError.message);
+    if (studentPendingReschedError) {
+      console.error('Error fetching Resched:', studentPendingReschedError.message);
       return res.status(500).send('Internal server error');
     }
 
-    const counselorPrograms = counselorProgramData.map(entry => entry.program);
 
-    // Fetch counselor's departments
-    const { data: counselorDepartments, error: counselorError } = await supabase
-      .from('Counselor Role')
-      .select('department')
-      .eq('email', counselorEmail);
-
-    if (counselorError) {
-      console.error('Error fetching counselor departments:', counselorError.message);
-      return res.status(500).send('Internal server error');
-    }
-
-    const departments = counselorDepartments.map(entry => entry.department);
-
-    // Fetch new appointments
-    const { data: newAppointments, error: newAppointmentsError } = await supabase
-      .from('Pending Appointment')
-      .select('*')
-      .in('department', departments)
-      .eq('notif', true)
-      .order('date', { ascending: true });
-
-    if (newAppointmentsError) {
-      console.error('Error fetching new appointments:', newAppointmentsError.message);
-      return res.status(500).send('Internal server error');
-    }
-
-    hasNewAppointments = newAppointments.length > 0;
-
-    // Fetch all pending appointments
-    const { data: pendingAppointments, error } = await supabase
-      .from('Pending Appointment')
-      .select('*');
-
-    if (error) {
-      console.error('Error fetching pending appointments:', error.message);
-      return res.status(500).send('Internal server error');
-    }
-
-   // Filter appointments based on counselor's program and department
-const filteredAppointments = pendingAppointments.filter(appointment => {
-  // Check if counselor's program matches the prefix of the appointment's progCode and department
-  const matchingProgram = counselorPrograms.some(program => appointment.progCode.startsWith(program));
-  const matchingDepartment = departments.includes(appointment.department);
-
-  return matchingProgram && matchingDepartment;
-});
-
-    const currentTime = new Date();
-    const updatedPendingAppointments = [];
-
-    // Loop through pending appointments
-    for (const appointment of filteredAppointments) {
-      const appointedDateTime = new Date(`${appointment.appointed_date} ${appointment.appointed_time}`);
-
-      if (currentTime > appointedDateTime) {
-        // Prepare data for 'Appointment History' with REJECTED status
-        const rejectedAppointmentData = {
-          counselor_email: counselorEmail,
-          counselor_Fname: counselorData.first_name,
-          counselor_Lname: counselorData.last_name,
-          date: appointment.appointed_date,
-          time: appointment.appointed_time,
-          email: appointment.email,
-          department: appointment.department,
-          first_name: appointment.first_name,
-          last_name: appointment.last_name,
-          appointed_date: appointment.appointed_date,
-          appointed_time: appointment.appointed_time,
-          prog_status: 'IGNORED'
-          // Add other fields needed for the Appointment History table
-        };
-
-        // Insert rejected appointment in the 'Appointment History' table
-        const { data: insertedAppointment, error: insertError } = await supabase
-          .from('Appointment History')
-          .insert(rejectedAppointmentData);
-
-        if (insertError) {
-          console.error('Error inserting rejected appointment:', insertError.message);
-          // Handle the error if insertion fails
-        }
-
-        // Delete the rejected appointment from 'Pending Appointment'
-        const { error: deleteError } = await supabase
-          .from('Pending Appointment')
-          .delete()
-          .eq('id', appointment.id);
-
-        if (deleteError) {
-          console.error('Error deleting expired appointment:', deleteError.message);
-          // Handle the error if deletion fails
-        }
-      } else {
-        // Appointment is still pending, add it to the updated list
-        updatedPendingAppointments.push(appointment);
-      }
-    }
-
-    // Update new_flag for the viewed appointments
-    for (const appointment of updatedPendingAppointments) {
-      const { error: updateError } = await supabase
-        .from('Pending Appointment')
-        .update({ notif: false })
-        .eq('id', appointment.id);
-
-      if (updateError) {
-        console.error('Error updating appointment status:', updateError.message);
-        // Handle the error if the update fails
-      }
-    }
-
-    res.render('CounselorPendingAppointmentPage', {
-      counselorData,
-      pendingAppointments: updatedPendingAppointments,
-      hasNewAppointments: hasNewAppointments,
+    res.render('studentReschedules', {
+      studentData,
+      studentPendingResched: studentPendingResched,
     });
   } catch (error) {
     console.error('Server error:', error.message);
@@ -1796,6 +1682,91 @@ console.log('newAppointmentEndTime:', newAppointmentEndTime);
   }
 });
 
+myapp.post('/acceptResched/:appointmentId', async (req, res) => {
+  try {
+    const appointmentId = req.params.appointmentId;  
+    const remarks = req.body.remarks;
+    const appointmentDateTime = new Date();
+    const options = {
+      timeZone: 'Asia/Manila',
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    };
+    const appointmentTimeStr = appointmentDateTime.toLocaleString('en-US', options);
+    const appointmentDateStr = appointmentDateTime.toLocaleDateString('en-US', { timeZone: 'Asia/Manila' });
+
+    // Retrieve appointment details from 'Pending Appointment' based on appointmentId
+    const { data: appointmentData, error: appointmentError } = await supabase
+      .from('Pending Reschedule')
+      .select('*')
+      .eq('id', appointmentId);
+
+    if (appointmentError || !appointmentData.length) {
+      console.error('Error fetching appointment details:', appointmentError?.message);
+      return res.status(404).send('Appointment not found');
+    }
+
+    const appointmentDetails = appointmentData[0];
+    const student_Email = appointmentDetails.email;
+    const student_FName = appointmentDetails.first_name;
+    const student_LName = appointmentDetails.last_name;
+    const dept = appointmentDetails.department;
+    const appoint_date = appointmentDetails.appointed_date;
+    const appoint_time = appointmentDetails.appointed_time;
+    const progCode = appointmentDetails.progCode;
+    const counselor_email = appointmentDetails.counselor_email;
+    const counselor_Fname = appointmentDetails.counselor_Fname;
+    const counselor_Lname = appointmentDetails.counselor_Lname;
+
+    // Prepare data for 'Accepted Appointment' with counselor details and adjusted date/time
+    const acceptedAppointmentData = {
+      counselor_email: counselor_email,
+      counselor_Fname: counselor_Fname,
+      counselor_Lname: counselor_Lname,
+      date: appointmentDateStr,
+      time: appointmentTimeStr,
+      email: student_Email,
+      department: dept ,
+      first_name: student_FName,
+      last_name: student_LName,
+      appointed_date: appoint_date,
+      appointed_time: appoint_time,
+      progCode:progCode,
+      prog_stat: 'ACCEPTED',
+      remarks: remarks
+
+    };
+
+    // Save accepted appointment in the 'Accepted Appointment' table
+    const { data: insertedAppointment, error: insertError } = await supabase
+      .from('Accepted Appointment')
+      .insert(acceptedAppointmentData);
+
+    if (insertError) {
+      console.error('Error inserting accepted appointment:', insertError.message);
+      return res.status(500).send('Failed to accept the appointment');
+    }
+
+    // Remove the appointment from 'Pending Appointment' after moving it to 'Accepted Appointment'
+    const { error: deleteError } = await supabase
+      .from('Pending Reschedule')
+      .delete()
+      .eq('id', appointmentId);
+
+    if (deleteError) {
+      console.error('Error deleting appointment from pending:', deleteError.message);
+      // Handle the error (appointment accepted but not removed from pending)
+    }
+    // Send success response
+    res.status(200).json({ message: 'Reschedule accepted successfully' });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
+
 myapp.post('/reschedAppointment/:appointmentId', async (req, res) => {
   try {
     const counselorData = res.locals.counselorData;
@@ -2099,6 +2070,91 @@ myapp.post('/rejectAppointment/:appointmentId', async (req, res) => {
     }
     // Send success response
     res.status(200).json({ message: 'Appointment rejected successfully' });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
+
+myapp.post('/rejectResched/:appointmentId', async (req, res) => {
+  try {
+    const appointmentId = req.params.appointmentId;  
+    const remarks = req.body.remarks; 
+    const appointmentDateTime = new Date();
+    const options = {
+      timeZone: 'Asia/Manila',
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    };
+    const appointmentTimeStr = appointmentDateTime.toLocaleString('en-US', options);
+    const appointmentDateStr = appointmentDateTime.toLocaleDateString('en-US', { timeZone: 'Asia/Manila' });
+
+    // Retrieve appointment details from 'Pending Appointment' based on appointmentId
+    const { data: appointmentData, error: appointmentError } = await supabase
+      .from('Pending Reschedule')
+      .select('*')
+      .eq('id', appointmentId);
+
+    if (appointmentError || !appointmentData.length) {
+      console.error('Error fetching appointment details:', appointmentError?.message);
+      return res.status(404).send('Appointment not found');
+    }
+
+    const appointmentDetails = appointmentData[0];
+    const student_Email = appointmentDetails.email;
+    const student_FName = appointmentDetails.first_name;
+    const student_LName = appointmentDetails.last_name;
+    const dept = appointmentDetails.department;
+    const appoint_date = appointmentDetails.appointed_date;
+    const appoint_time = appointmentDetails.appointed_time;
+    const progCode = appointmentDetails.progCode;
+    const counselor_email = appointmentDetails.counselor_email;
+    const counselor_Fname = appointmentDetails.counselor_Fname;
+    const counselor_Lname = appointmentDetails.counselor_Lname;
+
+
+    // Prepare data for 'Accepted Appointment' with counselor details and adjusted date/time
+    const rejectedAppointmentData = {
+      counselor_email: counselor_email,
+      counselor_Fname: counselor_Fname,
+      counselor_Lname: counselor_Lname,
+      date: appointmentDateStr,
+      time: appointmentTimeStr,
+      email: student_Email,
+      department: dept ,
+      first_name: student_FName,
+      last_name: student_LName,
+      appointed_date: appoint_date,
+      appointed_time: appoint_time,
+      progCode:progCode,
+      remarks: remarks
+
+    };
+
+    // Save accepted appointment in the 'Accepted Appointment' table
+    const { data: insertedAppointment, error: insertError } = await supabase
+      .from('Appointment History')
+      .insert(rejectedAppointmentData);
+
+    if (insertError) {
+      console.error('Error inserting rejected appointment:', insertError.message);
+      return res.status(500).send('Failed to reject the appointment');
+    }
+
+    // Remove the appointment from 'Pending Appointment' after moving it to 'Accepted Appointment'
+    const { error: deleteError } = await supabase
+      .from('Pending Reschedule')
+      .delete()
+      .eq('id', appointmentId);
+
+    if (deleteError) {
+      console.error('Error deleting appointment from pending:', deleteError.message);
+      // Handle the error (appointment accepted but not removed from pending)
+    }
+    // Send success response
+    res.status(200).json({ message: 'Reschedule rejected successfully' });
   } catch (error) {
     console.error('Server error:', error.message);
     res.status(500).send('Internal server error');
