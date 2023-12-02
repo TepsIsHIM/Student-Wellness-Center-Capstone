@@ -79,55 +79,6 @@ myapp.get('/studentProfilePage', (req, res) => {
   res.render('studentProfilePage', { studentData });
 });
 
-myapp.get('/CounselorViewReport', async (req, res) => {
-  try {
-      const timeEncoded = req.query.timeEncoded;
-
-      if (!timeEncoded) {
-          return res.status(400).send('Bad Request: Missing timeEncoded parameter');
-      }
-
-      const counselorData = res.locals.counselorData;
-      const counselorEmail = counselorData.email;
-
-      // Handle the case where timeEncoded is null
-      if (timeEncoded === 'null') {
-          return res.status(400).send('Bad Request: Invalid timeEncoded parameter');
-      }
-
-      const { data: counselorLog, error } = await supabase
-          .from('Report')
-          .select('*')
-          .eq('counselor_email', counselorEmail)
-          .eq('time_encoded', timeEncoded);
-
-      if (error) {
-          console.error('Error fetching report:', error.message);
-          return res.status(500).send('Internal server error');
-      }
-
-      if (counselorLog.length === 0) {
-          return res.status(404).send('Report not found');
-      }
-
-      const log = counselorLog[0];
-
-      // Render the EJS template with the retrieved data
-      res.render('CounselorViewReport', { log });
-  } catch (error) {
-      // Handle any unexpected server errors
-      console.error('Server error:', error.message);
-      res.status(500).send('Internal server error');
-  }
-});
-
-
-
-
-
-
-
-
 myapp.get('/studentAppointmentStatus', async (req, res) => {
   try {
     // Extract counselor's email from the session data
@@ -164,6 +115,147 @@ myapp.get('/studentAppointmentStatus', async (req, res) => {
   } catch (error1) {
     // Handle any unexpected server errors
     console.error('Server error:', error1.message);
+    res.status(500).send('Internal server error');
+  }
+});
+
+myapp.get('/CounselorPendingAppointmentPage', async (req, res) => {
+  let hasNewAppointments;
+  try {
+    const studentData = res.locals.studentData;
+    const studentEmail = counselorData.email;
+
+    // Fetch counselor's program
+    const { data: counselorProgramData, error: counselorProgramError } = await supabase
+      .from('Pending Reschedule') // Adjusted table name with a space
+      .select('*')
+      .eq('email', studentEmail);
+
+    if (counselorProgramError) {
+      console.error('Error fetching counselor program:', counselorProgramError.message);
+      return res.status(500).send('Internal server error');
+    }
+
+    const counselorPrograms = counselorProgramData.map(entry => entry.program);
+
+    // Fetch counselor's departments
+    const { data: counselorDepartments, error: counselorError } = await supabase
+      .from('Counselor Role')
+      .select('department')
+      .eq('email', counselorEmail);
+
+    if (counselorError) {
+      console.error('Error fetching counselor departments:', counselorError.message);
+      return res.status(500).send('Internal server error');
+    }
+
+    const departments = counselorDepartments.map(entry => entry.department);
+
+    // Fetch new appointments
+    const { data: newAppointments, error: newAppointmentsError } = await supabase
+      .from('Pending Appointment')
+      .select('*')
+      .in('department', departments)
+      .eq('notif', true)
+      .order('date', { ascending: true });
+
+    if (newAppointmentsError) {
+      console.error('Error fetching new appointments:', newAppointmentsError.message);
+      return res.status(500).send('Internal server error');
+    }
+
+    hasNewAppointments = newAppointments.length > 0;
+
+    // Fetch all pending appointments
+    const { data: pendingAppointments, error } = await supabase
+      .from('Pending Appointment')
+      .select('*');
+
+    if (error) {
+      console.error('Error fetching pending appointments:', error.message);
+      return res.status(500).send('Internal server error');
+    }
+
+   // Filter appointments based on counselor's program and department
+const filteredAppointments = pendingAppointments.filter(appointment => {
+  // Check if counselor's program matches the prefix of the appointment's progCode and department
+  const matchingProgram = counselorPrograms.some(program => appointment.progCode.startsWith(program));
+  const matchingDepartment = departments.includes(appointment.department);
+
+  return matchingProgram && matchingDepartment;
+});
+
+    const currentTime = new Date();
+    const updatedPendingAppointments = [];
+
+    // Loop through pending appointments
+    for (const appointment of filteredAppointments) {
+      const appointedDateTime = new Date(`${appointment.appointed_date} ${appointment.appointed_time}`);
+
+      if (currentTime > appointedDateTime) {
+        // Prepare data for 'Appointment History' with REJECTED status
+        const rejectedAppointmentData = {
+          counselor_email: counselorEmail,
+          counselor_Fname: counselorData.first_name,
+          counselor_Lname: counselorData.last_name,
+          date: appointment.appointed_date,
+          time: appointment.appointed_time,
+          email: appointment.email,
+          department: appointment.department,
+          first_name: appointment.first_name,
+          last_name: appointment.last_name,
+          appointed_date: appointment.appointed_date,
+          appointed_time: appointment.appointed_time,
+          prog_status: 'IGNORED'
+          // Add other fields needed for the Appointment History table
+        };
+
+        // Insert rejected appointment in the 'Appointment History' table
+        const { data: insertedAppointment, error: insertError } = await supabase
+          .from('Appointment History')
+          .insert(rejectedAppointmentData);
+
+        if (insertError) {
+          console.error('Error inserting rejected appointment:', insertError.message);
+          // Handle the error if insertion fails
+        }
+
+        // Delete the rejected appointment from 'Pending Appointment'
+        const { error: deleteError } = await supabase
+          .from('Pending Appointment')
+          .delete()
+          .eq('id', appointment.id);
+
+        if (deleteError) {
+          console.error('Error deleting expired appointment:', deleteError.message);
+          // Handle the error if deletion fails
+        }
+      } else {
+        // Appointment is still pending, add it to the updated list
+        updatedPendingAppointments.push(appointment);
+      }
+    }
+
+    // Update new_flag for the viewed appointments
+    for (const appointment of updatedPendingAppointments) {
+      const { error: updateError } = await supabase
+        .from('Pending Appointment')
+        .update({ notif: false })
+        .eq('id', appointment.id);
+
+      if (updateError) {
+        console.error('Error updating appointment status:', updateError.message);
+        // Handle the error if the update fails
+      }
+    }
+
+    res.render('CounselorPendingAppointmentPage', {
+      counselorData,
+      pendingAppointments: updatedPendingAppointments,
+      hasNewAppointments: hasNewAppointments,
+    });
+  } catch (error) {
+    console.error('Server error:', error.message);
     res.status(500).send('Internal server error');
   }
 });
@@ -1330,7 +1422,7 @@ myapp.post('/logout', async (req, res) => {
 });
 
 // APPOINTMENT
-myapp.post('/create-appointment', async (req, res) => {   
+myapp.post('/create-appointment', async (req, res) => { 
   try {
     // Access session data, such as email and first name
     const userEmail = res.locals.studentData.email;

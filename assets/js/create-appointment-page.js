@@ -2,32 +2,16 @@ function insertRecord() {
   const dateInput = document.getElementById('date');
   const timeInput = document.getElementById('time');
   const serviceInput = document.getElementById('service');
-  
 
-  const selectedDate = new Date(dateInput.value + 'T00:00:00Z');
-selectedDate.setMilliseconds(0);
+  const selectedDate = new Date(dateInput.value);
   const currentDate = new Date();
-  const currentDateUTC = new Date(currentDate.toISOString());
   
-  if (selectedDate.toISOString().split('T')[0] < currentDateUTC.toISOString().split('T')[0]) {
+  if (selectedDate < currentDate) {
     alert('Please select a future date.');
     dateInput.value = '';
     return;
   }
 
-  if (!dateInput){
-  alert("Please select a date")
-return;
-}
-if (!timeInput){
-  alert("Please select a time")
-return;
-}
-
-if (!dateInput||!timeInput){
-  alert("Please select a date and time")
-return;
-}
   // Check if the selected date is not a weekend (Saturday or Sunday)
   const dayOfWeek = selectedDate.getDay();
   
@@ -53,6 +37,21 @@ return;
     timeInput.value = ''; // Clear the time input
     return;
   }
+
+  if (!dateInput){
+    alert("Please select a date")
+  return;
+  }
+  if (!timeInput){
+    alert("Please select a time")
+  return;
+  }
+  
+  if (!dateInput||!timeInput){
+    alert("Please select a date and time")
+  return;
+  }
+  
 
   const appointmentDateTime = new Date();
 
