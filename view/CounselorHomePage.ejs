@@ -57,6 +57,7 @@
       <h1 class="logo me-auto"><a href="/CounselorHomePage">DLSU-D Student Wellness Center</a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      
 
       <nav id="navbar" class="navbar">
         <ul>
@@ -96,6 +97,11 @@
               <li><a href="/CounselorManualReport">Manual Report</a></li>
             </ul>
           </li>
+          <li>
+            <% if (counselorData.admin) { %>
+              <a href="/adminHomePage" id="admin-link">Admin Page</a>
+            <% } %>
+          </li>
           <li><a id="logout" class="getstarted" href="javascript:;">Logout</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -103,6 +109,7 @@
 
     </div>
   </div>
+
   </header><!-- End Header -->
 
   <!-- ======= Hero Section ======= -->
