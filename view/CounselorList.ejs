@@ -32,19 +32,18 @@
 </head>
 
 <body>
-
   <!-- ======= Top Bar ======= -->
+  <% if (!studentData) { %>   <script>window.location.href = "/";</script><% } %>
   <section id="topbar" class="d-flex align-items-center">
-    <div class="container d-flex justify-content-center justify-content-md-between">
-      <div class="contact-info d-flex align-items-center">
-        <i class="bi bi-phone-fill phone-icon"></i> Cavite: +63 (46) 481.1900
-        <i class="bi bi-phone-fill phone-icon"></i> Manila: +63 (2) 8779.5180
-      </div>
-      <div class="social-links d-none d-md-block">
-        <a href="https://www.facebook.com/dlsudswc/" class="facebook"><i class="bi bi-facebook"></i></a>
-      </div>
-    </div>
-  </section>
+   <div class="container d-flex justify-content-center justify-content-md-between">
+     <div class="contact-info d-flex align-items-center">
+       <i class="bi bi-person"></i> Welcome, <%= studentData.last_name %> <%= studentData.first_name %>
+     </div>
+     <div class="social-links d-none d-md-block">
+       <a href="https://www.facebook.com/dlsudswc/" class="facebook"><i class="bi bi-facebook"></i></a>
+     </div>
+   </div>
+ </section>
 
   <!-- ======= Header ======= -->
   <div class="shadow p-3 mb-5 bg-body rounded">
@@ -71,6 +70,7 @@
           <li class="dropdown"><a href="#"><span>Appointment Details</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="/studentAppointmentStatus">Appointment Status</a></li>
+              <li><a href="/studentReschedules">Pending Reschedule</a></li>
               <li><a href="/studentAppointmentHistory">Appointment History</a></li>
             </ul>
           </li>
