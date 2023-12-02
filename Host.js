@@ -122,14 +122,14 @@ myapp.get('/studentAppointmentStatus', async (req, res) => {
 myapp.get('/CounselorPendingAppointmentPage', async (req, res) => {
   let hasNewAppointments;
   try {
-    const studentData = res.locals.studentData;
-    const studentEmail = counselorData.email;
+    const counselorData = res.locals.counselorData;
+    const counselorEmail = counselorData.email;
 
     // Fetch counselor's program
     const { data: counselorProgramData, error: counselorProgramError } = await supabase
-      .from('Pending Reschedule') // Adjusted table name with a space
+      .from('Counselor Program') // Adjusted table name with a space
       .select('*')
-      .eq('email', studentEmail);
+      .eq('email', counselorEmail);
 
     if (counselorProgramError) {
       console.error('Error fetching counselor program:', counselorProgramError.message);
