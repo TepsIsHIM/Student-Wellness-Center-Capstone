@@ -1469,12 +1469,12 @@ myapp.post('/create-appointment', async (req, res) => {
       return res.json({ success: false, message: 'You already have a pending appointment.' });
     }
 
-    if (checkAccepted && checkAcceptedError.length > 0) {
-      return res.json({ success: false, message: 'You already have an accepted appointment.' });
+    if (checkAccepted && checkAccepted.length > 0) {
+      return res.json({ success: false, message: 'You already have a ongoing appointment.' });
     }
 
-    if (checkResched && checkReschedError.length > 0) {
-      return res.json({ success: false, message: 'You already have a pending Reschedule.' });
+    if (checkResched && checkResched.length > 0) {
+      return res.json({ success: false, message: 'You already have a pending reschedule.' });
     }
 
     const { data:appoint, error } = await supabase
