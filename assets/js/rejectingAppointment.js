@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
       $('#reschedModal').modal('show');
       $('#rejectModal').modal('hide');
   }else if (event.target.classList.contains('confirm-reschedule')) {
-    handleRescheduleConfirmation
+    handleRescheduleConfirmation();
     
   }
 });
