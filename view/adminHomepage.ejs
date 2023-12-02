@@ -79,6 +79,11 @@
               <li><a href="/adminCounselorLog">Summary Of Appointment</a></li>
             </ul>
           </li>
+          <li>
+            <% if (counselorData.admin) { %>
+              <a href="/CounselorHomePage" id="admin-link">Counselor Page</a>
+            <% } %>
+          </li>
           <li><a id="logout" class="getstarted scrollto" href="javascript:;">Logout</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
