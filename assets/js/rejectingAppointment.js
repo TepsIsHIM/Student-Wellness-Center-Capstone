@@ -13,10 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
       $('#reschedModal').modal('show');
       $('#rejectModal').modal('hide');
   }else if (event.target.classList.contains('confirm-reschedule')) {
-    const date = document.getElementById('rescheduleDate').value;
-    const rescheduleTime = document.getElementById('rescheduleTime').value;
-    const rescheduleNotes = document.getElementById('rescheduleNotes').value;
-    reschedAppointment(currentAppointmentId, date,rescheduleTime,rescheduleNotes);
+    handleRescheduleConfirmation
     
   }
 });
