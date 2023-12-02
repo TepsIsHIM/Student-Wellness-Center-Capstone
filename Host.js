@@ -79,6 +79,48 @@ myapp.get('/studentProfilePage', (req, res) => {
   res.render('studentProfilePage', { studentData });
 });
 
+myapp.get('/CounselorViewReport', async (req, res) => {
+  try {
+      const timeEncoded = req.query.timeEncoded;
+
+      if (!timeEncoded) {
+          return res.status(400).send('Bad Request: Missing timeEncoded parameter');
+      }
+
+      const counselorData = res.locals.counselorData;
+      const counselorEmail = counselorData.email;
+
+      // Handle the case where timeEncoded is null
+      if (timeEncoded === 'null') {
+          return res.status(400).send('Bad Request: Invalid timeEncoded parameter');
+      }
+
+      const { data: counselorLog, error } = await supabase
+          .from('Report')
+          .select('*')
+          .eq('counselor_email', counselorEmail)
+          .eq('time_encoded', timeEncoded);
+
+      if (error) {
+          console.error('Error fetching report:', error.message);
+          return res.status(500).send('Internal server error');
+      }
+
+      if (counselorLog.length === 0) {
+          return res.status(404).send('Report not found');
+      }
+
+      const log = counselorLog[0];
+
+      // Render the EJS template with the retrieved data
+      res.render('CounselorViewReport', { log });
+  } catch (error) {
+      // Handle any unexpected server errors
+      console.error('Server error:', error.message);
+      res.status(500).send('Internal server error');
+  }
+});
+
 myapp.get('/studentAppointmentStatus', async (req, res) => {
   try {
     // Extract counselor's email from the session data
