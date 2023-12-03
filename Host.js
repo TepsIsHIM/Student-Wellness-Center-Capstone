@@ -71,11 +71,21 @@ myapp.get('/Registerpage', (req, res) => {
 
 myapp.get('/StudentHomepage', (req, res) => {
   const studentData = res.locals.studentData;
+  if (!studentData) {
+    // Redirect to the login page if studentData is not present
+    res.redirect('/');
+    return; // Important: End the request-response cycle to avoid further processing
+  }
   res.render('StudentHomepage', { studentData });
 });
 
 myapp.get('/studentProfilePage', (req, res) => {
   const studentData = res.locals.studentData;
+  if (!studentData) {
+    // Redirect to the login page if studentData is not present
+    res.redirect('/');
+    return; // Important: End the request-response cycle to avoid further processing
+  }
   res.render('studentProfilePage', { studentData });
 });
 
@@ -126,7 +136,11 @@ myapp.get('/studentAppointmentStatus', async (req, res) => {
     // Extract counselor's email from the session data
     const studentData = res.locals.studentData;
     const studentEmail = studentData.email; // Assuming the email is stored in counselorData
-
+    if (!studentData) {
+      // Redirect to the login page if studentData is not present
+      res.redirect('/');
+      return; // Important: End the request-response cycle to avoid further processing
+    }
     // Fetch pending appointments data for all departments associated with the counselor
     const { data: pendingAppointment, error } = await supabase
       .from('Pending Appointment') // Replace with your actual table name
@@ -165,7 +179,11 @@ myapp.get('/studentReschedules', async (req, res) => {
   try {
     const studentData = res.locals.studentData;
     const studentEmail = studentData.email;
-
+    if (!studentData) {
+      // Redirect to the login page if studentData is not present
+      res.redirect('/');
+      return; // Important: End the request-response cycle to avoid further processing
+    }
     // Fetch counselor's program
     const { data: studentPendingResched, error: studentPendingReschedError } = await supabase
       .from('Pending Reschedule') // Adjusted table name with a space
@@ -193,7 +211,11 @@ myapp.get('/studentAppointmentHistory', async (req, res) => {
     // Extract counselor's email from the session data
     const studentData = res.locals.studentData;
     const studentEmail = studentData.email;  // Assuming the email is stored in counselorData
-
+    if (!studentData) {
+      // Redirect to the login page if studentData is not present
+      res.redirect('/');
+      return; // Important: End the request-response cycle to avoid further processing
+    }
     // Fetch pending appointments data for all departments associated with the counselor
     const { data: appointmentHistory, error } = await supabase
       .from('Appointment History') // Replace with your actual table name
@@ -231,11 +253,22 @@ myapp.get('/studentAppointmentHistory', async (req, res) => {
 });
 
 myapp.get('/CounselorList', (req, res) => {
-  res.render('CounselorList');
+  const studentData = res.locals.studentData;
+  if (!studentData) {
+    // Redirect to the login page if studentData is not present
+    res.redirect('/');
+    return; // Important: End the request-response cycle to avoid further processing
+  }
+  res.render('CounselorList', { studentData });
 });
 
 myapp.get('/CreateAppointmentPage', (req, res) => {
   const studentData = res.locals.studentData;
+  if (!studentData) {
+    // Redirect to the login page if studentData is not present
+    res.redirect('/');
+    return; // Important: End the request-response cycle to avoid further processing
+  }
   res.render('CreateAppointmentPage', { studentData });
 });
 
@@ -246,7 +279,11 @@ myapp.get('/CounselorHomePage', async (req, res) => {
   try {
     const counselorData = res.locals.counselorData;
     const counselorEmail = counselorData.email;
-
+    if (!counselorData) {
+      // Redirect to the login page if studentData is not present
+      res.redirect('/');
+      return; // Important: End the request-response cycle to avoid further processing
+    }
     // Fetch counselor's departments
     const { data: counselorDepartments, error: counselorError } = await supabase
       .from('Counselor Role')
@@ -381,7 +418,11 @@ myapp.get('/CounselorProfilePage', async (req, res) => {
   try {
     const counselorData = res.locals.counselorData;
     const counselorEmail = counselorData.email;
-
+    if (!counselorData) {
+      // Redirect to the login page if studentData is not present
+      res.redirect('/');
+      return; // Important: End the request-response cycle to avoid further processing
+    }
     // Fetch counselor's departments
     const { data: counselorDepartments, error: counselorError } = await supabase
       .from('Counselor Role')
@@ -515,7 +556,11 @@ myapp.get('/CounselorPendingAppointmentPage', async (req, res) => {
   try {
     const counselorData = res.locals.counselorData;
     const counselorEmail = counselorData.email;
-
+    if (!counselorData) {
+      // Redirect to the login page if studentData is not present
+      res.redirect('/');
+      return; // Important: End the request-response cycle to avoid further processing
+    }
     // Fetch counselor's program
     const { data: counselorProgramData, error: counselorProgramError } = await supabase
       .from('Counselor Program') // Adjusted table name with a space
@@ -656,7 +701,11 @@ myapp.get('/CounselorAcceptedAppointmentPage', async (req, res) => {
     // Extract counselor's email from the session data
     const counselorData = res.locals.counselorData;
     const counselorEmail = counselorData.email; // Assuming the email is stored in counselorData
-
+    if (!counselorData) {
+      // Redirect to the login page if studentData is not present
+      res.redirect('/');
+      return; // Important: End the request-response cycle to avoid further processing
+    }
     // Fetch pending appointments data for all departments associated with the counselor
     const { data: acceptedAppointments, error } = await supabase
       .from('Accepted Appointment') // Replace with your actual table name
@@ -680,10 +729,15 @@ myapp.get('/CounselorAcceptedAppointmentPage', async (req, res) => {
 
 myapp.get('/CounselorAppointmentHistoryPage', async (req, res) => {
   try {
+    
     // Extract counselor's email from the session data
     const counselorData = res.locals.counselorData;
     const counselorEmail = counselorData.email; // Assuming the email is stored in counselorData
-
+    if (!counselorData) {
+      // Redirect to the login page if studentData is not present
+      res.redirect('/');
+      return; // Important: End the request-response cycle to avoid further processing
+    }
     // Fetch pending appointments data for all departments associated with the counselor
     const { data: appointmentHistory, error } = await supabase
       .from('Appointment History') // Replace with your actual table name
@@ -707,8 +761,14 @@ myapp.get('/CounselorAppointmentHistoryPage', async (req, res) => {
 
 myapp.get('/CounselorLogs', async (req, res) => {
   try {
+    
     const counselorData = res.locals.counselorData;
     const counselorEmail = counselorData.email;
+    if (!counselorData) {
+      // Redirect to the login page if studentData is not present
+      res.redirect('/');
+      return; // Important: End the request-response cycle to avoid further processing
+    }
     const { data: counselorLog, error } = await supabase
       .from('Report')
       .select('*')
@@ -731,6 +791,11 @@ myapp.get('/CounselorLogs', async (req, res) => {
 myapp.get('/CounselorReport', async(req, res) => {
   try {
     const counselorData = res.locals.counselorData;
+    if (!counselorData) {
+      // Redirect to the login page if studentData is not present
+      res.redirect('/');
+      return; // Important: End the request-response cycle to avoid further processing
+    }
     const counselorEmail = counselorData.email;
     const { data: counselorReport, error } = await supabase
       .from('Completed Appointment (No Reports)')
@@ -754,6 +819,11 @@ myapp.get('/CounselorReport', async(req, res) => {
 myapp.get('/CounselorManualReport', async(req, res) => {
   try {
     const counselorData = res.locals.counselorData;
+    if (!counselorData) {
+      // Redirect to the login page if studentData is not present
+      res.redirect('/');
+      return; // Important: End the request-response cycle to avoid further processing
+    }
     const counselorEmail = counselorData.email;
     const { data: counselorReport, error } = await supabase
       .from('Completed Appointment (No Reports)')
@@ -792,16 +862,31 @@ myapp.get('/emailSuggestions', async (req, res) => {
 
 myapp.get('/adminHomepage', (req, res) => {
   const counselorData = res.locals.counselorData;
+  if (!counselorData) {
+    // Redirect to the login page if studentData is not present
+    res.redirect('/');
+    return; // Important: End the request-response cycle to avoid further processing
+  }
   res.render('adminHomepage', { counselorData });
 });
 
 myapp.get('/adminCreateAccounts', (req, res) => {
   const counselorData = res.locals.counselorData;
+  if (!counselorData) {
+    // Redirect to the login page if studentData is not present
+    res.redirect('/');
+    return; // Important: End the request-response cycle to avoid further processing
+  }
   res.render('adminCreateAccounts', { counselorData });
 });
 
 myapp.get('/adminAppointmentHistory', async (req, res) => {
   const counselorData = res.locals.counselorData;
+  if (!counselorData) {
+    // Redirect to the login page if studentData is not present
+    res.redirect('/');
+    return; // Important: End the request-response cycle to avoid further processing
+  }
   try {
     const { data: appointmentHistory, error } = await supabase
       .from('Appointment History')
@@ -823,6 +908,11 @@ myapp.get('/adminAppointmentHistory', async (req, res) => {
 
 myapp.get('/adminAcceptedAppointment', async (req, res) => {
   const counselorData = res.locals.counselorData;
+  if (!counselorData) {
+    // Redirect to the login page if studentData is not present
+    res.redirect('/');
+    return; // Important: End the request-response cycle to avoid further processing
+  }
   try {
     const { data: acceptedAppointment, error } = await supabase
       .from('Accepted Appointment')
@@ -844,6 +934,11 @@ myapp.get('/adminAcceptedAppointment', async (req, res) => {
 
 myapp.get('/adminPendingAppointment', async (req, res) => {
   const counselorData = res.locals.counselorData;
+  if (!counselorData) {
+    // Redirect to the login page if studentData is not present
+    res.redirect('/');
+    return; // Important: End the request-response cycle to avoid further processing
+  }
   try {
     const { data: pendingAppointment, error } = await supabase
       .from('Pending Appointment')
@@ -865,6 +960,11 @@ myapp.get('/adminPendingAppointment', async (req, res) => {
 
 myapp.get('/adminViewAccounts', async (req, res) => {
   const counselorData = res.locals.counselorData;
+  if (!counselorData) {
+    // Redirect to the login page if studentData is not present
+    res.redirect('/');
+    return; // Important: End the request-response cycle to avoid further processing
+  }
   try {
     const { data: studentViewAccounts, error } = await supabase
       .from('Student Accounts')
@@ -894,6 +994,11 @@ myapp.get('/adminViewAccounts', async (req, res) => {
 
 myapp.get('/adminEditRoles', async (req, res) => {
   const counselorData = res.locals.counselorData;
+  if (!counselorData) {
+    // Redirect to the login page if studentData is not present
+    res.redirect('/');
+    return; // Important: End the request-response cycle to avoid further processing
+  }
   try {
     const { data: editRoles, error1 } = await supabase
       .from('Counselor Accounts') 
@@ -1011,6 +1116,11 @@ myapp.get('/getAdminCount', async (req, res) => {
 
 myapp.get('/adminCounselorLog', async (req, res) => {
   const counselorData = res.locals.counselorData;
+  if (!counselorData) {
+    // Redirect to the login page if studentData is not present
+    res.redirect('/');
+    return; // Important: End the request-response cycle to avoid further processing
+  }
   try {
     const { data: counselorLog, error } = await supabase
       .from('Report')
@@ -1524,7 +1634,7 @@ myapp.post('/feedback/:appointmentId', async (req, res) => {
 
     // Retrieve appointment details from 'Pending Appointment' based on appointmentId
     const { data: appointmentData, error: appointmentError } = await supabase
-      .from('Pending Appointment')
+      .from('Appointment History')
       .select('*')
       .eq('id', appointmentId);
 
@@ -1542,7 +1652,7 @@ myapp.post('/feedback/:appointmentId', async (req, res) => {
     // Save accepted appointment in the 'Accepted Appointment' table
     const { data: insertedAppointment, error: insertError } = await supabase
       .from('Appointment History')
-      .upsert(feedbackData)
+      .update(feedbackData)
       .eq('id', appointmentId);
 
     if (insertError) {
