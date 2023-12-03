@@ -22,7 +22,7 @@ myapp.use(express.static(__dirname + '/assets'));
 
 // Supabase configuration
 const { createClient, SupabaseClient } = require('@supabase/supabase-js');
-const supabase = createClient('https://waeqvekicdlqijxmhclw.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhZXF2ZWtpY2RscWlqeG1oY2x3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTUyNjMxNjIsImV4cCI6MjAxMDgzOTE2Mn0.8Ga9_qwNgeAKlqWI_xCLQPJFqGha3XfiNMxrT8_RXaM');
+const supabase = createClient('https://rvclliowsbnowatrukem.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2Y2xsaW93c2Jub3dhdHJ1a2VtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDE2MDIzMDEsImV4cCI6MjAxNzE3ODMwMX0.Khui4wtODbFdxNcSTWhsNdgGW4mpb8kFSeCVz118gYI');
 
 async function getUser(type, email) {
   if (type) {
@@ -906,7 +906,7 @@ myapp.get('/adminEditRoles', async (req, res) => {
     
     const { data: assignedRoles, error2 } = await supabase
       .from('Counselor Role') 
-      .select('email, department, progCode')
+      .select('email, department')
 
     if (error2) {
       console.error('Error fetching Counselor Role:', error2.message);
