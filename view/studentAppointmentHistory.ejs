@@ -122,8 +122,8 @@
 
             <!-- "Rate" button triggering modal -->
 <% if (appointment.prog_status !== 'REJECTED' && appointment.prog_status !== 'CANCELLED') { %>
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Rate
+  <button type="button" class="btn btn-primary feedback" data-bs-toggle="modal" data-bs-target="#exampleModal" data-appointment-id="<%= appointment.id %>">
+    Rate 
   </button>
 <% } %>
 
@@ -134,7 +134,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Feedback for Counselor <%= appointment.counselor_Lname %> <%= appointment.counselor_Fname %></h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-bs-dismiss="modal"id="closeModalX2" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -171,8 +171,8 @@
       </div>
     </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Submit Feedback</button>
+        <button type="button" class="btn btn-secondary"  id="closeModalBtn2" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary confirm-submit">Submit Feedback</button>
       </div>
     </div>
   </div>
@@ -223,6 +223,7 @@
   <!-- Template Main JS File -->
   <script src="/js/home-page.js"></script>
   <script src="/js/spinner.js"></script>
+  <script src="/js/feedback.js"></script>
   <style>
     body {
       display: flex;

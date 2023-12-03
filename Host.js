@@ -1516,6 +1516,46 @@ myapp.post('/studentCancelAppointment/:appointmentId', async (req, res) => {
     res.status(500).send('Internal server error');
   }
 });
+
+myapp.post('/feedback/:appointmentId', async (req, res) => {
+  try {
+    const appointmentId = req.params.appointmentId;  
+    const ratingValue = req.body.ratingValue;
+
+    // Retrieve appointment details from 'Pending Appointment' based on appointmentId
+    const { data: appointmentData, error: appointmentError } = await supabase
+      .from('Pending Appointment')
+      .select('*')
+      .eq('id', appointmentId);
+
+    if (appointmentError || !appointmentData.length) {
+      console.error('Error fetching appointment details:', appointmentError?.message);
+      return res.status(404).send('Appointment not found');
+    }
+
+
+    // Prepare data for 'Accepted Appointment' with counselor details and adjusted date/time
+    const feedbackData = {
+      feedback:ratingValue
+    };
+
+    // Save accepted appointment in the 'Accepted Appointment' table
+    const { data: insertedAppointment, error: insertError } = await supabase
+      .from('Appointment History')
+      .upsert(feedbackData)
+      .eq('id', appointmentId);
+
+    if (insertError) {
+      console.error('Error inserting feedback appointment:', insertError.message);
+      return res.status(500).send('Failed to feedback the appointment');
+    }
+
+    res.status(200).json({ message: 'Appointment feedback successfully' });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
 //EDIT ROLES
 myapp.post('/updateDepartments', async (req, res) => {
   const { email, departments } = req.body;
