@@ -1116,6 +1116,7 @@ myapp.post('/register', async (req, res) => {
             id_number: uppercaseIDNumber,
             phone_number: phoneNumber,
             accountType: uppercaseAccountType,
+            admin:'false'
 
           },
         ])
