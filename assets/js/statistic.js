@@ -21,6 +21,10 @@ document.getElementById('generateButton').addEventListener('click', async () => 
         document.getElementById('secondYearCount').innerText = data.statistics['2nd Year'];
         document.getElementById('thirdYearCount').innerText = data.statistics['3rd Year'];
         document.getElementById('fourthYearCount').innerText = data.statistics['4th Year'];
+
+        // Calculate and update the total count
+        const totalCount = Object.values(data.statistics).reduce((acc, count) => acc + count, 0);
+        document.getElementById('totalCount').innerText = totalCount;
     } catch (error) {
         console.error('Error submitting form:', error);
     }
