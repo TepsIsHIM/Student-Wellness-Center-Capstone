@@ -75,7 +75,7 @@
           <li class="dropdown"><a href="#"><span>Documentation</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="/adminCounselorLog">Counselor Logs</a></li>
-              <li><a href="/adminStatisticsForm">Statistic Report</a></li>
+              <li><a href="/adminCounselorLog">Statistic Report</a></li>
               <li><a href="/adminCounselorLog">Summary Of Appointment</a></li>
             </ul>
           </li>
@@ -92,61 +92,55 @@
     </div>
   </header><!-- End Header -->
 
-  <!-- ======= Hero Section ======= -->
-  <section id="hero">
-    <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
 
-      <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
-
-      <div class="carousel-inner" role="listbox">
-
-        <!-- Slide 1 -->
-        <div class="carousel-item active" style="background-image: url(/img/slide/slide-1.jpg)">
-          <div class="carousel-container">
-            <div class="container">
-              <h2 class="animate__animated animate__fadeInDown">Welcome <span>ADMIN</span></h2>
-              <p class="animate__animated animate__fadeInUp">You are now using Student Wellness Center website as ADMIN</p>
-            </div>
+  <main class="container mt-4">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="mb-4">Admin Statistics Form</h1>
+  
+        <form>
+          <div class="mb-3">
+            <label for="fromDate" class="form-label">From:</label>
+            <input type="date" id="fromDate" name="fromDate" class="form-control">
           </div>
-        </div>
+  
+          <div class="mb-3">
+            <label for="toDate" class="form-label">To:</label>
+            <input type="date" id="toDate" name="toDate" class="form-control">
+          </div>
+  
+          <button id="generateButton" class="btn btn-primary">Generate Report</button>
+        </form>
+  
+        <table class="table mt-4">
+          <thead>
+            <tr>
+              <th>Year Level</th>
+              <th>Number of Appointments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1st Year</td>
+              <td><span id="firstYearCount">0</span></td>
+            </tr>
+            <tr>
+              <td>2nd Year</td>
+              <td><span id="secondYearCount">0</span></td>
+            </tr>
+            <tr>
+              <td>3rd Year</td>
+              <td><span id="thirdYearCount">0</span></td>
+            </tr>
+            <tr>
+              <td>4th Year</td>
+              <td><span id="fourthYearCount">0</span></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-  </section><!-- End Hero -->
-
-  <main id="main">
-
-    <!-- ======= Featured Services Section ======= -->
-    <section id="featured-services" class="featured-services section-bg">
-      <div class="container">
-
-        <div class="row no-gutters">
-          <div class="col-lg-4 col-md-6">
-            <div class="icon-box">
-              <div class="icon"><i class="bi bi-laptop"></i></div>
-              <h4 class="title"><a href="">Manage Accounts</a></h4>
-              <p class="description">This where admin can create,accept or deny the accounts of the students and counselors</p>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="icon-box">
-              <div class="icon"><i class="bi bi-briefcase"></i></div>
-              <h4 class="title"><a href="">Manage Appointment</a></h4>
-              <p class="description">The admin can also see all the pending,accepted,rejected and successful appointments record </p>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="icon-box">
-              <div class="icon"><i class="bi bi-calendar4-week"></i></div>
-              <h4 class="title"><a href="">Monitor Documentation</a></h4>
-              <p class="description">The admin can also see where all the documentation of the counselors record.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section><!-- End Featured Services Section -->
-  </main><!-- End #main -->
-
+  </main>
    <!-- ======= Footer ======= -->
    <footer id="footer">
     <div class="container">
@@ -173,6 +167,7 @@
   <!-- Template Main JS File -->
   <script src="/js/home-page.js"></script>
 
+  <script src="/js/statistic.js"></script>
 </body>
 
 </html>

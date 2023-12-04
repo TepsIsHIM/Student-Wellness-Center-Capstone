@@ -870,6 +870,10 @@ myapp.get('/adminHomepage', (req, res) => {
   res.render('adminHomepage', { counselorData });
 });
 
+myapp.get('/adminStatisticsForm', (req, res) => {
+  res.render('adminStatisticsForm');
+});
+
 myapp.get('/adminCreateAccounts', (req, res) => {
   const counselorData = res.locals.counselorData;
   if (!counselorData) {
@@ -3289,4 +3293,82 @@ if (deleteProgramError) {
     res.status(500).send('Internal server error');
   }
 });
+
+
+
+// Route to handle the adminStatistics form submission
+myapp.post('/generate-report', async (req, res) => {
+  try {
+      const fromDate = req.body.fromDate;
+      const toDate = req.body.toDate;
+
+      // Fetch data from Supabase within the specified date range
+      const { data, error } = await supabase
+          .from('Appointment History')
+          .select('*')
+          .gte('appointed_date', fromDate)
+          .lte('appointed_date', toDate);
+
+      if (error) {
+          throw error;
+      }
+      console.log(data);
+      // Calculate statistics based on the fetched data
+      const statistics = calculateStatistics(data);
+      
+      // Send the statistics data as JSON
+      res.json({ statistics });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+function calculateStatistics(data) {
+  // Implement your logic to calculate statistics based on the fetched data
+  // This is just a simple example; adjust it according to your requirements
+
+  const statistics = {
+      '1st Year': 0,
+      '2nd Year': 0,
+      '3rd Year': 0,
+      '4th Year': 0,
+  };
+
+  data.forEach(appointment => {
+      const yearLevel = getYearLevelFromProgCode(appointment.progCode);
+      if (yearLevel && statistics[yearLevel] !== undefined) {
+          statistics[yearLevel]++;
+      }
+  });
+  console.log('Current Statistics:', statistics);
+  return statistics;
+}
+
+function getYearLevelFromProgCode(progCode) {
+  // Extract the first character of the numeric part of the program code
+  const match = progCode.match(/\d/);
+
+  if (match) {
+      const firstDigit = match[0];
+
+      console.log(`progCode: ${progCode}, firstDigit: ${firstDigit}`); // Add this line for debugging
+
+      // Map the first digit to the corresponding year level
+      switch (firstDigit) {
+          case '1':
+              return '1st Year';
+          case '2':
+              return '2nd Year';
+          case '3':
+              return '3rd Year';
+          case '4':
+              return '4th Year';
+          default:
+              return 'Unknown Year'; // Adjust as needed for other cases
+      }
+  }
+
+  return 'Unknown Year'; // Return if no numeric part is found
+}
 
