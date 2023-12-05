@@ -1300,14 +1300,20 @@ myapp.post('/changePassword', async (req, res) => {
   const { newPassword, token } = req.body;
 
   try {
-    // Reset the user's password using the token
-    const { error } = await supabase.auth.updateUser(null, {
-      token,
+    // Validate that the user is authenticated before updating the password
+    const { user, error: authError } = await supabase.auth.api.getUser(token);
+
+    if (authError) {
+      throw authError;
+    }
+
+    // Reset the user's password using the user ID
+    const { error: updateError } = await supabase.auth.api.updateUser(user.id, {
       password: newPassword,
     });
 
-    if (error) {
-      throw error;
+    if (updateError) {
+      throw updateError;
     }
 
     // Send a JSON response indicating success
