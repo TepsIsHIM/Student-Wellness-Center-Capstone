@@ -4,9 +4,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const confirmPasswordInput = document.getElementById('confirmPassword');
 
     if (changeForm) {
-        changeForm.addEventListener('submit', async function (event) {
-            event.preventDefault();
+        const confirmButton = document.getElementById('confirmButton');
 
+        confirmButton.addEventListener('click', async function () {
             const newPassword = newPasswordInput.value.trim();
             const confirmPassword = confirmPasswordInput.value.trim();
 
