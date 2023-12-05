@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             try {
-                const response = await fetch('/change-password', {
+                const response = await fetch('/changePassword', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
