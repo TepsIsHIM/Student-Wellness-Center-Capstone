@@ -1297,30 +1297,23 @@ myapp.post('/forgotPassword', async (req, res) => {
 });
 
 myapp.post('/changePassword', async (req, res) => {
-  const { newPassword, token } = req.body;
-
   try {
-    // Validate that the user is authenticated before updating the password
-    const { user, error: authError } = await supabase.auth.api.getUser(token);
+    const { token, newPassword } = req.body;
 
-    if (authError) {
-      throw authError;
-    }
-
-    // Reset the user's password using the user ID
-    const { error: updateError } = await supabase.auth.api.updateUser(user.id, {
+    // Verify the token and reset the password using Supabase SDK
+    const { error } = await supabase.auth.api.updateUser(token, {
       password: newPassword,
     });
 
-    if (updateError) {
-      throw updateError;
+    if (error) {
+      return res.status(400).json({ error: 'Invalid or expired token' });
     }
 
-    // Send a JSON response indicating success
-    res.status(200).send('Password changed successfully');
+    // Password updated successfully
+    res.status(200).json({ success: true });
   } catch (error) {
-    // Send a JSON response indicating the error
-    res.status(500).send(`Failed to change password: ${error.message}`);
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Unexpected error' });
   }
 });
 
