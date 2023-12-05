@@ -63,7 +63,7 @@ myapp.get('/forgotPassword', (req, res) => {
 
 myapp.get('/changePassword', (req, res) => {
   const { token } = req.params;
-  res.render('changePassword');
+  res.render('changePassword', { token });
 });
 
 myapp.get('/Registerpage', (req, res) => {
