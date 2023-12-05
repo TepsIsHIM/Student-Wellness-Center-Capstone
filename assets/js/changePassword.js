@@ -1,49 +1,43 @@
+// changePassword.js
 document.addEventListener('DOMContentLoaded', function () {
     const changeForm = document.getElementById('changeForm');
-    const emailStatus = document.getElementById('emailStatus');
+    const newPasswordInput = document.getElementById('newPassword');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
 
     if (changeForm) {
         changeForm.addEventListener('submit', async function (event) {
             event.preventDefault();
-            const emailInput = document.getElementById('changeAccount');
-            const email = emailInput.value.trim();
-            const passwordInput = document.getElementById('confirmPassword');
-            const password = passwordInput.value.trim();
+
+            const newPassword = newPasswordInput.value.trim();
+            const confirmPassword = confirmPasswordInput.value.trim();
+
+            if (newPassword !== confirmPassword) {
+                // Passwords do not match
+                alert('Passwords do not match');
+                return;
+            }
 
             try {
-                const response = await fetch('/changePassword', {
+                const response = await fetch('/change-password', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ email, password }),
+                    body: JSON.stringify({ newPassword }),
                 });
 
                 if (response.ok) {
-                    // Password reset email sent successfully
+                    // Password changed successfully
                     const message = await response.text();
-                    if (message === 'Password reset email sent successfully') {
-                        emailStatus.innerText = 'An email has been sent';
-                        emailStatus.className = 'status-box success';
-                        // You can also redirect the user to a confirmation page or handle it as needed
-                    } else {
-                        emailStatus.innerText = 'Unknown success message';
-                        emailStatus.className = 'status-box error';
-                    }
+                    alert(message); // You can customize this alert or redirect the user to a success page
                 } else {
-                    const data = await response.text();
-                    if (data === 'User not found') {
-                        emailStatus.innerText = 'User not found';
-                        emailStatus.className = 'status-box error';
-                    } else {
-                        emailStatus.innerText = `Error: ${data}`;
-                        emailStatus.className = 'status-box error';
-                    }
+                    // Handle other response statuses
+                    const errorMessage = await response.text();
+                    alert(`Error: ${errorMessage}`);
                 }
             } catch (error) {
                 console.error('Unexpected error:', error);
-                emailStatus.innerText = 'Make Sure To Check Existing Email.';
-                emailStatus.className = 'status-box error';
+                alert('Failed to change password. Please try again.'); // Provide user-friendly error message
             }
         });
     }

@@ -3,8 +3,8 @@ const cors = require('cors');
 const ejs = require('ejs');
 const myapp = express();
 const port = 3030;
-const bcrypt = require('bcryptjs');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const router = express.Router();
 
 myapp.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
@@ -62,6 +62,7 @@ myapp.get('/forgotPassword', (req, res) => {
 });
 
 myapp.get('/changePassword', (req, res) => {
+  const { token } = req.params;
   res.render('changePassword');
 });
 
@@ -1296,35 +1297,24 @@ myapp.post('/forgotPassword', async (req, res) => {
 });
 
 myapp.post('/changePassword', async (req, res) => {
-  const { email,password } = req.body;
-
+  const { newPassword, token } = req.body;
 
   try {
-    const { data, error: changepsw } = await supabase.auth.updateUser({ 
-      email: email, 
-      password: password 
-    })
-    
-    if (changepsw) {
-     
-      console.error('Error logging in:', changepsw.message);
-      if (changepsw.message.includes("Invalid login credentials")) {
-        res.status(401).json({ error: 'Incorrect email or password' });
-      } else {
-        res.status(500).json({ error: 'Login failed' });
-      }
-    
-      return;
-    }
-    if (!data || !data.user) {
-      console.error('Authentication failed');
-      res.status(401).json({ error: 'Authentication failed' });
-      return;
+    // Reset the user's password using the token
+    const { error } = await supabase.auth.updateUser(null, {
+      token,
+      password: newPassword,
+    });
+
+    if (error) {
+      throw error;
     }
 
-  } catch (e) {
-    console.error('Unexpected error:', e);
-    return res.status(500).send('Failed');
+    // Send a JSON response indicating success
+    res.status(200).send('Password changed successfully');
+  } catch (error) {
+    // Send a JSON response indicating the error
+    res.status(500).send(`Failed to change password: ${error.message}`);
   }
 });
 
@@ -3293,8 +3283,6 @@ if (deleteProgramError) {
     res.status(500).send('Internal server error');
   }
 });
-
-
 
 // Route to handle the adminStatistics form submission
 myapp.post('/generate-report', async (req, res) => {
