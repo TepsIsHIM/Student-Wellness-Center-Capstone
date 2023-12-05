@@ -1,4 +1,3 @@
-// changePassword.js
 document.addEventListener('DOMContentLoaded', function () {
     const changeForm = document.getElementById('changeForm');
     const newPasswordInput = document.getElementById('newPassword');
