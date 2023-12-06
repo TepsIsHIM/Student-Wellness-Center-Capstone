@@ -1301,7 +1301,7 @@ myapp.post('/changePassword', async (req, res) => {
     const { token, newPassword } = req.body;
 
     // Verify the token and reset the password using Supabase SDK
-    const { error } = await supabase.auth.api.updateUser(token, {
+    const { error } = await supabase.auth.updateUser(token, {
       password: newPassword,
     });
 
