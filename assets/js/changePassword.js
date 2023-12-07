@@ -13,18 +13,14 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Extract token from the URL fragment identifier
-        const fragment = window.location.hash.substr(1);
-        const params = new URLSearchParams(fragment);
-        const token = params.get('access_token');
 
         try {
-            const response = await fetch('/reset-password', {
+            const response = await fetch('/changePassword', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ token, newPassword }),
+                body: JSON.stringify({ confirmPassword }),
             });
 
             if (response.ok) {

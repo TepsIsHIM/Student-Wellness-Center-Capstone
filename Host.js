@@ -62,8 +62,7 @@ myapp.get('/forgotPassword', (req, res) => {
 });
 
 myapp.get('/changePassword', (req, res) => {
-  const { token } = req.params;
-  res.render('changePassword', { token });
+  res.render('changePassword',);
 });
 
 myapp.get('/Registerpage', (req, res) => {
@@ -1270,7 +1269,9 @@ myapp.post('/forgotPassword', async (req, res) => {
       .single();
 
     if (studentData) {
-      await supabase.auth.resetPasswordForEmail(studentData.email);
+      await supabase.auth.resetPasswordForEmail(studentData.email, {
+  redirectTo: 'https://dlsud-swc.vercel.app/changePassword',
+})
       return res.status(200).send('Password reset email sent successfully');
     }
 
@@ -1282,7 +1283,9 @@ myapp.post('/forgotPassword', async (req, res) => {
       .single();
 
     if (counselorData) {
-      await supabase.auth.resetPasswordForEmail(counselorData.email);
+      await supabase.auth.resetPasswordForEmail(counselorData.email, {
+  redirectTo: 'https://dlsud-swc.vercel.app/changePassword',
+})
       return res.status(200).send('Password reset email sent successfully');
     }
 
@@ -1298,22 +1301,22 @@ myapp.post('/forgotPassword', async (req, res) => {
 
 myapp.post('/changePassword', async (req, res) => {
   try {
-    const { token, newPassword } = req.body;
+    const { newPassword } = req.body;
 
-    // Verify the token and reset the password using Supabase SDK
-    const { error } = await supabase.auth.updateUser(token, {
-      password: newPassword,
-    });
-
+    // Reset the user's password using the token
+    const { error } = await supabase.auth.updateUser({ password: newPassword })
+    console.log(error);
     if (error) {
-      return res.status(400).json({ error: 'Invalid or expired token' });
+      console.log(error);
+      throw error;
     }
 
-    // Password updated successfully
-    res.status(200).json({ success: true });
+    // Send a JSON response indicating success
+    res.status(200).send('Password changed successfully');
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Unexpected error' });
+    // Send a JSON response indicating the error
+    console.log(error);
+    res.status(500).send(`Failed to change password: ${error.message}`);
   }
 });
 
