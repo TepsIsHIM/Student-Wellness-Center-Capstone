@@ -122,13 +122,13 @@
 
             <!-- "Rate" button triggering modal -->
 <% if (appointment.prog_status !== 'REJECTED' && appointment.prog_status !== 'CANCELLED') { %>
-  <button type="button" class="btn btn-primary feedback" data-bs-toggle="modal" data-bs-target="#exampleModal" data-appointment-id="<%= appointment.id %>">
+  <button type="button" class="btn btn-warning feedback" data-bs-toggle="modal" data-bs-target="#exampleModal" data-appointment-id="<%= appointment.id %>">
     Rate 
   </button>
 <% } %>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -147,24 +147,24 @@
           </div>
           <div class="col-12">
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="rating" id="rating1" value="1">
-              <label class="form-check-label" for="rating1">Bad</label>
+              <input class="form-check-input" type="radio" name="rating" id="rating1" value="Very Dissatisfied">
+              <label class="form-check-label" for="rating1">Very Dissatisfied</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="rating" id="rating2" value="2">
-              <label class="form-check-label" for="rating2">Poor</label>
+              <input class="form-check-input" type="radio" name="rating" id="rating2" value="Dissatisfied">
+              <label class="form-check-label" for="rating2">Dissatisfied</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="rating" id="rating3" value="3">
-              <label class="form-check-label" for="rating3">Ok</label>
+              <input class="form-check-input" type="radio" name="rating" id="rating3" value="Neutral">
+              <label class="form-check-label" for="rating3">Neutral</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="rating" id="rating4" value="4">
-              <label class="form-check-label" for="rating4">Good</label>
+              <input class="form-check-input" type="radio" name="rating" id="rating4" value="Satisfied">
+              <label class="form-check-label" for="rating4">Satisfied</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="rating" id="rating5" value="5">
-              <label class="form-check-label" for="rating5">Excellent</label>
+              <input class="form-check-input" type="radio" name="rating" id="rating5" value="Very Satisfied">
+              <label class="form-check-label" for="rating5">Very Satisfied</label>
             </div>
           </div>
         </form>
@@ -172,7 +172,7 @@
     </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary"  id="closeModalBtn2" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary confirm-submit">Submit Feedback</button>
+        <button type="button" class="btn btn-primary confirm-submit" id="submitFeedbackBtns">Submit Feedback</button>
       </div>
     </div>
   </div>
