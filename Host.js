@@ -996,6 +996,51 @@ myapp.get('/adminViewAccounts', async (req, res) => {
   }
 });
 
+myapp.get('/getStudentData/:sEmail', async (req, res) => {
+  const sEmail = req.params.sEmail;
+  try {
+    // Fetch student data from Supabase
+    const { data, error } = await supabase
+      .from('Student Accounts')
+      .select('*')
+      .eq('email', sEmail)
+      .single();
+
+    if (error) {
+      console.error('Error fetching student data:', error);
+      return res.status(500).send('Internal server error');
+    }
+    console.log('Retrieved student data:', data); 
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching student data:', error);
+    res.status(500).send('Internal server error');
+  }
+});
+
+myapp.get('/getCounselorData/:cEmail', async (req, res) => {
+  const cEmail = req.params.cEmail;
+  try {
+    // Fetch student data from Supabase
+    const { data, error } = await supabase
+      .from('Counselor Accounts')
+      .select('*')
+      .eq('email', cEmail)
+      .single();
+
+    if (error) {
+      console.error('Error fetching counselor data:', error);
+      return res.status(500).send('Internal server error');
+    }
+    console.log('Retrieved counselor data:', data); 
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching counselor data:', error);
+    res.status(500).send('Internal server error');
+  }
+});
+
+
 myapp.get('/adminEditRoles', async (req, res) => {
   const counselorData = res.locals.counselorData;
   if (!counselorData) {
@@ -1270,10 +1315,10 @@ myapp.post('/forgotPassword', async (req, res) => {
 
     if (studentData) {
       await supabase.auth.resetPasswordForEmail(studentData.email, {
-  redirectTo: 'https://dlsud-swc.vercel.app/changePassword',
+  redirectTo: 'http://localhost:3030/changePassword',
 })
       return res.status(200).send('Password reset email sent successfully');
-    }
+    }   
 
       
     const { data: counselorData, error: counselorError } = await supabase
@@ -1284,7 +1329,7 @@ myapp.post('/forgotPassword', async (req, res) => {
 
     if (counselorData) {
       await supabase.auth.resetPasswordForEmail(counselorData.email, {
-  redirectTo: 'https://dlsud-swc.vercel.app/changePassword',
+  redirectTo: 'http://localhost:3030/changePassword',
 })
       return res.status(200).send('Password reset email sent successfully');
     }
@@ -3168,6 +3213,129 @@ myapp.post('/adminCreateAccount', async (req, res) => {
   } catch (e) {
     console.error('Unexpected error:', e);
     res.status(500).json({ error: 'Registration failed' });
+  }
+});
+
+myapp.post('/adminEditStudent', async (req, res) => {
+  try {
+    const { sEmail,idNumber, programCode, lastName, firstName, gender, departmentSelect } = req.body;
+
+    const uppercaseFirstName = firstName.toUpperCase()
+    const uppercaseLastName = lastName.toUpperCase()
+    const uppercaseIDNumber= idNumber.toUpperCase()
+    const uppercaseGender = gender.toUpperCase()
+    const uppercaseProgramCode = programCode.toUpperCase()
+
+    // Prepare data for 'Accepted Appointment' with counselor details and adjusted date/time
+    const updateAccount = {
+      first_name: uppercaseFirstName,
+      last_name: uppercaseLastName,
+      gender: uppercaseGender,
+      id_number: uppercaseIDNumber,
+      department:departmentSelect,
+      progCode:uppercaseProgramCode
+
+    };
+
+    // Save accepted appointment in the 'Accepted Appointment' table
+    const { data: updateStudentAccount, error: insertError } = await supabase
+      .from('Student Accounts')
+      .update(updateAccount)
+      .eq('email', sEmail);
+
+    if (insertError) {
+      console.error('Error updating account:', insertError.message);
+      return res.status(500).send('Failed to update the account');
+    }
+
+    // Send success response
+    res.status(200).json({ message: 'Account updated successfully' });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
+
+myapp.post('/adminEditCounselor', async (req, res) => {
+  try {
+    const { cEmail,idNumber, lastName, firstName, gender } = req.body;
+
+    const uppercaseFirstName = firstName.toUpperCase()
+    const uppercaseLastName = lastName.toUpperCase()
+    const uppercaseIDNumber= idNumber.toUpperCase()
+    const uppercaseGender = gender.toUpperCase()
+
+    // Prepare data for 'Accepted Appointment' with counselor details and adjusted date/time
+    const updateAccount = {
+      first_name: uppercaseFirstName,
+      last_name: uppercaseLastName,
+      gender: uppercaseGender,
+      id_number: uppercaseIDNumber,
+
+    };
+
+    // Save accepted appointment in the 'Accepted Appointment' table
+    const { data: updateStudentAccount, error: insertError } = await supabase
+      .from('Counselor Accounts')
+      .update(updateAccount)
+      .eq('email', cEmail);
+
+    if (insertError) {
+      console.error('Error updating account:', insertError.message);
+      return res.status(500).send('Failed to update the account');
+    }
+
+    // Send success response
+    res.status(200).json({ message: 'Account updated successfully' });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
+
+myapp.post('/adminDeleteStudent', async (req, res) => {
+  try {
+    const {  sEmail } = req.body;
+
+    // Save accepted appointment in the 'Accepted Appointment' table
+    const { data: deleteStudent, error: insertError } = await supabase
+      .from('Student Accounts')
+      .delete('*')
+      .eq('email', sEmail);
+
+    if (insertError) {
+      console.error('Error deleting account:', insertError.message);
+      return res.status(500).send('Failed to delete an account');
+    }
+
+    // Send success response
+    res.status(200).json({ message: 'Student deleted successfully' });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
+
+myapp.post('/adminDeleteCounselor', async (req, res) => {
+  try {
+    const {  cEmail } = req.body;
+
+    // Save accepted appointment in the 'Accepted Appointment' table
+    const { data: deleteCounselor, error: insertError } = await supabase
+      .from('Counselor Accounts')
+      .delete('*')
+      .eq('email', cEmail);
+
+    if (insertError) {
+      console.error('Error deleting account:', insertError.message);
+      return res.status(500).send('Failed to delete the counselor');
+    }
+
+    // Send success response
+    res.status(200).json({ message: 'Counselor deleted successfully' });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
   }
 });
 
