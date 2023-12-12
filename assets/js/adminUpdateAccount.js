@@ -39,6 +39,35 @@ document.addEventListener('DOMContentLoaded', function () {
         const firstName = document.getElementById('firstName').value;
         const gender = document.querySelector('input[name="gender"]:checked').value;
         const departmentSelect = document.getElementById('department').value;
+        const programCodeRegex = /^[a-zA-Z]{3}\d{2}$/;
+        const nameRegex = /^[a-zA-Z\s]+$/; // Only alphabetic characters
+        if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
+          alert('First Name and Last Name should only contain alphabetic characters.');
+          $('#editStudentModal').modal('hide');
+          return; // Prevent form submission
+      }
+        if (!/^\d{9}$/.test(idNumber)) {
+          alert('Please enter a valid ID number for students.');
+          $('#editStudentModal').modal('hide');
+          return; // Prevent form submission
+      }
+
+      if (
+        !firstName ||
+        !lastName ||
+        !idNumber 
+    ) {
+        alert('Please fill out all required fields.');
+        $('#editStudentModal').modal('hide');
+        return; // Prevent form submission
+    }
+
+        // Perform programCode validation
+        if (!programCodeRegex.test(programCode)) {
+          alert('Please enter a valid program code (e.g., BIT12).');
+          $('#editStudentModal').modal('hide');
+          return; // Prevent form submission
+      }
         fetch('/adminEditStudent', {
           method: 'POST',
           headers: {
@@ -121,6 +150,34 @@ document.addEventListener('DOMContentLoaded', function () {
       const lastName = document.getElementById('lastName2').value;
       const firstName = document.getElementById('firstName2').value;
       const gender = document.querySelector('input[name="gender2"]:checked').value;
+      const nameRegex = /^[a-zA-Z\s]+$/; // Only alphabetic characters
+      if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
+        alert('First Name and Last Name should only contain alphabetic characters.');
+        $('#editCounselorModal').modal('hide');
+        return; // Prevent form submission
+    }
+    if (!/^F-\d+$/.test(idNumber)) {
+      alert('Please enter a valid ID number for counselors.');
+      $('#editCounselorModal').modal('hide');
+      return; // Prevent form submission
+  }
+
+    if (
+      !firstName ||
+      !lastName ||
+      !idNumber 
+  ) {
+      alert('Please fill out all required fields.');
+      $('#editCounselorModal').modal('hide');
+      return; // Prevent form submission
+  }
+
+      // Perform programCode validation
+      if (!programCodeRegex.test(programCode)) {
+        alert('Please enter a valid program code (e.g., BIT12).');
+        $('#editCounselorModal').modal('hide');
+        return; // Prevent form submission
+    }
       fetch('/adminEditCounselor', {
         method: 'POST',
         headers: {

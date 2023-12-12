@@ -3339,6 +3339,29 @@ myapp.post('/adminDeleteCounselor', async (req, res) => {
   }
 });
 
+myapp.post('/adminResetStudent', async (req, res) => {
+  try {
+    const {  sEmail } = req.body;
+
+    // Save accepted appointment in the 'Accepted Appointment' table
+    const { data: resetStudent, error: insertError } = await supabase
+      .from('Student Accounts')
+      .delete('*')
+      .eq('email', sEmail);
+
+    if (insertError) {
+      console.error('Error deleting account:', insertError.message);
+      return res.status(500).send('Failed to delete the counselor');
+    }
+
+    // Send success response
+    res.status(200).json({ message: 'Counselor deleted successfully' });
+  } catch (error) {
+    console.error('Server error:', error.message);
+    res.status(500).send('Internal server error');
+  }
+});
+
 myapp.post('/adminEditRoles/update', async (req, res) => {
   try {
     const { counselorEmail, departments, admin , programs } = req.body;

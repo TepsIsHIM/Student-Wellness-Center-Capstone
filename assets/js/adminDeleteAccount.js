@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
               window.location.reload();
             }, 1000);
           } else {
+            $('#deleteCounselorModal').modal('hide');
             console.error('Failed to Delete the Account');
           }
         })
