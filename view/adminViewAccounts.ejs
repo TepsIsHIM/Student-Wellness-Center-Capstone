@@ -132,8 +132,6 @@
             <td>
               <button class="btn btn-outline-success edit-student" data-toggle="modal"
                   data-target="#editStudentModal" studentEmail="<%= item.email %>">Edit</button>
-                  <button class="btn btn-outline-success reset-student" data-toggle="modal"
-                  data-target="#acceptModal" studentEmail="<%= item.email %>">Reset Password</button>
               <button class="btn btn-outline-danger delete-student" data-toggle="modal"
                   data-target="#deleteStudentModal" studentEmail="<%= item.email %>">Delete</button>
           </td>
@@ -170,8 +168,6 @@
             <td>
               <button class="btn btn-outline-success edit-counselor" data-toggle="modal"
                   data-target="#editCounselorModal" counselorEmail="<%= item2.email %>">Edit</button>
-                  <button class="btn btn-outline-success reset-counselor" data-toggle="modal"
-                  data-target="#acceptModal"counselorEmail="<%= item2.email %>">Reset Password</button>
               <button class="btn btn-outline-danger delete-counselor" data-toggle="modal"
                   data-target="#deleteCounselorModal" counselorEmail="<%= item2.email %>">Delete</button>
           </td>
@@ -482,28 +478,7 @@ tbody tr:hover {
 </div>
 </div>
 
-<!-- Reset Student Modal-->
-<div class="modal fade" id="resetStudentModal" tabindex="-1" role="dialog" aria-labelledby="resetStudentModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="resetStudentModalLabel">Reset Password Account</h5>
 
-        <button type="button" class="close close-modal-btn" data-dismiss="modal" id="closeResetModalX1" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Are you sure you want to Reset Password this Student account?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger confirm-resetStudent" data-dismiss="modal">Confirm Delete</button>
-        <button type="button" class="close close-modal-btn" data-dismiss="modal" aria-label="Close" id="closeResetBtn1">Close
-        </button>
-    </div>
-  </div>
-</div>
-</div>
 </body>
 
 </html>

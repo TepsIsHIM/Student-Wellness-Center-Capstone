@@ -2,6 +2,11 @@ document.getElementById('generateButton').addEventListener('click', async (event
     event.preventDefault();
     const fromDate = document.getElementById('fromDate').value;
     const toDate = document.getElementById('toDate').value;
+    if (!fromDate || !toDate) {
+        // Display an alert or update a message to inform the user
+        alert('Please select both "From" and "To" dates.');
+        return;
+    }
 
     try {
         const response = await fetch('/generate-report', {

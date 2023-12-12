@@ -1,4 +1,18 @@
+
 document.addEventListener('DOMContentLoaded', function () {
+
+    document.addEventListener('click', function (event) {
+        if (event.target.classList.contains('terms-modal')) {
+          $('#termsModal').modal('show');
+        } 
+      });
+    document.getElementById('closeTermsModalX1').addEventListener('click', function () {
+        $('#termsModal').modal('hide');
+      });
+    
+      document.getElementById('closeTermsBtn1').addEventListener('click', function () {
+        $('#termsModal').modal('hide');
+      });
     const createAccountButton = document.getElementById('createAccountButton');
     const accountTypeSelect = document.getElementById('accountType');
     const departmentDropdown = document.getElementById('departmentDropdown');
