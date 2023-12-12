@@ -30,7 +30,7 @@ if (!programCodeRegex.test(progCode)) {
 }
     confirmModal.show();
   });
-
+  
   // Add an event listener to the "Yes, Save Changes" button in the confirmation modal
   const confirmChangesBtn = document.getElementById('confirmChangesBtn');
   confirmChangesBtn.addEventListener('click', function () {

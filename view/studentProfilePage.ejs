@@ -214,6 +214,58 @@
   </div>
 </div>
 
+<!-- Modal for Editing User Password -->
+<div class="modal fade" id="editPasswordModal" tabindex="-1" aria-labelledby="editPasswordModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPasswordModalLabel">Edit Profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Form for Editing User Profile -->
+        <form id="editProfileForm">
+          <div class="mb-3">
+            <label for="editName" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="editName" value="<%= studentData.first_name %> <%= studentData.last_name %>" readonly>
+          </div>
+          <div class="mb-3">
+            <label for="editEmail" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="editEmail" value="<%= studentData.email %>" readonly>
+          </div>
+          <div class="mb-3">
+            <label for="editNewPassword" class="form-label">New Password</label>
+            <input type="password" class="form-control" id="editNewPassword"  >
+          </div>
+          <div class="mb-3">
+            <label for="editConfirmPassword" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="editConfirmPassword"  >
+          </div>
+          <button type="button" class="btn btn-primary" id="openConfirmPasswordModalBtn">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="confirmPasswordModal" tabindex="-1" aria-labelledby="confirmPasswordModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ConfirmPasswordModalLabel">Confirm Changes</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to save these changes?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="confirmPasswordChangesBtn">Yes, Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   </main><!-- End #main -->
   <!-- ======= Footer ======= -->

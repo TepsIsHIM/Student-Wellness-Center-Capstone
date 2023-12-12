@@ -3480,76 +3480,109 @@ if (deleteProgramError) {
 // Route to handle the adminStatistics form submission
 myapp.post('/generate-report', async (req, res) => {
   try {
-      const fromDate = req.body.fromDate;
-      const toDate = req.body.toDate;
+    const fromDate = req.body.fromDate;
+    const toDate = req.body.toDate;
 
-      // Fetch data from Supabase within the specified date range
-      const { data, error } = await supabase
-          .from('Appointment History')
-          .select('*')
-          .gte('appointed_date', fromDate)
-          .lte('appointed_date', toDate);
+    // Fetch data from 'Appointment History' within the specified date range
+    const { data: appointmentData, error: appointmentError } = await supabase
+      .from('Appointment History')
+      .select('*')
+      .gte('appointed_date', fromDate)
+      .lte('appointed_date', toDate);
 
-      if (error) {
-          throw error;
-      }
-      console.log(data);
-      // Calculate statistics based on the fetched data
-      const statistics = calculateStatistics(data);
-      
-      // Send the statistics data as JSON
-      res.json({ statistics });
+    if (appointmentError) {
+      throw appointmentError;
+    }
+
+    // Fetch data from 'Report' within the specified date range
+    const { data: reportData, error: reportError } = await supabase
+      .from('Report')
+      .select('*')
+      .gte('date_encoded', fromDate)
+      .lte('date_encoded', toDate);
+
+    if (reportError) {
+      throw reportError;
+    }
+
+    // Calculate statistics based on 'Appointment History' data
+    const appointmentStatistics = calculateStatistics(appointmentData);
+
+    // Calculate statistics based on 'Report' data
+    const reportStatistics = calculateReportStatistics(reportData);
+
+    // Send both sets of statistics data as JSON
+    res.json({ appointmentStatistics, reportStatistics });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
 function calculateStatistics(data) {
-  // Implement your logic to calculate statistics based on the fetched data
-  // This is just a simple example; adjust it according to your requirements
-
   const statistics = {
-      '1st Year': 0,
-      '2nd Year': 0,
-      '3rd Year': 0,
-      '4th Year': 0,
+    '1st Year': 0,
+    '2nd Year': 0,
+    '3rd Year': 0,
+    '4th Year': 0,
   };
 
   data.forEach(appointment => {
-      const yearLevel = getYearLevelFromProgCode(appointment.progCode);
-      if (yearLevel && statistics[yearLevel] !== undefined) {
-          statistics[yearLevel]++;
-      }
+    const yearLevel = getYearLevelFromProgCode(appointment.progCode);
+
+    if (yearLevel && statistics[yearLevel] !== undefined) {
+      statistics[yearLevel]++;
+    }
   });
-  console.log('Current Statistics:', statistics);
+
+  console.log('Appointment Statistics:', statistics);
   return statistics;
 }
 
+function calculateReportStatistics(data) {
+  const reportStatistics = {
+    'COUNSELING': { '1st Year': 0, '2nd Year': 0, '3rd Year': 0, '4th Year': 0 },
+    'CONSULTATION': { '1st Year': 0, '2nd Year': 0, '3rd Year': 0, '4th Year': 0 },
+    'INTERVIEW': { '1st Year': 0, '2nd Year': 0, '3rd Year': 0, '4th Year': 0 },
+    'TESTING': { '1st Year': 0, '2nd Year': 0, '3rd Year': 0, '4th Year': 0 },
+    'OTHERS': { '1st Year': 0, '2nd Year': 0, '3rd Year': 0, '4th Year': 0 },
+  };
+
+  data.forEach(report => {
+    const yearLevel = getYearLevelFromProgCode(report.progcode);
+    const service = report.service;
+
+    if (yearLevel && reportStatistics[service] && reportStatistics[service][yearLevel] !== undefined) {
+      reportStatistics[service][yearLevel]++;
+    }
+  });
+
+  console.log('Report Statistics:', reportStatistics);
+  return reportStatistics;
+}
+
 function getYearLevelFromProgCode(progCode) {
-  // Extract the first character of the numeric part of the program code
-  const match = progCode.match(/\d/);
+  const match = progCode ? progCode.match(/\d/) : null;
 
   if (match) {
-      const firstDigit = match[0];
+    const firstDigit = match[0];
 
-      console.log(`progCode: ${progCode}, firstDigit: ${firstDigit}`); // Add this line for debugging
+    console.log(`progCode: ${progCode}, firstDigit: ${firstDigit}`);
 
-      // Map the first digit to the corresponding year level
-      switch (firstDigit) {
-          case '1':
-              return '1st Year';
-          case '2':
-              return '2nd Year';
-          case '3':
-              return '3rd Year';
-          case '4':
-              return '4th Year';
-          default:
-              return 'Unknown Year'; // Adjust as needed for other cases
-      }
+    switch (firstDigit) {
+      case '1':
+        return '1st Year';
+      case '2':
+        return '2nd Year';
+      case '3':
+        return '3rd Year';
+      case '4':
+        return '4th Year';
+      default:
+        return 'Unknown Year';
+    }
   }
 
-  return 'Unknown Year'; // Return if no numeric part is found
+  return 'Unknown Year';
 }
 
