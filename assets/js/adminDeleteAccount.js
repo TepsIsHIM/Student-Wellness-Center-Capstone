@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Error deleting the account:', error);
         // Handle the error or show a message to the user
       });
-
+    }
 
 
       if (event.target.classList.contains('delete-counselor')) {
@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
           // Handle the error or show a message to the user
         });
     }
-  }
 });
 
   // DELETE MODAL
